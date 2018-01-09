@@ -1,3 +1,39 @@
+import React from 'react';
+
+// material ui related imports
+//import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import {grey900} from 'material-ui/styles/colors';
+
+import Header from './components/header';
+import MainContainer from './components/mainContainer';
+import Footer from './components/footer';
+
+const muiTheme = getMuiTheme({
+    palette: {
+        primary1Color: grey900
+    }
+  });
+
+export default class App extends React.Component{
+    
+    render(){
+        return(
+            <MuiThemeProvider muiTheme={muiTheme}>
+                <div className="App">
+                    <Header />
+                    <MainContainer />
+                    <Footer />
+                </div>
+            </MuiThemeProvider>
+        );
+    }
+}
+
+
+
+/*
 import React, { Component } from "react";
 // import logo from "./logo.svg";
 import "./App.css";
@@ -34,7 +70,7 @@ class App extends Component {
                 </header>
                 {/* <p className="App-intro">
                   To get started, edit <code>src/App.js</code> and save to reload.
-                </p> */}
+                </p> } // need to be commented
                 <div className="main-container">
                     <Search
                         defaultListCriteria={this.state.listCriteria}
@@ -50,3 +86,4 @@ class App extends Component {
 }
 
 export default App;
+*/
