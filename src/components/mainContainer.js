@@ -5,6 +5,8 @@ import {fetchDefaultSearchCriteria} from '../actions/searchActions';
 
 import AutoComplete from 'material-ui/AutoComplete';
 
+import UpdateSetList from './UpdateSetList';
+
 /*
 @connect((store)=>{
     return {
@@ -36,6 +38,7 @@ class MainContainer extends React.Component{
                 floatingLabelText="Search"
                 fullWidth={true}
                 />
+                <UpdateSetList />
           </div> 
         );
     }
