@@ -7,10 +7,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { grey900,white,grey300} from 'material-ui/styles/colors';
 
-const userInfo = {
-     userName:"Haribabu Garbhana"
-}
-
 const muiTheme = getMuiTheme({
     palette: {
         primary1Color: grey900,
@@ -22,6 +18,11 @@ const muiTheme = getMuiTheme({
     },
   });
 
+  const user = {
+      name : 'Haribabu Garbhana',
+      id : 23
+  }
+
 export default class Header extends React.Component{
 
     constructor(props){
@@ -29,7 +30,8 @@ export default class Header extends React.Component{
 
         // keep the initilization components here..
         this.state = {
-            value : 1
+            value : 1,
+            userInfo: user,
         };
     }
 
@@ -48,7 +50,7 @@ export default class Header extends React.Component{
                         iconElementRight={
                             <div className = "user_info_section">
                                 <DropDownMenu value={this.state.value} onChange={this.handleChange} autoWidth={true}>
-                                    <MenuItem value={1} primaryText="Haribabu Garbhana" />
+                                    <MenuItem value={1} primaryText={this.state.userInfo.name}/>
                                     <MenuItem value={2} primaryText="Log Out" />
                                 </DropDownMenu>
                             </div>
