@@ -17,7 +17,7 @@ export default class File extends React.Component{
             primaryText={this.props.file.name}
             leftIcon={<Book />}  
             secondaryText={this.props.file.description}
-
+            className ="fileItem"
           />
         );
     }

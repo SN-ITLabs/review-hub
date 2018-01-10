@@ -30,7 +30,7 @@ export default class UpdateSetList extends React.Component {
       <div>
         <br />
           <List>
-            <Subheader>All Update Sets</Subheader>
+            <Subheader>All Update Sets (Change the updateSetList in mainContainer to modify the below list data)</Subheader>
             {this.props.updateSets.map(updateSetData =>
                 <UpdateSet updateSet={updateSetData} key={updateSetData.sys_id} />
             )}
