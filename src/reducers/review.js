@@ -24,6 +24,10 @@ export default function reducer(state={
             state =  {...state,searchCriteria:action.payload.teams};
             break;
         }
+        case 'FETCH_ALL_UPDATE_SETS':{
+            state = {...state,updateSets:action.payload.updateSetList};
+            break;
+        }
         case 'ADD_COMMENT':{
             break;
         }
