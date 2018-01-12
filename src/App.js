@@ -10,6 +10,7 @@ import Header from './components/header';
 import MainContainer from './components/mainContainer';
 import Footer from './components/footer';
 
+
 const muiTheme = getMuiTheme({
     palette: {
         primary1Color: grey900
@@ -23,7 +24,7 @@ export default class App extends React.Component{
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div className="App">
                     <Header />
-                    <MainContainer />
+                    <MainContainer/>
                     <Footer />
                 </div>
             </MuiThemeProvider>

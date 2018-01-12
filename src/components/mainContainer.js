@@ -6,7 +6,7 @@ import {fetchDefaultSearchCriteria,getAllUpdateSets} from '../actions/searchActi
 import AutoComplete from 'material-ui/AutoComplete';
 
 import UpdateSetList from './UpdateSetList';
-
+import Differ from './DifferCom';
 /*
 @connect((store)=>{
     return {
@@ -38,6 +38,7 @@ class MainContainer extends React.Component{
                     fullWidth={true}
                 />
                 <UpdateSetList updateSets={updateSetList}/>
+                <Differ className="differ" />
           </div> 
         );
     }

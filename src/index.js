@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'highlight.js/styles/github.css'
 
 import {Provider} from 'react-redux';
 

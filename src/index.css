@@ -1,3 +1,5 @@
+@import url('../node_modules/font-awesome/css/font-awesome.min.css');
+
 body {
   margin: 0;
   padding: 0;
@@ -34,4 +36,64 @@ img{
 .logo_header{
   float: right;
   padding-top: 30px;
+}
+
+
+/** 
+  Differ Components CSS
+**/
+
+.differ-com{
+  padding: 5%;
+  font-size: 1rem;
+  font-family: Courier New, Courier, monospace;
+  border: 1px solid #f2f2f2;
+}
+.no-padding{
+  padding: 0 !important;
+}
+
+.differ-com .script-code.highlight .line-code{
+  background-color:#fffec6;
+  border-left: 5px solid silver;
+}
+.differ-com .script-code.highlight .line-code.replace ins{
+  text-decoration: none;
+  background-color: #a3fc83;
+  border: 1px solid #7be256;
+}
+.differ-com .script-code.highlight .line-code.replace del{
+  text-decoration: none;
+  background-color: #ffb0a3;
+  border: 1px solid #ff8775;
+}
+
+.differ-com .script-code:hover,
+.differ-com .script-code:focus
+{
+  background: #f2f2f2;
+}
+.differ-com .script-code .line-comment{
+  cursor: pointer;
+  background: #d2efcb;
+  text-align: center;
+  color: #6a9161;
+}
+.differ-com .script-code .line-comment:hover,
+.differ-com .script-code .line-comment:focus{
+  color: #913737;
+}
+.differ-com .script-code .line-comment .line-comment-action:before{
+  content: "\f27a";
+  font-family: FontAwesome;
+}
+
+.differ-com .script-code .line-number{
+  font-weight: bold;
+  text-align: right;
+  background: #f2f2f2;
+}
+.differ-com .script-code .line-code{
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
