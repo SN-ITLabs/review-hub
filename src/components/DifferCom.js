@@ -12,19 +12,18 @@ class Line extends React.Component{
     render(){
         //console.log(this.props.difference);
         if(this.props.compare && this.props.difference){
-            var _token = Date.now();
             var _differenceCode = this.props.difference;
-            _differenceCode = _differenceCode.replace('<ins>', '_ins_' + _token);
-            _differenceCode = _differenceCode.replace('</ins>', '_ins__' + _token);
-            _differenceCode = _differenceCode.replace('<del>', '_del_' + _token);
-            _differenceCode = _differenceCode.replace('</del>', '_del__' + _token);
+            _differenceCode = _differenceCode.replace(/<ins>/g, '_ins_');
+            _differenceCode = _differenceCode.replace(/<\/ins>/g, '_inse_');
+            _differenceCode = _differenceCode.replace(/<del>/g, '_del_');
+            _differenceCode = _differenceCode.replace(/<\/del>/g, '_dele_');
 
             _differenceCode = this.hljs.highlightAuto(_differenceCode).value;
 
-            _differenceCode = _differenceCode.replace('_ins_' + _token, '<ins>');
-            _differenceCode = _differenceCode.replace('_ins__' + _token, '</ins>');
-            _differenceCode = _differenceCode.replace('_del_' + _token, '<del>');
-            _differenceCode = _differenceCode.replace('_del__' + _token, '</del>');
+            _differenceCode = _differenceCode.replace(/_ins_/g, '<ins>');
+            _differenceCode = _differenceCode.replace(/_inse_/g, '</ins>');
+            _differenceCode = _differenceCode.replace(/_del_/g, '<del>');
+            _differenceCode = _differenceCode.replace(/_dele_/g, '</del>');
             
             return(
                 <div className="row highlight-row">
