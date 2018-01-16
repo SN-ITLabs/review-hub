@@ -78,13 +78,14 @@ img{
   background: #d2efcb;
   text-align: center;
   color: #6a9161;
+  font-size: 1.4rem;
 }
 .differ-com .script-code .line-comment:hover,
 .differ-com .script-code .line-comment:focus{
   color: #913737;
 }
 .differ-com .script-code .line-comment .line-comment-action:before{
-  content: "\f27a";
+  content: "\f086";
   font-family: FontAwesome;
 }
 

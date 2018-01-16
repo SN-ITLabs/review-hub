@@ -46,7 +46,7 @@ class Line extends React.Component{
             <div className="row">
                 <div className="no-padding col-md-12">
                     <div className="row script-code">
-                        <div className="no-padding col-md-1 line-comment"><span className="line-comment-action" line-id={this.props.line_number}></span></div>
+                        <div className="no-padding col-md-1 line-comment"></div>
                         <div className="col-md-1 line-number">{this.props.lineNumber}</div>
                         <div className="col-md-10 line-code" dangerouslySetInnerHTML={{__html: this.hljs.highlightAuto(this.props.script).value}}></div>
                     </div>
