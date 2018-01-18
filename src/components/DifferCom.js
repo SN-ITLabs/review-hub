@@ -1,6 +1,6 @@
 import React from 'react';
 import getDifferScript from "../util/DifferService";
-
+import CommentBox from './CommentBox';
 //var hl = require("highlight").Highlight;
 
 class Line extends React.Component{
@@ -37,6 +37,11 @@ class Line extends React.Component{
                             <div className="no-padding col-md-1 line-comment"></div>
                             <div className="col-md-1 line-number"></div>
                             <div className="col-md-10 line-code replace" dangerouslySetInnerHTML={{__html: _differenceCode}}></div>
+                        </div>
+                        <div className="row script-code highlight">
+                            <div className="no-padding col-md-1"></div>
+                            <div className="col-md-1"></div>
+                            <div className="col-md-10"><CommentBox user="Avishek Dalal"/></div>
                         </div>
                     </div>
                 </div>
