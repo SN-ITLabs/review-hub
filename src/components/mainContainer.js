@@ -9,6 +9,7 @@ import UpdateSetList from './UpdateSetList';
 
 import UserProfileList from './userProfileList';
 
+import Differ from './DifferCom';
 /*
 @connect((store)=>{
     return {
@@ -56,6 +57,7 @@ class MainContainer extends React.Component{
                             fullWidth={true}
                         />
                         <UpdateSetList updateSets={updateSetList} profileHandler={this.handleUpdateSetProfiles.bind(this)}/>
+                        <Differ className="differ" />
                 </div> 
                 <div className="leftContent col-sm-3 col-xs-3 col-md-3 col-lg-3">
                     <UserProfileList userProfiles={this.state.profiles}/>
