@@ -12,9 +12,13 @@ const nestedStyle = {
 export default class UpdateSet extends React.Component{
     constructor(props){
         super(props);
-        this.state = {
-            // make sure you are maintaing the state properly
-        }
+        this.state={
+            profiles : []
+           }
+    }
+
+    handleUpdateSetProfiles(profiles){
+        this.props.profileHandler(profiles);
     }
 
     render(){
@@ -27,7 +31,7 @@ export default class UpdateSet extends React.Component{
             nestedListStyle = {nestedStyle.style}
             nestedItems={
                 this.props.updateSet.files.map(fileData =>
-                    <File file={fileData} key={fileData.sys_id} />
+                    <File file={fileData} key={fileData.sys_id} profileHandler={this.handleUpdateSetProfiles.bind(this)}/>
                 )
             }
             />
@@ -59,4 +63,7 @@ class UpdateSet extends Component {
     }
 }
 
-export default UpdateSet;*/
+export default UpdateSet;
+
+onClick={this.handleOnClick.bind(this)}
+*/

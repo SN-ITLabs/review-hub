@@ -8,10 +8,15 @@ export default class UpdateSetList extends React.Component {
 
     constructor(props){
       super(props);
-      this.state = {
-       
-      };
+      this.state={
+        profiles : []
+       }
     }
+
+    handleUpdateSetProfiles(profiles){
+        this.props.profileHandler(profiles);
+    }
+
 
   render() {
     return (
@@ -20,36 +25,13 @@ export default class UpdateSetList extends React.Component {
           <List>
             <Subheader>All Update Sets (Change the updateSetList in fetch all updatesets action to modify the below list data)</Subheader>
             {this.props.updateSets.map(updateSetData =>
-                <UpdateSet updateSet={updateSetData} key={updateSetData.sys_id} />
+                <UpdateSet updateSet={updateSetData} 
+                key={updateSetData.sys_id} 
+                profileHandler={this.handleUpdateSetProfiles.bind(this)}
+                />
             )}
           </List>
       </div>
     );
   }
 }
-
-
-
-
-
-
-/*import React, { Component } from 'react';
-
-import UpdateSet from './UpdateSet';
-
-class UpdateSetList extends Component {
-    render() {
-        return (
-            <div>
-                <ul>
-                    {this.props.updateSetListData.map(updateSet =>
-                        <UpdateSet data={updateSet} key={updateSet.name}></UpdateSet>
-                    )}
-                </ul>
-            </div>
-
-        );
-    }
-}
-
-export default UpdateSetList;*/

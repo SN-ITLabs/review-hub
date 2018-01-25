@@ -14,7 +14,7 @@ export function getAllUpdateSets(){
         type:'FETCH_ALL_UPDATE_SETS',
         payload:{
             updateSetList : [{
-                name : 'Updateset 1',
+                name : 'STRY48944 Partner portal dev changes',
                 sys_id:'484994',
                 payload:{},
                 description:'this is my test updateset',
@@ -22,17 +22,41 @@ export function getAllUpdateSets(){
                     {
                        name:"ppdevuitl.js",
                        sys_id:"748484",
-                       description:"provides the utility functions for the pp"
+                       description:"provides the utility functions for the pp",
+                       userProfiles:[
+                            {
+                                name:"David Hub",
+                                sys_id:"489494",
+                                description:"Customer relation ships manager"
+                            },
+                            {
+                                name:"Ruther Furd",
+                                sys_id:"48944",
+                                description:"Engagement manager"
+                            }
+                        ]
                     },
                     {
                         name:"deputil.js",
                         sys_id:"48944",
-                        description:"provides the dep functions for the pp"
+                        description:"provides the dep functions for the pp",
+                        userProfiles:[
+                            {
+                                name:"David Hub",
+                                sys_id:"489494",
+                                description:"Customer relation ships manager"
+                             },
+                             {
+                                 name:"Ruther Furd",
+                                 sys_id:"48944",
+                                 description:"Engagement manager"
+                             }
+                        ]
                     }
                 ]
             },
             {
-                name : 'Updateset 2',
+                name : 'STRY49494 PS Operations dev changes',
                 sys_id:'4849956',
                 payload:{},
                 description:'another update set to testing the values',
@@ -40,17 +64,41 @@ export function getAllUpdateSets(){
                     {
                        name:"ppdevuitl.js",
                        sys_id:"748484",
-                       description:"provides the utility functions for the pp"
+                       description:"provides the utility functions for the pp",
+                       userProfiles:[
+                        {
+                            name:"Refred Hub",
+                            sys_id:"489494",
+                            description:"Customer relation ships manager"
+                         },
+                         {
+                             name:"Ruther Furd",
+                             sys_id:"48944",
+                             description:"Engagement manager"
+                         }
+                    ]
                     },
                     {
                         name:"deputil.js",
                         sys_id:"48944",
-                        description:"provides the dep functions for the pp"
+                        description:"provides the dep functions for the pp",
+                        userProfiles:[
+                            {
+                                name:"Refred Hub",
+                                sys_id:"489494",
+                                description:"Customer relation ships manager"
+                             },
+                             {
+                                 name:"Ruther Furd",
+                                 sys_id:"48944",
+                                 description:"Engagement manager"
+                             }
+                        ]
                     }
                 ]
             },
             {
-                name : 'Updateset 3',
+                name : 'STRY379393 CPQ dev changes ',
                 sys_id:'48499474',
                 payload:{},
                 description:'keep the track of deploymnet testing',
@@ -58,17 +106,41 @@ export function getAllUpdateSets(){
                     {
                        name:"ppdevuitl.js",
                        sys_id:"748484",
-                       description:"provides the utility functions for the pp"
+                       description:"provides the utility functions for the pp",
+                       userProfiles:[
+                        {
+                            name:"Refred Hub",
+                            sys_id:"489494",
+                            description:"Customer relation ships manager"
+                         },
+                         {
+                             name:"Ruther Furd",
+                             sys_id:"48944",
+                             description:"Engagement manager"
+                         }
+                    ]
                     },
                     {
                         name:"deputil.js",
                         sys_id:"48944",
-                        description:"provides the dep functions for the pp"
+                        description:"provides the dep functions for the pp",
+                        userProfiles:[
+                            {
+                                name:"Refred Hub",
+                                sys_id:"489494",
+                                description:"Customer relation ships manager"
+                             },
+                             {
+                                 name:"Ruther Furd",
+                                 sys_id:"48944",
+                                 description:"Engagement manager"
+                             }
+                        ]
                     }
                 ]
             },
             {
-                name : 'Updateset 4',
+                name : 'STRY380303 Sales alert implementation',
                 sys_id:'48493738',
                 payload:{},
                 description:'implementing opportuntiy testings',
@@ -76,17 +148,41 @@ export function getAllUpdateSets(){
                     {
                        name:"ppdevuitl.js",
                        sys_id:"748484",
-                       description:"provides the utility functions for the pp"
+                       description:"provides the utility functions for the pp",
+                       userProfiles:[
+                        {
+                            name:"Refred Hub",
+                            sys_id:"489494",
+                            description:"Customer relation ships manager"
+                         },
+                         {
+                             name:"Ruther Furd",
+                             sys_id:"48944",
+                             description:"Engagement manager"
+                         }
+                    ]
                     },
                     {
                         name:"deputil.js",
                         sys_id:"48944",
-                        description:"provides the dep functions for the pp"
+                        description:"provides the dep functions for the pp",
+                        userProfiles:[
+                            {
+                                name:"Refred Hub",
+                                sys_id:"489494",
+                                description:"Customer relation ships manager"
+                             },
+                             {
+                                 name:"Ruther Furd",
+                                 sys_id:"48944",
+                                 description:"Engagement manager"
+                             }
+                        ]
                     }
                 ]
             },
             {
-                name : 'Updateset 5',
+                name : 'STRY83030 Demo changes on sales territories',
                 sys_id:'3033030',
                 payload:{},
                 description:'contracts reagaring ps vendors',
@@ -94,12 +190,36 @@ export function getAllUpdateSets(){
                     {
                        name:"ppdevuitl.js",
                        sys_id:"748484",
-                       description:"provides the utility functions for the pp"
+                       description:"provides the utility functions for the pp",
+                       userProfiles:[
+                        {
+                            name:"Refred Hub",
+                            sys_id:"489494",
+                            description:"Customer relation ships manager"
+                         },
+                         {
+                             name:"Ruther Furd",
+                             sys_id:"48944",
+                             description:"Engagement manager"
+                         }
+                    ]
                     },
                     {
                         name:"deputil.js",
                         sys_id:"48944",
-                        description:"provides the dep functions for the pp"
+                        description:"provides the dep functions for the pp",
+                        userProfiles:[
+                            {
+                                name:"Refred Hub",
+                                sys_id:"489494",
+                                description:"Customer relation ships manager"
+                             },
+                             {
+                                 name:"Ruther Furd",
+                                 sys_id:"48944",
+                                 description:"Engagement manager"
+                             }
+                        ]
                     }
                 ]
             }]

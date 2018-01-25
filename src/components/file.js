@@ -7,9 +7,18 @@ export default class File extends React.Component{
    
     constructor(props){
         super(props);
-        this.state={}
+        this.state={
+            profiles : []
+        }
     }
-
+    
+    handleUpdateSetProfiles(){
+       // this.setState = {
+         //   profiles : this.props.file.userProfiles
+     //   }
+       
+        this.props.profileHandler(this.props.file.userProfiles);
+    }
     render(){
         return(
             <ListItem
@@ -17,6 +26,7 @@ export default class File extends React.Component{
             primaryText={this.props.file.name}
             leftIcon={<Book />}  
             secondaryText={this.props.file.description}
+            onClick={this.handleUpdateSetProfiles.bind(this)}
             className ="fileItem"
           />
         );
