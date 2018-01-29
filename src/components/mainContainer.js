@@ -57,7 +57,7 @@ class MainContainer extends React.Component{
                             fullWidth={true}
                         />
                         <UpdateSetList updateSets={updateSetList} profileHandler={this.handleUpdateSetProfiles.bind(this)}/>
-                        <Differ className="differ" />
+                        {/* <Differ className="differ" /> */}
                 </div> 
                 <div className="leftContent col-sm-3 col-xs-3 col-md-3 col-lg-3">
                     <UserProfileList userProfiles={this.state.profiles}/>
