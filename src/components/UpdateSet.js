@@ -3,7 +3,7 @@ import React from 'react';
 import {ListItem} from 'material-ui/List';
 import AccountCircle from 'material-ui/svg-icons/action/account-circle';
 
-import File from './file';
+import File from './File';
 
 const nestedStyle = {
     style : {paddingLeft:'50px'}
@@ -23,18 +23,32 @@ export default class UpdateSet extends React.Component{
 
     render(){
         return(
+            // <ListItem 
+            // primaryText={this.props.updateSet.name} 
+            // leftIcon={<AccountCircle />}  
+            // secondaryText={this.props.updateSet.description}
+            // primaryTogglesNestedList={true}
+            // nestedListStyle = {nestedStyle.style}
+            // nestedItems={
+            //     this.props.updateSet.files.map(fileData =>
+            //         <File file={fileData} key={fileData.sys_id} profileHandler={this.handleUpdateSetProfiles.bind(this)}/>
+            //     )
+            // }
+            // />
+           
             <ListItem 
-            primaryText={this.props.updateSet.name} 
+            primaryText={this.props.changeSetName} 
             leftIcon={<AccountCircle />}  
-            secondaryText={this.props.updateSet.description}
             primaryTogglesNestedList={true}
             nestedListStyle = {nestedStyle.style}
             nestedItems={
-                this.props.updateSet.files.map(fileData =>
-                    <File file={fileData} key={fileData.sys_id} profileHandler={this.handleUpdateSetProfiles.bind(this)}/>
+                this.props.changeSet.files.map(fileData =>
+                    <File file={fileData} profileHandler={this.handleUpdateSetProfiles.bind(this)}/>
                 )
             }
             />
+
+
         );
     }
 }

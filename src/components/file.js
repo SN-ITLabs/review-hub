@@ -21,14 +21,23 @@ export default class File extends React.Component{
     }
     render(){
         return(
-            <ListItem
-            key={this.props.file.sys_id}
-            primaryText={this.props.file.name}
+        //     <ListItem
+        //     key={this.props.file.sys_id}
+        //     primaryText={this.props.file.name}
+        //     leftIcon={<Book />}  
+        //     secondaryText={this.props.file.description}
+        //     onClick={this.handleUpdateSetProfiles.bind(this)}
+        //     className ="fileItem"
+        //   />
+
+        <ListItem
+            primaryText={this.props.file.record_name}
             leftIcon={<Book />}  
-            secondaryText={this.props.file.description}
+            secondaryText={this.props.file.sys_updated_by}
             onClick={this.handleUpdateSetProfiles.bind(this)}
             className ="fileItem"
           />
+
         );
     }
 

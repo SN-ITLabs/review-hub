@@ -23,13 +23,21 @@ export default class UpdateSetList extends React.Component {
       <div>
         <br />
           <List>
-            <Subheader>All Update Sets (Change the updateSetList in fetch all updatesets action to modify the below list data)</Subheader>
-            {this.props.updateSets.map(updateSetData =>
+            <Subheader>All Change Sets</Subheader>
+            {/* {this.props.updateSets.map(updateSetData =>
                 <UpdateSet updateSet={updateSetData} 
                 key={updateSetData.sys_id} 
                 profileHandler={this.handleUpdateSetProfiles.bind(this)}
                 />
+            )} */}
+           
+            {Object.keys(this.props.changeSets).map(name =>
+              <UpdateSet changeSetName = {name} 
+              changeSet={this.props.changeSets[name]} 
+              profileHandler={this.handleUpdateSetProfiles.bind(this)}
+              />
             )}
+
           </List>
       </div>
     );

@@ -3,7 +3,7 @@ import React from 'react';
 import {List} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 
-import UserProfile from './userProfile';
+import UserProfile from './UserProfile';
 
 export default class UserProfileList extends React.Component{
     

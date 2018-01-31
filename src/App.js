@@ -6,9 +6,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {grey900} from 'material-ui/styles/colors';
 
-import Header from './components/header';
-import MainContainer from './components/mainContainer';
-import Footer from './components/footer';
+import Header from './components/Header';
+import MainContainer from './components/MainContainer';
+import Footer from './components/Footer';
 
 
 const muiTheme = getMuiTheme({

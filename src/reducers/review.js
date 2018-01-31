@@ -12,7 +12,8 @@ export default function reducer(state={
   // configure the default state 
   userInfo:{},
   searchCriteria:[],
-  updateSets:[]
+  updateSets:[],
+  changeSets:{}
 },action){
    
     // update the state and return the state based on the action type
@@ -26,6 +27,10 @@ export default function reducer(state={
         }
         case 'FETCH_ALL_UPDATE_SETS':{
             state = {...state,updateSets:action.payload.updateSetList};
+            break;
+        }
+        case 'FETCH_ALL_CHANGE_SETS':{
+            state = {...state,changeSets:action.payload};
             break;
         }
         case 'ADD_COMMENT':{

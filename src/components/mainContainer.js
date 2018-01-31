@@ -1,15 +1,15 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {fetchDefaultSearchCriteria,getAllUpdateSets} from '../actions/searchActions';
+import {fetchDefaultSearchCriteria,getAllUpdateSets,getChangeSetsForReview} from '../actions/SearchActions';
 
 import AutoComplete from 'material-ui/AutoComplete';
 
 import UpdateSetList from './UpdateSetList';
 
-import UserProfileList from './userProfileList';
+import UserProfileList from './UserProfileList';
 
-import Differ from './DifferCom';
+//import Differ from './DifferCom';
 /*
 @connect((store)=>{
     return {
@@ -31,7 +31,8 @@ class MainContainer extends React.Component{
     }
     
     handleonClose = (value) => {
-        this.props.dispatch(getAllUpdateSets())
+        //this.props.dispatch(getAllUpdateSets())
+        this.props.dispatch(getChangeSetsForReview())
     };
 
     handleUpdateSetProfiles(userProfiles){
@@ -42,7 +43,7 @@ class MainContainer extends React.Component{
     }
 
     render(){
-        const {searchCriteria,updateSetList} = this.props;
+        const {searchCriteria,updateSetList,changeSetsList} = this.props;
         
         return(
            <div className="container">
@@ -56,7 +57,8 @@ class MainContainer extends React.Component{
                             floatingLabelText="Search"
                             fullWidth={true}
                         />
-                        <UpdateSetList updateSets={updateSetList} profileHandler={this.handleUpdateSetProfiles.bind(this)}/>
+                        <UpdateSetList changeSets={changeSetsList} profileHandler={this.handleUpdateSetProfiles.bind(this)}/>
+                        {/* <UpdateSetList updateSets={updateSetList} profileHandler={this.handleUpdateSetProfiles.bind(this)}/> */}
                         {/* <Differ className="differ" /> */}
                 </div> 
                 <div className="leftContent col-sm-3 col-xs-3 col-md-3 col-lg-3">
@@ -71,7 +73,8 @@ class MainContainer extends React.Component{
 const stateMap = (state) => {
     return {
         searchCriteria : state.searchCriteria,
-        updateSetList : state.updateSets
+        updateSetList : state.updateSets,
+        changeSetsList : state.changeSets
     };
 };
 
