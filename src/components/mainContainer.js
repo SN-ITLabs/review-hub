@@ -1,15 +1,15 @@
-import React from 'react';
-import {connect} from 'react-redux';
+import React from "react";
+import { connect } from "react-redux";
 
-import {fetchDefaultSearchCriteria,getAllUpdateSets} from '../actions/searchActions';
+import { fetchDefaultSearchCriteria, getAllUpdateSets } from "../actions/searchActions";
 
-import AutoComplete from 'material-ui/AutoComplete';
+import AutoComplete from "material-ui/AutoComplete";
 
-import UpdateSetList from './UpdateSetList';
+import UpdateSetList from "./UpdateSetList";
 
-import UserProfileList from './userProfileList';
+import UserProfileList from "./userProfileList";
 
-import Differ from './DifferCom';
+//import Differ from "./DifferCom";
 /*
 @connect((store)=>{
     return {
@@ -17,37 +17,36 @@ import Differ from './DifferCom';
     }
 })*/
 
-class MainContainer extends React.Component{
-
-    constructor(props){
+class MainContainer extends React.Component {
+    constructor(props) {
         super(props);
-        this.state={
-            profiles : []
-        }
+        this.state = {
+            profiles: []
+        };
     }
-  
-    componentWillMount(){
-        this.props.dispatch(fetchDefaultSearchCriteria())
+
+    componentWillMount() {
+        this.props.dispatch(fetchDefaultSearchCriteria());
     }
-    
-    handleonClose = (value) => {
-        this.props.dispatch(getAllUpdateSets())
+
+    handleonClose = value => {
+        this.props.dispatch(getAllUpdateSets());
     };
 
-    handleUpdateSetProfiles(userProfiles){
+    handleUpdateSetProfiles(userProfiles) {
         this.setState({
             profiles: userProfiles
         });
-       // alert(profiles.length);
+        // alert(profiles.length);
     }
 
-    render(){
-        const {searchCriteria,updateSetList} = this.props;
-        
-        return(
-           <div className="container">
-              <div className="row">
-                <div className="mainContent col-sm-9 col-xs-9 col-md-9 col-lg-9">
+    render() {
+        const { searchCriteria, updateSetList } = this.props;
+
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="mainContent col-sm-9 col-xs-9 col-md-9 col-lg-9">
                         <AutoComplete
                             hintText="Type Search key word"
                             dataSource={searchCriteria}
@@ -56,22 +55,25 @@ class MainContainer extends React.Component{
                             floatingLabelText="Search"
                             fullWidth={true}
                         />
-                        <UpdateSetList updateSets={updateSetList} profileHandler={this.handleUpdateSetProfiles.bind(this)}/>
+                        <UpdateSetList
+                            updateSets={updateSetList}
+                            profileHandler={this.handleUpdateSetProfiles.bind(this)}
+                        />
                         {/* <Differ className="differ" /> */}
-                </div> 
-                <div className="leftContent col-sm-3 col-xs-3 col-md-3 col-lg-3">
-                    <UserProfileList userProfiles={this.state.profiles}/>
+                    </div>
+                    <div className="leftContent col-sm-3 col-xs-3 col-md-3 col-lg-3">
+                        <UserProfileList userProfiles={this.state.profiles} />
+                    </div>
                 </div>
-             </div>
-          </div>
+            </div>
         );
     }
 }
 
-const stateMap = (state) => {
+const stateMap = state => {
     return {
-        searchCriteria : state.searchCriteria,
-        updateSetList : state.updateSets
+        searchCriteria: state.searchCriteria,
+        updateSetList: state.updateSets
     };
 };
 
