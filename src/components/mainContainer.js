@@ -1,11 +1,11 @@
-import React from 'react';
-import {connect} from 'react-redux';
+import React from "react";
+import { connect } from "react-redux";
 
 import {fetchDefaultSearchCriteria,getAllUpdateSets,getChangeSetsForReview} from '../actions/SearchActions';
 
-import AutoComplete from 'material-ui/AutoComplete';
+import AutoComplete from "material-ui/AutoComplete";
 
-import UpdateSetList from './UpdateSetList';
+import UpdateSetList from "./UpdateSetList";
 
 import UserProfileList from './UserProfileList';
 
@@ -17,17 +17,16 @@ import UserProfileList from './UserProfileList';
     }
 })*/
 
-class MainContainer extends React.Component{
-
-    constructor(props){
+class MainContainer extends React.Component {
+    constructor(props) {
         super(props);
-        this.state={
-            profiles : []
-        }
+        this.state = {
+            profiles: []
+        };
     }
-  
-    componentWillMount(){
-        this.props.dispatch(fetchDefaultSearchCriteria())
+
+    componentWillMount() {
+        this.props.dispatch(fetchDefaultSearchCriteria());
     }
     
     handleonClose = (value) => {
@@ -35,11 +34,11 @@ class MainContainer extends React.Component{
         this.props.dispatch(getChangeSetsForReview())
     };
 
-    handleUpdateSetProfiles(userProfiles){
+    handleUpdateSetProfiles(userProfiles) {
         this.setState({
             profiles: userProfiles
         });
-       // alert(profiles.length);
+        // alert(profiles.length);
     }
 
     render(){
@@ -60,17 +59,17 @@ class MainContainer extends React.Component{
                         <UpdateSetList changeSets={changeSetsList} profileHandler={this.handleUpdateSetProfiles.bind(this)}/>
                         {/* <UpdateSetList updateSets={updateSetList} profileHandler={this.handleUpdateSetProfiles.bind(this)}/> */}
                         {/* <Differ className="differ" /> */}
-                </div> 
-                <div className="leftContent col-sm-3 col-xs-3 col-md-3 col-lg-3">
-                    <UserProfileList userProfiles={this.state.profiles}/>
+                    </div>
+                    <div className="leftContent col-sm-3 col-xs-3 col-md-3 col-lg-3">
+                        <UserProfileList userProfiles={this.state.profiles} />
+                    </div>
                 </div>
-             </div>
-          </div>
+            </div>
         );
     }
 }
 
-const stateMap = (state) => {
+const stateMap = state => {
     return {
         searchCriteria : state.searchCriteria,
         updateSetList : state.updateSets,
