@@ -17,7 +17,7 @@ export default class File extends React.Component{
          //   profiles : this.props.file.userProfiles
      //   }
        
-        this.props.profileHandler(this.props.file.userProfiles);
+       // this.props.profileHandler(this.props.file.userProfiles);
     }
     render(){
         return(
