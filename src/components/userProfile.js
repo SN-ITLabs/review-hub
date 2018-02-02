@@ -13,12 +13,20 @@ export default class UserProfile extends React.Component{
 
     render(){
         return(
+            // <ListItem 
+            // primaryText={this.props.profile.name} 
+            // leftIcon={<AccountCircle />}  
+            // secondaryText={this.props.profile.description}
+            // primaryTogglesNestedList={true}
+            // />
+
             <ListItem 
-            primaryText={this.props.profile.name} 
+            primaryText={this.props.review['changed_by']} 
             leftIcon={<AccountCircle />}  
-            secondaryText={this.props.profile.description}
             primaryTogglesNestedList={true}
+            secondaryText={this.props.review['sys_updated_by']}
             />
+
         );
     }
 }

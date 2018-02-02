@@ -21,7 +21,8 @@ class MainContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            profiles: []
+            profiles: [],
+            reviewer:{}
         };
     }
 
@@ -34,11 +35,19 @@ class MainContainer extends React.Component {
         this.props.dispatch(getChangeSetsForReview())
     };
 
-    handleUpdateSetProfiles(userProfiles) {
+    handleUpdateSetProfiles(reviewe) {
+        // this.setState({
+        //     profiles: userProfiles
+        // });
         this.setState({
-            profiles: userProfiles
+            reviewer: reviewe
         });
-        // alert(profiles.length);
+    }
+
+    handleReviewers(reviewe){
+        this.setState({
+            reviewer: reviewe
+        });
     }
 
     render(){
@@ -56,12 +65,15 @@ class MainContainer extends React.Component {
                             floatingLabelText="Search"
                             fullWidth={true}
                         />
-                        <UpdateSetList changeSets={changeSetsList} profileHandler={this.handleUpdateSetProfiles.bind(this)}/>
+                        <UpdateSetList changeSets={changeSetsList} 
+                        profileHandler={this.handleUpdateSetProfiles.bind(this)}
+                        reviewHandler={this.handleReviewers.bind(this)}
+                        />
                         {/* <UpdateSetList updateSets={updateSetList} profileHandler={this.handleUpdateSetProfiles.bind(this)}/> */}
                         {/* <Differ className="differ" /> */}
                     </div>
                     <div className="leftContent col-sm-3 col-xs-3 col-md-3 col-lg-3">
-                        <UserProfileList userProfiles={this.state.profiles} />
+                        <UserProfileList reviews={this.state.reviewer} />
                     </div>
                 </div>
             </div>

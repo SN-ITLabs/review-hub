@@ -9,7 +9,6 @@ export default class UserProfileList extends React.Component{
     
     constructor(props){
         super(props);
-
         // keep the initization code here
     }
 
@@ -17,9 +16,14 @@ export default class UserProfileList extends React.Component{
         return(
             <List>
             <Subheader>Reviewer Details</Subheader>
-            {this.props.userProfiles.map(userProfile =>
+            {/* {this.props.userProfiles.map(userProfile =>
                 <UserProfile profile={userProfile} key={userProfile.sys_id} />
-            )}
+            )} */}
+
+                {/* {Object.keys(this.props.reviews).map(reviewer => */}
+                     <UserProfile review={this.props.reviews}  />
+                {/* )} */}
+
           </List>
         );
     }

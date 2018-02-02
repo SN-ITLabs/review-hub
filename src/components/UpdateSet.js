@@ -20,6 +20,16 @@ export default class UpdateSet extends React.Component{
     handleUpdateSetProfiles(profiles){
         this.props.profileHandler(profiles);
     }
+    
+    handleReviewers(){
+       var changeSet = this.props.changeSet;
+       
+       var reviewer = {};
+       reviewer["changed_by"] = changeSet["changed_by"];
+       reviewer["sys_updated_by"] = changeSet["sys_updated_by"];
+       
+       this.props.revieweHandler(reviewer);
+    }
 
     render(){
         return(
@@ -46,38 +56,10 @@ export default class UpdateSet extends React.Component{
                     <File file={fileData} profileHandler={this.handleUpdateSetProfiles.bind(this)}/>
                 )
             }
+            onClick={this.handleReviewers.bind(this)}
             />
 
 
         );
     }
 }
-
-
-
-
-
-
-
-
-
-
-/*import React, { Component } from 'react';
-
-import FileNav from './FileNav';
-
-class UpdateSet extends Component {
-    render() {
-        return (
-            <li>
-                {this.props.data.name}
-                <FileNav></FileNav>
-            </li>
-        );
-    }
-}
-
-export default UpdateSet;
-
-onClick={this.handleOnClick.bind(this)}
-*/

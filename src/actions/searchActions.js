@@ -73,9 +73,9 @@ export function fetchDefaultSearchCriteria(){
 }
 
 export function getAllUpdateSets() {
-    if (!IS_LOCAL) {
+   /* if (!IS_LOCAL) {
         //var chGA = new GlideAjax();
-    } else
+    } else*/
         return {
             type: "FETCH_ALL_UPDATE_SETS",
             payload: {

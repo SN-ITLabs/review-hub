@@ -17,6 +17,9 @@ export default class UpdateSetList extends React.Component {
         this.props.profileHandler(profiles);
     }
 
+    hanleReviewers(reviewers){
+       this.props.reviewHandler(reviewers);
+    }
 
   render() {
     return (
@@ -35,6 +38,7 @@ export default class UpdateSetList extends React.Component {
               <UpdateSet changeSetName = {name} 
               changeSet={this.props.changeSets[name]} 
               profileHandler={this.handleUpdateSetProfiles.bind(this)}
+              revieweHandler={this.hanleReviewers.bind(this)}
               />
             )}
 
