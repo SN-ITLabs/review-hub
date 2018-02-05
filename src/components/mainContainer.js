@@ -7,7 +7,9 @@ import AutoComplete from "material-ui/AutoComplete";
 
 import UpdateSetList from "./UpdateSetList";
 
-import UserProfileList from './UserProfileList';
+import UserProfileList from "./UserProfileList";
+
+import { SNAjax } from "../util/globalhelper";
 
 //import Differ from './DifferCom';
 /*
@@ -22,18 +24,34 @@ class MainContainer extends React.Component {
         super(props);
         this.state = {
             profiles: [],
-            reviewer:{}
+            reviewer: {}
         };
     }
 
     componentWillMount() {
         this.props.dispatch(fetchDefaultSearchCriteria());
+<<<<<<< HEAD
        // this.props.dispatch(testAjaxRequest());
+=======
+
+        const TAG_URL =
+            "https://deepu317.service-now.com/api/snc/jsonhttp?sysparm_processor=TestSiJSON&sysparm_scope=global&sysparm_name=getTestOutput";
+
+        SNAjax.get(TAG_URL)
+            .then(function(response) {
+                console.log("In Success");
+                console.log(JSON.stringify(response.data));
+            })
+            .catch(function(error) {
+                console.log("In Error");
+                console.dir(error.response);
+            });
+>>>>>>> SN AJAX changes
     }
-    
-    handleonClose = (value) => {
+
+    handleonClose = value => {
         //this.props.dispatch(getAllUpdateSets())
-        this.props.dispatch(getChangeSetsForReview())
+        this.props.dispatch(getChangeSetsForReview());
     };
 
     handleUpdateSetProfiles(reviewe) {
@@ -45,19 +63,19 @@ class MainContainer extends React.Component {
         });
     }
 
-    handleReviewers(reviewe){
+    handleReviewers(reviewe) {
         this.setState({
             reviewer: reviewe
         });
     }
 
-    render(){
-        const {searchCriteria,updateSetList,changeSetsList} = this.props;
-        
-        return(
-           <div className="container">
-              <div className="row">
-                <div className="mainContent col-sm-9 col-xs-9 col-md-9 col-lg-9">
+    render() {
+        const { searchCriteria, updateSetList, changeSetsList } = this.props;
+
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="mainContent col-sm-9 col-xs-9 col-md-9 col-lg-9">
                         <AutoComplete
                             hintText="Type Search key word"
                             dataSource={searchCriteria}
@@ -66,9 +84,10 @@ class MainContainer extends React.Component {
                             floatingLabelText="Search"
                             fullWidth={true}
                         />
-                        <UpdateSetList changeSets={changeSetsList} 
-                        profileHandler={this.handleUpdateSetProfiles.bind(this)}
-                        reviewHandler={this.handleReviewers.bind(this)}
+                        <UpdateSetList
+                            changeSets={changeSetsList}
+                            profileHandler={this.handleUpdateSetProfiles.bind(this)}
+                            reviewHandler={this.handleReviewers.bind(this)}
                         />
                         {/* <UpdateSetList updateSets={updateSetList} profileHandler={this.handleUpdateSetProfiles.bind(this)}/> */}
                         {/* <Differ className="differ" /> */}
@@ -84,9 +103,9 @@ class MainContainer extends React.Component {
 
 const stateMap = state => {
     return {
-        searchCriteria : state.searchCriteria,
-        updateSetList : state.updateSets,
-        changeSetsList : state.changeSets
+        searchCriteria: state.searchCriteria,
+        updateSetList: state.updateSets,
+        changeSetsList: state.changeSets
     };
 };
 

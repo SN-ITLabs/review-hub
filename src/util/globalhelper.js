@@ -1,28 +1,25 @@
-import {IS_LOCAL} from '../util/Constants';
+import axios from "axios";
+import { HUB_CONST } from "./Constants";
 
-export default function GlideAjax(){
-    if(IS_LOCAL)
-        return () => {};
-    else 
-        return window.GlideAjax;
-}
-
-/*if(IS_LOCAL){
-
-}
-
-if(!IS_LOCAL){
-    var ga = new GlideAjax('x_snc_review_hub.ChangeSetAjax');
-    ga.addParam('sysparm_name', 'getChangeSetsInReview');
-    ga.setScope('x_snc_review_hub');
-    ga.getXML(result);
-
-    function result(response){
-        console.log("testing...");
-        console.dir(response);
-    }
- }
-*/
 export function getDefaultListCriteria() {
-    return 'My Team';
+    return "My Team";
+}
+
+export let SNAjax = (function() {
+    let _config = {};
+    if (HUB_CONST.IS_LOCAL) {
+        _config.baseURL = "https://" + HUB_CONST.DEV_INSTANCE + ".servicenow.com";
+    }
+    let _httpClient = axios.create(_config);
+
+    _httpClient.defaults.timeout = HUB_CONST.HTTP_CLIENT_TIMEOUT;
+    if (HUB_CONST.IS_LOCAL) _httpClient.defaults.headers.common["Authorization"] = _getAuthHeader();
+    _httpClient.defaults.headers.post["Content-Type"] = "application/json";
+    _httpClient.defaults.headers.put["Content-Type"] = "application/json";
+
+    return _httpClient;
+})();
+
+function _getAuthHeader(params) {
+    return "Basic " + btoa(HUB_CONST.DEV_INSTANCE_USER_NAME, HUB_CONST.DEV_INSTANCE_USER_PASSWORD);
 }
