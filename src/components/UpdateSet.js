@@ -1,7 +1,12 @@
 import React from 'react';
+import { connect } from "react-redux";
+
 
 import {ListItem} from 'material-ui/List';
 import AccountCircle from 'material-ui/svg-icons/action/account-circle';
+
+import {changesetReviewSuccess,changesetReviewReject} from '../actions/ReviewActions';
+
 
 import File from './File';
 
@@ -9,12 +14,10 @@ const nestedStyle = {
     style : {paddingLeft:'50px'}
 }
 
-export default class UpdateSet extends React.Component{
+class UpdateSet extends React.Component{
     constructor(props){
         super(props);
-        this.state={
-            profiles : []
-           }
+        this.state={}
     }
 
     handleUpdateSetProfiles(profiles){
@@ -25,35 +28,22 @@ export default class UpdateSet extends React.Component{
        var changeSet = this.props.changeSet;
        
        var reviewer = {};
-       reviewer["changed_by"] = changeSet["changed_by"];
-       reviewer["sys_updated_by"] = changeSet["sys_updated_by"];
+       reviewer["changed_by"] = changeSet["created_by"];
+       reviewer["sys_updated_by"] = changeSet["reviewer"];
        
        this.props.revieweHandler(reviewer);
     }
 
     handleReviewSuccess(){
-        alert('review success');
+        this.props.dispatch(changesetReviewSuccess(this.props.changeSetName));
     }
 
     handleReject(){
-        alert('review reject');
+        this.props.dispatch(changesetReviewReject(this.props.changeSetName));
     }
 
     render(){
         return(
-            // <ListItem 
-            // primaryText={this.props.updateSet.name} 
-            // leftIcon={<AccountCircle />}  
-            // secondaryText={this.props.updateSet.description}
-            // primaryTogglesNestedList={true}
-            // nestedListStyle = {nestedStyle.style}
-            // nestedItems={
-            //     this.props.updateSet.files.map(fileData =>
-            //         <File file={fileData} key={fileData.sys_id} profileHandler={this.handleUpdateSetProfiles.bind(this)}/>
-            //     )
-            // }
-            // />
-           
             <ListItem 
             primaryText={this.props.changeSetName} 
             leftIcon={<AccountCircle />}  
@@ -61,9 +51,10 @@ export default class UpdateSet extends React.Component{
             nestedListStyle = {nestedStyle.style}
             nestedItems={
                 this.props.changeSet.files.map(fileData =>
-                    <File file={fileData} profileHandler={this.handleUpdateSetProfiles.bind(this)}/>
+                    <File file={fileData} profileHandler={this.handleUpdateSetProfiles.bind(this)} key={fileData.change_id}/>
                 )
             }
+            secondaryText={this.props.changeSet.instance}
             onClick={this.handleReviewers.bind(this)}
             rightIconButton = {
                 <div className="review-buttons-updateset">
@@ -77,3 +68,10 @@ export default class UpdateSet extends React.Component{
         );
     }
 }
+
+const stateMap = state => {
+    return {
+        
+    };
+};
+export default connect(stateMap)(UpdateSet);

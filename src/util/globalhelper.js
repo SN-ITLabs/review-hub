@@ -8,7 +8,7 @@ export function getDefaultListCriteria() {
 export let SNAjax = (function() {
     let _config = {};
     if (HUB_CONST.IS_LOCAL) {
-        _config.baseURL = "https://" + HUB_CONST.DEV_INSTANCE + ".servicenow.com";
+        _config.baseURL = "https://" + HUB_CONST.DEV_INSTANCE + ".service-now.com";
     }
     let _httpClient = axios.create(_config);
 
@@ -21,5 +21,5 @@ export let SNAjax = (function() {
 })();
 
 function _getAuthHeader(params) {
-    return "Basic " + btoa(HUB_CONST.DEV_INSTANCE_USER_NAME, HUB_CONST.DEV_INSTANCE_USER_PASSWORD);
+    return "Basic " + btoa(HUB_CONST.DEV_INSTANCE_USER_NAME +":"+ HUB_CONST.DEV_INSTANCE_USER_PASSWORD);
 }

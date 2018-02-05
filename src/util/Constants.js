@@ -2,7 +2,7 @@ export const HUB_CONST = {
     IS_LOCAL: window.location.hostname === "localhost",
 
     /* DEV INSTACNE DATA*/
-    DEV_INSTANCE: "deepu317",
+    DEV_INSTANCE: "itappsrcr",
     DEV_INSTANCE_USER_NAME: "review.hub",
     DEV_INSTANCE_USER_PASSWORD: "test123",
 

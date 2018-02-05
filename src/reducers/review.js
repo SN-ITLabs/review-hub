@@ -30,7 +30,11 @@ export default function reducer(state={
             break;
         }
         case 'FETCH_ALL_CHANGE_SETS':{
-            state = {...state,changeSets:action.payload};
+            state = {...state,changeSets:action.payload.data};
+            break;
+        }
+        case 'CHANGE_SET_REVIEW_SUCCESS':{
+            state = {...state};
             break;
         }
         case 'ADD_COMMENT':{

@@ -27,13 +27,6 @@ export default class UpdateSetList extends React.Component {
         <br />
           <List>
             <Subheader>All Change Sets</Subheader>
-            {/* {this.props.updateSets.map(updateSetData =>
-                <UpdateSet updateSet={updateSetData} 
-                key={updateSetData.sys_id} 
-                profileHandler={this.handleUpdateSetProfiles.bind(this)}
-                />
-            )} */}
-           
             {Object.keys(this.props.changeSets).map(name =>
               <UpdateSet changeSetName = {name} 
               changeSet={this.props.changeSets[name]} 

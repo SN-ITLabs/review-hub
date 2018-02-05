@@ -20,8 +20,8 @@ export default class File extends React.Component{
      //   }
         var fileUser = this.props.file;
         var reviewUser = {};
-        reviewUser["changed_by"] = fileUser["changed_by"];
-        reviewUser["sys_updated_by"] = fileUser["sys_updated_by"];
+        reviewUser["changed_by"] = fileUser["developer"];
+        reviewUser["sys_updated_by"] = fileUser["reviewer"];
 
         this.props.profileHandler(reviewUser);
     }
@@ -46,9 +46,9 @@ export default class File extends React.Component{
         //   />
          <div className="file-content">
             <ListItem
-                primaryText={this.props.file.record_name}
+                primaryText={this.props.file.file_name}
                 leftIcon={<Book />}  
-                secondaryText={this.props.file.sys_updated_by}
+                secondaryText={this.props.file.type}
                 onClick={this.handleUpdateSetProfiles.bind(this)}
                 rightIconButton = {
                     <div className="review-buttons">
