@@ -1,7 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import {fetchDefaultSearchCriteria,getAllUpdateSets,getChangeSetsForReview,testAjaxRequest} from '../actions/SearchActions';
+import {
+    fetchDefaultSearchCriteria,
+    getAllUpdateSets,
+    getChangeSetsForReview,
+    testAjaxRequest
+} from "../actions/SearchActions";
 
 import AutoComplete from "material-ui/AutoComplete";
 
@@ -30,9 +35,6 @@ class MainContainer extends React.Component {
 
     componentWillMount() {
         this.props.dispatch(fetchDefaultSearchCriteria());
-<<<<<<< HEAD
-       // this.props.dispatch(testAjaxRequest());
-=======
 
         const TAG_URL =
             "https://deepu317.service-now.com/api/snc/jsonhttp?sysparm_processor=TestSiJSON&sysparm_scope=global&sysparm_name=getTestOutput";
@@ -46,7 +48,6 @@ class MainContainer extends React.Component {
                 console.log("In Error");
                 console.dir(error.response);
             });
->>>>>>> SN AJAX changes
     }
 
     handleonClose = value => {

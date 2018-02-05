@@ -3,8 +3,8 @@ export const HUB_CONST = {
 
     /* DEV INSTACNE DATA*/
     DEV_INSTANCE: "deepu317",
-    DEV_INSTANCE_USER_NAME: "admin",
-    DEV_INSTANCE_USER_PASSWORD: "Gpkmpnow@317",
+    DEV_INSTANCE_USER_NAME: "review.hub",
+    DEV_INSTANCE_USER_PASSWORD: "test123",
 
     /* PROD INSTACNE DATA*/
     PROD_INSTANCE: "tools4it",
