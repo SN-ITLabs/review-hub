@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import {fetchDefaultSearchCriteria,getAllUpdateSets,getChangeSetsForReview} from '../actions/SearchActions';
+import {fetchDefaultSearchCriteria,getAllUpdateSets,getChangeSetsForReview,testAjaxRequest} from '../actions/SearchActions';
 
 import AutoComplete from "material-ui/AutoComplete";
 
@@ -28,6 +28,7 @@ class MainContainer extends React.Component {
 
     componentWillMount() {
         this.props.dispatch(fetchDefaultSearchCriteria());
+       // this.props.dispatch(testAjaxRequest());
     }
     
     handleonClose = (value) => {

@@ -33,14 +33,6 @@ export default class File extends React.Component{
        });
     }
 
-    handleReviewSuccess(){
-        alert('review success');
-    }
-
-    handleReject(){
-        alert('review reject');
-    }
-
     render(){
 
         return(
@@ -61,8 +53,6 @@ export default class File extends React.Component{
                 rightIconButton = {
                     <div className="review-buttons">
                         <button type='button' className='btn btn-primary btn-sm' onClick={this.handleReview.bind(this)}>Show Diff</button>&nbsp;
-                        <button type='button' className='btn btn-success btn-sm' onClick={this.handleReviewSuccess.bind(this)}>Accept</button>&nbsp;
-                        <button type='button' className='btn btn-danger btn-sm' onClick={this.handleReject.bind(this)}>Reject</button>
                     </div>
                 }
                 className ="fileItem"

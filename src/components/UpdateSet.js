@@ -31,6 +31,14 @@ export default class UpdateSet extends React.Component{
        this.props.revieweHandler(reviewer);
     }
 
+    handleReviewSuccess(){
+        alert('review success');
+    }
+
+    handleReject(){
+        alert('review reject');
+    }
+
     render(){
         return(
             // <ListItem 
@@ -57,6 +65,12 @@ export default class UpdateSet extends React.Component{
                 )
             }
             onClick={this.handleReviewers.bind(this)}
+            rightIconButton = {
+                <div className="review-buttons-updateset">
+                    <button type='button' className='btn btn-success btn-sm' onClick={this.handleReviewSuccess.bind(this)}>Accept</button>&nbsp;
+                    <button type='button' className='btn btn-danger btn-sm' onClick={this.handleReject.bind(this)}>Reject</button>
+                </div>
+            }
             />
 
 
