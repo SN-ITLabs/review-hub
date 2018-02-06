@@ -4,7 +4,7 @@ export default class CommentBox extends React.Component{
     constructor(props){
         super(props);
         this.state = {};
-       // this.hljs = require('highlight.js');
+       //// this.hljs = require('highlight.js');
     }
     render(){
         return (
