@@ -1,12 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import {
-    fetchDefaultSearchCriteria,
-    getAllUpdateSets,
-    getChangeSetsForReview,
-} from "../actions/SearchActions";
-
+import { fetchDefaultSearchCriteria, getAllUpdateSets, getChangeSetsForReview } from "../actions/SearchActions";
 
 import AutoComplete from "material-ui/AutoComplete";
 
@@ -35,9 +30,26 @@ class MainContainer extends React.Component {
 
     componentWillMount() {
         this.props.dispatch(fetchDefaultSearchCriteria());
-    }
 
-    
+        // SNAjax({
+        //     processor: "ChangeSetAjax",
+        //     action: "getChangeSetsInReview",
+        //     scope: "x_snc_review_hub",
+        //     params: {
+        //         sysparam_changeset: "TEST123",
+        //         sysparam_state: "surf_codereviewd"
+        //     }
+        // })
+        //     .getJSON()
+        //     .then(function(response) {
+        //         console.log("In Success");
+        //         console.log(JSON.stringify(response.data));
+        //     })
+        //     .catch(function(error) {
+        //         console.log("In Error");
+        //         console.dir(error.response);
+        //     });
+    }
 
     handleonClose = value => {
         //this.props.dispatch(getAllUpdateSets())
@@ -61,6 +73,7 @@ class MainContainer extends React.Component {
 
     render() {
         const { searchCriteria, updateSetList, changeSetsList } = this.props;
+
         return (
             <div className="container">
                 <div className="row">
@@ -78,6 +91,8 @@ class MainContainer extends React.Component {
                             profileHandler={this.handleUpdateSetProfiles.bind(this)}
                             reviewHandler={this.handleReviewers.bind(this)}
                         />
+                        {/* <UpdateSetList updateSets={updateSetList} profileHandler={this.handleUpdateSetProfiles.bind(this)}/> */}
+                        {/* <Differ className="differ" /> */}
                     </div>
                     <div className="leftContent col-sm-3 col-xs-3 col-md-3 col-lg-3">
                         <UserProfileList reviews={this.state.reviewer} />
