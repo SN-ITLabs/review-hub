@@ -7,7 +7,7 @@ class Line extends React.Component{
     constructor(props){
         super(props);
         this.state = {};
-        this.hljs = require('highlight.js');
+      //  this.hljs = require('highlight.js');
     }
     render(){
         //console.log(this.props.difference);
@@ -18,7 +18,7 @@ class Line extends React.Component{
             _differenceCode = _differenceCode.replace(/<del>/g, '_del_');
             _differenceCode = _differenceCode.replace(/<\/del>/g, '_dele_');
 
-            _differenceCode = this.hljs.highlightAuto(_differenceCode).value;
+            // _differenceCode = this.hljs.highlightAuto(_differenceCode).value;
 
             _differenceCode = _differenceCode.replace(/_ins_/g, '<ins>');
             _differenceCode = _differenceCode.replace(/_inse_/g, '</ins>');
@@ -31,12 +31,14 @@ class Line extends React.Component{
                         <div className="row script-code highlight">
                             <div className="no-padding col-md-1 line-comment"><span className="line-comment-action" line-id={this.props.line_number}></span></div>
                             <div className="col-md-1 line-number">{this.props.lineNumber}</div>
-                            <div className="col-md-10 line-code" dangerouslySetInnerHTML={{__html: this.hljs.highlightAuto(this.props.script).value}}></div>
+                            {/* <div className="col-md-10 line-code" dangerouslySetInnerHTML={{__html: this.hljs.highlightAuto(this.props.script).value}}></div> */}
+                            <div className="col-md-10 line-code" dangerouslySetInnerHTML={{__html: this.props.script}}></div> 
                         </div>
                         <div className="row script-code highlight">
                             <div className="no-padding col-md-1 line-comment"></div>
                             <div className="col-md-1 line-number"></div>
-                            <div className="col-md-10 line-code replace" dangerouslySetInnerHTML={{__html: _differenceCode}}></div>
+                            {/* <div className="col-md-10 line-code replace" dangerouslySetInnerHTML={{__html: _differenceCode}}></div> */}
+                            <div className="col-md-10 line-code replace" dangerouslySetInnerHTML={{__html: _differenceCode}}></div> 
                         </div>
                         <div className="row script-code highlight">
                             <div className="no-padding col-md-1"></div>
@@ -53,7 +55,8 @@ class Line extends React.Component{
                     <div className="row script-code">
                         <div className="no-padding col-md-1 line-comment"></div>
                         <div className="col-md-1 line-number">{this.props.lineNumber}</div>
-                        <div className="col-md-10 line-code" dangerouslySetInnerHTML={{__html: this.hljs.highlightAuto(this.props.script).value}}></div>
+                        {/* <div className="col-md-10 line-code" dangerouslySetInnerHTML={{__html: this.hljs.highlightAuto(this.props.script).value}}></div> */}
+                  <div className="col-md-10 line-code" dangerouslySetInnerHTML={{__html: this.props.script}}></div>
                     </div>
                 </div>
             </div>

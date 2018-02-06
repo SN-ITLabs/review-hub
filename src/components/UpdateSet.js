@@ -7,7 +7,6 @@ import AccountCircle from 'material-ui/svg-icons/action/account-circle';
 
 import {changesetReviewSuccess,changesetReviewReject} from '../actions/ReviewActions';
 
-
 import File from './File';
 
 const nestedStyle = {
