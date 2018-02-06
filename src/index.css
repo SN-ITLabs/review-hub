@@ -84,6 +84,12 @@ footer {
     font-family: FontAwesome;
 }
 
+.differ-com .script-code .line-comment .comments-present:before {
+    content: "\f086";
+    font-family: FontAwesome;
+    font-size: 12px;
+}
+
 .differ-com .script-code .line-number {
     font-weight: bold;
     text-align: right;
@@ -96,17 +102,19 @@ footer {
 
 .comment-box {
     padding: 1%;
-    background: #f2f2f2;
     margin-top: 1%;
     margin-bottom: 1%;
 }
-
+.comment-box .comment-box-container{
+    background: #f2f2f2;
+    padding: 1%;
+}
 .comment-box .profile-icon {
     text-align: center;
-    font-size: 36px;
+    font-size: 24px;
     background: #f2a77b;
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
 }
 
@@ -117,7 +125,7 @@ footer {
 
 .comment-box .comment-box-post-textarea {
     width: 100%;
-    min-height: 80px;
+    min-height: 60px;
     resize: none;
     padding: 1%;
     outline: 0;
@@ -140,4 +148,20 @@ footer {
 .comment-box .comment-box-post-button:focus {
     color: white;
     background: #6086c1;
+}
+
+.comment{
+    background: #f2f2f2;
+    margin-bottom: 10px;
+    padding: 1%;
+}
+
+.comment .comment-user{
+    font-size: 12px;
+    font-weight: bold;
+    color: #6086c1;
+}
+
+.comment .comment-message{
+    font-size: 14px;
 }

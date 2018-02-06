@@ -1,13 +1,24 @@
 import React from "react";
 import getDifferScript from "../util/DifferService";
 import CommentBox from "./CommentBox";
+import commentsFactory from "../util/CommentService"
 //var hl = require("highlight").Highlight;
 
 class Line extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            showComment: false,
+            commentFactoryInstance: commentsFactory()
+        };
         //this.hljs = require('highlight.js');
+    }
+    toggleLineComment(){
+        this.setState({
+            showComment: !this.state.showComment
+        });
+
+        console.log(this.state.showComment);
     }
     render() {
         //console.log(this.props.difference);
@@ -24,13 +35,18 @@ class Line extends React.Component {
             _differenceCode = _differenceCode.replace(/_inse_/g, "</ins>");
             _differenceCode = _differenceCode.replace(/_del_/g, "<del>");
             _differenceCode = _differenceCode.replace(/_dele_/g, "</del>");
-
+            
             return (
                 <div className="row highlight-row">
                     <div className="no-padding col-md-12">
                         <div className="row script-code highlight">
                             <div className="no-padding col-md-1 line-comment">
-                                <span className="line-comment-action" line-id={this.props.line_number} />
+                                <span className="line-comment-action" line-id={this.props.lineNumber} onClick={this.toggleLineComment.bind(this)}/>
+                                {
+                                    this.state.commentFactoryInstance.get(this.props.lineNumber).length > 0 ?
+                                        (<span className="comments-present"/>)
+                                    : <span />
+                                }
                             </div>
                             <div className="col-md-1 line-number">{this.props.lineNumber}</div>
                             {/* <div className="col-md-10 line-code" dangerouslySetInnerHTML={{__html: this.hljs.highlightAuto(this.props.script).value}}></div> */}
@@ -42,13 +58,18 @@ class Line extends React.Component {
                             {/* <div className="col-md-10 line-code replace" dangerouslySetInnerHTML={{__html: _differenceCode}}></div> */}
                             <div className="col-md-10 line-code replace" dangerouslySetInnerHTML={{__html: _differenceCode}}></div> 
                         </div>
-                        <div className="row script-code highlight">
-                            <div className="no-padding col-md-1" />
-                            <div className="col-md-1" />
-                            <div className="col-md-10">
-                                <CommentBox user="Avishek Dalal" />
-                            </div>
-                        </div>
+                        {
+                            this.state.showComment ?
+                                (<div className="row script-code highlight">
+                                    <div className="no-padding col-md-1" />
+                                    <div className="col-md-1" />
+                                    <div className="col-md-10">
+                                        <CommentBox user="Avishek Dalal" line={this.props.lineNumber} commentInstance={this.state.commentFactoryInstance}/>
+                                    </div>
+                                </div>
+                                )
+                            : <div></div>
+                        }
                     </div>
                 </div>
             );
@@ -60,7 +81,7 @@ class Line extends React.Component {
                         <div className="no-padding col-md-1 line-comment" />
                         <div className="col-md-1 line-number">{this.props.lineNumber}</div>
                         {/* <div className="col-md-10 line-code" dangerouslySetInnerHTML={{__html: this.hljs.highlightAuto(this.props.script).value}}></div> */}
-                  <div className="col-md-10 line-code" dangerouslySetInnerHTML={{__html: this.props.script}}></div>
+                        <div className="col-md-10 line-code" dangerouslySetInnerHTML={{__html: this.props.script}}></div>
                     </div>
                 </div>
             </div>
