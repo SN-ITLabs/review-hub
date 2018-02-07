@@ -40,8 +40,13 @@ export let SNAjax = function(config) {
                 url += "&" + key + "=" + this.params[key];
             }
         }
+        if (HUB_CONST.IS_LOCAL) return _httpClient.get(url);
 
-        return _httpClient.get(url);
+        _httpReq.request({
+            method: "POST",
+            url: url
+            //data: JSON.stringify(_body)
+        });
     }
 
     return {
