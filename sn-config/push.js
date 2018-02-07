@@ -1,39 +1,65 @@
 var axios = require("axios");
 var fs = require("fs");
 
-var data = fs.readFileSync(
-    "/Users/haribabu.garbhana/SN/ReviewHub/review-hub/build/static/js/main.605fd1ca.js",
-    "utf-8"
-);
 
 const _httpReq = axios.create({ baseURL: "https://itappsrcr.service-now.com" });
 _httpReq.defaults.headers.post["Content-Type"] = "application/json";
 _httpReq.defaults.headers.common["Authorization"] = "Basic cmV2aWV3Lmh1Yjp0ZXN0MTIz";
 
-var _body = {
-    script_name: "reviewhub",
-    description: "Automated push from git - " + new Date(),
-    script: data
-};
+function pushJS(jsName){
+    var data = fs.readFileSync(
+        "/Users/haribabu.garbhana/SN/ReviewHub/review-hub/build/static/js/"+jsName,
+        "utf-8"
+    );
 
-const res = _httpReq
-    .request({
-        method: "POST",
-        url: "/api/now/table/sys_ui_script",
-        data: JSON.stringify(_body)
-    })
-    .then(function(res) {
-        if (res && res.status == 200) {
-            if (!res.data || !Array.isArray(res.data.result) || res.data.result.length <= 0) {
-                console.log("No response");
-                return [];
-                console.log(res);
+    var _body = {
+        script_name: "reviewhub",
+        description: "Automated push from git - " + new Date(),
+        script: data
+    };
+    
+    const res = _httpReq
+        .request({
+            method: "PUT",
+            url: "/api/now/table/sys_ui_script/7510ba2edbc49f00a86a5404ce9619ae",
+            data: JSON.stringify(_body)
+        })
+        .then(function(res) {
+            if (res && res.status == 200) {
+                console.log("Success - pushJS");
             }
-            //const _result = res.data.result;
-            //console.log(_result);
-            console.log("Success");
-        }
-    })
-    .catch(function(err) {
-        console.log(err);
-    });
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
+}
+
+function pushCSS(cssName){
+    var data = fs.readFileSync(
+        "/Users/haribabu.garbhana/SN/ReviewHub/review-hub/build/static/css/"+cssName,
+        "utf-8"
+    );
+
+    var _body = {
+        description: "Automated push from git - " + new Date(),
+        style: data
+    };
+    
+    const res = _httpReq
+        .request({
+            method: "PUT",
+            url: "/api/now/table/content_css/881bf7d2db809f00a86a5404ce96193b",
+            data: JSON.stringify(_body)
+        })
+        .then(function(res) {
+            if (res && res.status == 200) {
+                console.log("Success - pushCSS");
+            }
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
+}
+
+pushJS();
+pushCSS();
