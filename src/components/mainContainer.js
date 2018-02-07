@@ -1,6 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 
+import CircularProgress from 'material-ui/CircularProgress';
+
 import { fetchDefaultSearchCriteria, getAllUpdateSets, getChangeSetsForReview } from "../actions/SearchActions";
 
 import AutoComplete from "material-ui/AutoComplete";
@@ -10,6 +12,7 @@ import UpdateSetList from "./UpdateSetList";
 import UserProfileList from "./UserProfileList";
 
 import { SNAjax } from "../util/globalhelper";
+
 
 //import Differ from './DifferCom';
 /*
@@ -24,31 +27,13 @@ class MainContainer extends React.Component {
         super(props);
         this.state = {
             profiles: [],
-            reviewer: {}
-        };
+            reviewer: {},
+            fetching:false
+         };
     }
 
     componentWillMount() {
         this.props.dispatch(fetchDefaultSearchCriteria());
-
-        // SNAjax({
-        //     processor: "ChangeSetAjax",
-        //     action: "getChangeSetsInReview",
-        //     scope: "x_snc_review_hub",
-        //     params: {
-        //         sysparam_changeset: "TEST123",
-        //         sysparam_state: "surf_codereviewd"
-        //     }
-        // })
-        //     .getJSON()
-        //     .then(function(response) {
-        //         console.log("In Success");
-        //         console.log(JSON.stringify(response.data));
-        //     })
-        //     .catch(function(error) {
-        //         console.log("In Error");
-        //         console.dir(error.response);
-        //     });
     }
 
     handleonClose = value => {
@@ -73,7 +58,7 @@ class MainContainer extends React.Component {
 
     render() {
         const { searchCriteria, updateSetList, changeSetsList } = this.props;
-
+        
         return (
             <div className="container">
                 <div className="row">
@@ -86,6 +71,7 @@ class MainContainer extends React.Component {
                             floatingLabelText="Search"
                             fullWidth={true}
                         />
+                        { this.props.fetching ? <CircularProgress className="loading_icon"/>  : null}
                         <UpdateSetList
                             changeSets={changeSetsList}
                             profileHandler={this.handleUpdateSetProfiles.bind(this)}
@@ -107,7 +93,8 @@ const stateMap = state => {
     return {
         searchCriteria: state.searchCriteria,
         updateSetList: state.updateSets,
-        changeSetsList: state.changeSets
+        changeSetsList: state.changeSets,
+        fetching: state.fetching
     };
 };
 

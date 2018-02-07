@@ -12,8 +12,19 @@ export function getChangeSetsForReviewSuccess(response) {
     };
 }
 
+export function setLoadingIcon(fetch){
+    return{
+        type:"LOADING_INDICATOR",
+        payload:{
+            fetching:fetch
+        }
+    }
+}
+
 export function getChangeSetsForReview() {
+    
     return dispatch => {
+        dispatch(setLoadingIcon(true))
         return SNAjax({
             processor: "ChangeSetAjax",
             action: "getChangeSetsInReview",
@@ -27,7 +38,8 @@ export function getChangeSetsForReview() {
             })
             .catch(function(error) {
                 console.log("In Error");
-                console.dir(error.response);
+                dispatch(setLoadingIcon(false))
+                //console.dir(error.response);
             });
     };
 }
@@ -36,7 +48,7 @@ export function fetchDefaultSearchCriteria() {
     return {
         type: "DEFAULT_SEARCH",
         payload: {
-            teams: ["My UpdateSets", "My Team UpdateSets", "My Coleges"]
+            teams: ["My Reviews", "Team Reviews", "All Reviews"]
         }
     };
 }

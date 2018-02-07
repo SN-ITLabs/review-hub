@@ -13,7 +13,8 @@ export default function reducer(state={
   userInfo:{},
   searchCriteria:[],
   updateSets:[],
-  changeSets:{}
+  changeSets:{},
+  fetching:false
 },action){
    
     // update the state and return the state based on the action type
@@ -30,7 +31,11 @@ export default function reducer(state={
             break;
         }
         case 'FETCH_ALL_CHANGE_SETS':{
-            state = {...state,changeSets:action.payload.data};
+            state = {...state,changeSets:action.payload.data,fetching:false};
+            break;
+        }
+        case 'LOADING_INDICATOR':{
+            state = {...state,fetching:action.payload.fetching};
             break;
         }
         case 'CHANGE_SET_REVIEW_SUCCESS':{

@@ -2,7 +2,7 @@ import thunk from "redux-thunk";
 
 import { SNAjax } from "../util/globalhelper";
 
-import { getChangeSetsForReviewSuccess } from "./SearchActions";
+import { getChangeSetsForReviewSuccess,setLoadingIcon} from "./SearchActions";
 
 // implement your actions here...
 
@@ -26,8 +26,10 @@ export function handlechangesetReviewSuccess() {
     };
 }
 
+
 export function changesetReviewSuccess(changeset) {
     return dispatch => {
+        dispatch(setLoadingIcon(true))
         return SNAjax({
             processor: "ChangeSetAjax",
             action: "changeSetStateUpdate",
@@ -45,13 +47,15 @@ export function changesetReviewSuccess(changeset) {
             })
             .catch(function(error) {
                 console.log("In Error");
-                console.dir(error.response);
+                dispatch(setLoadingIcon(false));
+                //console.dir(error.response);
             });
     };
 }
 
 export function changesetReviewReject(changeset) {
     return dispatch => {
+        dispatch(setLoadingIcon(true))
         return SNAjax({
             processor: "ChangeSetAjax",
             action: "changeSetStateUpdate",
@@ -69,7 +73,8 @@ export function changesetReviewReject(changeset) {
             })
             .catch(function(error) {
                 console.log("In Error");
-                console.dir(error.response);
+                dispatch(setLoadingIcon(false));
+               // console.dir(error.response);
             });
     };
 }

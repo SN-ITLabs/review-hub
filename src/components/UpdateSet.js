@@ -16,7 +16,7 @@ const nestedStyle = {
 class UpdateSet extends React.Component{
     constructor(props){
         super(props);
-        this.state={}
+        //this.state={}
     }
 
     handleUpdateSetProfiles(profiles){
@@ -62,8 +62,6 @@ class UpdateSet extends React.Component{
                 </div>
             }
             />
-
-
         );
     }
 }
