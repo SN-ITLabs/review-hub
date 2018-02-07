@@ -77,15 +77,18 @@ footer {
 }
 .differ-com .script-code .line-comment:hover,
 .differ-com .script-code .line-comment:focus {
-    color: #913737;
+    color: #7d6e99;
 }
 .differ-com .script-code .line-comment .line-comment-action:before {
     content: "\f086";
     font-family: FontAwesome;
 }
 
+.differ-com .script-code .line-comment .comments-present{
+    padding: 5%;
+}
 .differ-com .script-code .line-comment .comments-present:before {
-    content: "\f086";
+    content: "\f0c0";
     font-family: FontAwesome;
     font-size: 12px;
 }

@@ -9,7 +9,7 @@ class Line extends React.Component {
         super(props);
         this.state = {
             showComment: false,
-            commentFactoryInstance: commentsFactory()
+            commentFactoryInstance: commentsFactory(this.props.file)
         };
         //this.hljs = require('highlight.js');
     }
@@ -64,7 +64,7 @@ class Line extends React.Component {
                                     <div className="no-padding col-md-1" />
                                     <div className="col-md-1" />
                                     <div className="col-md-10">
-                                        <CommentBox user="Avishek Dalal" line={this.props.lineNumber} commentInstance={this.state.commentFactoryInstance}/>
+                                        <CommentBox user="Haribabu" line={this.props.lineNumber} commentInstance={this.state.commentFactoryInstance}/>
                                     </div>
                                 </div>
                                 )
@@ -95,9 +95,10 @@ export default class Differ extends React.Component {
         this.state = {
             differData: getDifferScript()
         };
-        //console.log(this.state.differData);
+        console.log(this.props.change);
     }
     render() {
+        var _this = this;
         return (
             <div className="row">
                 <div className="col-md-12 differ-com">
@@ -110,6 +111,7 @@ export default class Differ extends React.Component {
                                 key={i}
                                 compare={object.compare}
                                 difference={object.difference}
+                                file={_this.props.change}
                             />
                         );
                     })}
