@@ -12,6 +12,7 @@ export default class File extends React.Component{
         this.state={
             showDiffer : false       
         }
+        console.log(this.props.changeName);
     }
     
     handleUpdateSetProfiles(){
@@ -34,7 +35,6 @@ export default class File extends React.Component{
     }
 
     render(){
-
         return(
         //     <ListItem
         //     key={this.props.file.sys_id}
@@ -58,7 +58,7 @@ export default class File extends React.Component{
                 className ="fileItem"
             />
 
-            { this.state.showDiffer ? <Differ className="differ" /> : null}
+            { this.state.showDiffer ? <Differ className="differ" change={this.props.changeName}/> : null}
 
          </div>
         );

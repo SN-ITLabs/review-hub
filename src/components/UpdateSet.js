@@ -49,8 +49,8 @@ class UpdateSet extends React.Component{
             primaryTogglesNestedList={true}
             nestedListStyle = {nestedStyle.style}
             nestedItems={
-                this.props.changeSet.files.map(fileData =>
-                    <File file={fileData} profileHandler={this.handleUpdateSetProfiles.bind(this)} key={fileData.change_id}/>
+                this.props.changeSet.files.map((fileData, index) =>
+                    <File file={fileData} profileHandler={this.handleUpdateSetProfiles.bind(this)} key={fileData.change_id} changeName={this.props.changeSetName + "_" + index}/>
                 )
             }
             secondaryText={this.props.changeSet.instance}
