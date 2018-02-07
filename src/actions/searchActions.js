@@ -7,24 +7,23 @@ export function getChangeSetsForReviewSuccess(response) {
     return {
         type: "FETCH_ALL_CHANGE_SETS",
         payload: {
-            data: response.data.result
+            data: response
         }
     };
 }
 
-export function setLoadingIcon(fetch){
-    return{
-        type:"LOADING_INDICATOR",
-        payload:{
-            fetching:fetch
+export function setLoadingIcon(fetch) {
+    return {
+        type: "LOADING_INDICATOR",
+        payload: {
+            fetching: fetch
         }
-    }
+    };
 }
 
 export function getChangeSetsForReview() {
-    
     return dispatch => {
-        dispatch(setLoadingIcon(true))
+        dispatch(setLoadingIcon(true));
         return SNAjax({
             processor: "ChangeSetAjax",
             action: "getChangeSetsInReview",
@@ -38,7 +37,7 @@ export function getChangeSetsForReview() {
             })
             .catch(function(error) {
                 console.log("In Error");
-                dispatch(setLoadingIcon(false))
+                dispatch(setLoadingIcon(false));
                 //console.dir(error.response);
             });
     };

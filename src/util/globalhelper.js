@@ -40,35 +40,83 @@ export let SNAjax = function(config) {
                 url += "&" + key + "=" + this.params[key];
             }
         }
-        if (HUB_CONST.IS_LOCAL) return _httpClient.get(url);
 
-        _httpReq.request({
-            method: "POST",
-            url: url
-            //data: JSON.stringify(_body)
+        return new Promise((resolve, reject) => {
+            _httpClient
+                .get(url)
+                .then(function(response) {
+                    let res = {};
+                    if (HUB_CONST.IS_LOCAL) {
+                        res = response.data.result;
+                        resolve(res);
+                    } else {
+                        debugger;
+                        const resAns = response.request.responseXML.documentElement.getAttribute(
+                            "answer"
+                        );
+                        try {
+                            const res = JSON.parse(resAns);
+                            resolve(res);
+                        } catch (error) {
+                            reject(error);
+                        }
+                    }
+                })
+                .catch(function(err) {
+                    reject(err);
+                });
         });
+
+        // if (HUB_CONST.IS_LOCAL) return _httpClient.get(url);
+
+        // return _httpClient.request({
+        //     method: "POST",
+        //     url: url
+        //     //data: JSON.stringify(_body)
+        // });
     }
 
     return {
         getJSON: getJSON.bind(config, _httpClient)
     };
 };
-
+/**
+ *
+ */
 function getAxiosHTTPClient() {
     let config = {};
-    if (HUB_CONST.IS_LOCAL) {
+    if (HUB_CONST.IS_LOCAL)
         config.baseURL = "https://" + HUB_CONST.DEV_INSTANCE + ".service-now.com";
-    }
+    /**
+     * Create base axios client
+     */
     let _httpClient = axios.create(config);
 
     _httpClient.defaults.timeout = HUB_CONST.HTTP_CLIENT_TIMEOUT;
-    if (HUB_CONST.IS_LOCAL) _httpClient.defaults.headers.common["Authorization"] = _getAuthHeader();
-    _httpClient.defaults.headers.post["Content-Type"] = "application/json";
-    _httpClient.defaults.headers.put["Content-Type"] = "application/json";
+    if (HUB_CONST.IS_LOCAL) {
+        _httpClient.defaults.headers.common["Authorization"] = _getAuthHeader();
+        _httpClient.defaults.headers.post["Content-Type"] = "application/json";
+    } else {
+        // set X-UserToken
+
+        console.log(window.g_ck);
+        debugger;
+
+        //if (typeof g_ck != "undefined" && g_ck != "")
+        _httpClient.defaults.headers.common["X-UserToken"] = window.g_ck;
+        //_httpClient.defaults.headers.common[""] = "application/json";
+        _httpClient.defaults.headers.common["Content-Type"] =
+            "application/x-www-form-urlencoded; charset=UTF-8";
+    }
 
     return _httpClient;
 }
 
 function _getAuthHeader(params) {
-    return "Basic " + btoa(HUB_CONST.DEV_INSTANCE_USER_NAME + ":" + HUB_CONST.DEV_INSTANCE_USER_PASSWORD);
+    return (
+        "Basic " +
+        btoa(
+            HUB_CONST.DEV_INSTANCE_USER_NAME + ":" + HUB_CONST.DEV_INSTANCE_USER_PASSWORD
+        )
+    );
 }
