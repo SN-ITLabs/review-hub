@@ -50,7 +50,6 @@ export let SNAjax = function(config) {
                         res = response.data.result;
                         resolve(res);
                     } else {
-                        debugger;
                         const resAns = response.request.responseXML.documentElement.getAttribute(
                             "answer"
                         );
