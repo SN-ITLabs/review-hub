@@ -38,6 +38,7 @@ class MainContainer extends React.Component {
 
     handleonClose = value => {
         //this.props.dispatch(getAllUpdateSets())
+        //alert(value);
         this.props.dispatch(getChangeSetsForReview());
     };
 
@@ -66,7 +67,7 @@ class MainContainer extends React.Component {
                         <AutoComplete
                             hintText="Type Search key word"
                             dataSource={searchCriteria}
-                            onClose={this.handleonClose}
+                            onNewRequest={this.handleonClose.bind(this)}
                             filter={AutoComplete.fuzzyFilter}
                             floatingLabelText="Search"
                             fullWidth={true}

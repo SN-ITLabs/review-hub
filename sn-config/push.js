@@ -3,7 +3,7 @@ var fs = require("fs");
 
 
 const _httpReq = axios.create({ baseURL: "https://itappsrcr.service-now.com" });
-_httpReq.defaults.headers.post["Content-Type"] = "application/json";
+_httpReq.defaults.headers.put["Content-Type"] = "application/json";
 _httpReq.defaults.headers.common["Authorization"] = "Basic cmV2aWV3Lmh1Yjp0ZXN0MTIz";
 
 function pushJS(jsName){
@@ -17,6 +17,7 @@ function pushJS(jsName){
         description: "Automated push from git - " + new Date(),
         script: data
     };
+
     
     const res = _httpReq
         .request({
@@ -61,5 +62,5 @@ function pushCSS(cssName){
         });
 }
 
-pushJS();
-pushCSS();
+pushJS("main.1444b3be.js");
+pushCSS("main.2fc61ccb.css");

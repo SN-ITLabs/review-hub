@@ -1,32 +1,50 @@
 import React from "react";
+import './App.css';
+import Footer from './components/Footer';
 
-// material ui related imports
-//import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+import LeftBar from './containers/LeftBarContainer';
+import Header from './containers/HeaderContainer';
+
+import MainDiff from './components/MainDiff';
+import RightBar from './components/RightBar';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {grey900} from 'material-ui/styles/colors';
-
-import Header from './components/Header';
-import MainContainer from './components/MainContainer';
-import Footer from './components/Footer';
 
 const muiTheme = getMuiTheme({
     palette: {
-        primary1Color: grey900
+        // primary1Color: grey900
     }
 });
 
 
-export default class App extends React.Component {
+class App extends React.Component {
+
+    handleDiffer(isOpen){
+      this.props.dispatch(isOpen);
+    }
+
     render() {
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
-                <div className="App">
-                    <Header />
-                    <MainContainer />
-                    <Footer />
+                <div className="app-container">
+                    <section className="app-head">
+                        <Header/>
+                    </section>
+                    <aside className="leftbar">
+                        <LeftBar differHandler={this.handleDiffer.bind(this)} />
+                    </aside>
+                        <MainDiff showDiffer={this.props.showDiffer}/>
+                    <aside className="rightbar">
+                        <RightBar />
+                    </aside>
+                    <section className="footer">
+                    <Footer/>
+                    </section>
                 </div>
             </MuiThemeProvider>
-        );
+        )
     }
 }
+
+export default App;

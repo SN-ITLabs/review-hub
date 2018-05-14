@@ -18,7 +18,7 @@ class Line extends React.Component {
             showComment: !this.state.showComment
         });
 
-        console.log(this.state.showComment);
+       // console.log(this.state.showComment);
     }
     render() {
         //console.log(this.props.difference);

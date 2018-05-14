@@ -7,26 +7,18 @@ export default class UserProfile extends React.Component{
     
     constructor(props){
         super(props);
-
         // keep the initization code here
     }
 
     render(){
         return(
-            // <ListItem 
-            // primaryText={this.props.profile.name} 
-            // leftIcon={<AccountCircle />}  
-            // secondaryText={this.props.profile.description}
-            // primaryTogglesNestedList={true}
-            // />
-
             <ListItem 
-            primaryText={this.props.review['changed_by']} 
+            // primaryText={this.props.review['changed_by']} 
+            primaryText={this.props.reviewers ? this.props.reviewers.changed_by : null} 
             leftIcon={<AccountCircle />}  
             primaryTogglesNestedList={true}
-            secondaryText={this.props.review['sys_updated_by']}
+            secondaryText={this.props.reviewers ? this.props.reviewers.reviewer : null}
             />
-
         );
     }
 }

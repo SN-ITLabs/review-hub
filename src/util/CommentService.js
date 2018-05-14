@@ -12,7 +12,7 @@ export default function commentsFactory(fileKey){
             "user": user,
             "message": message
         })
-        console.log(comments);
+        //console.log(comments);
         window.localStorage.setItem("commentStorage", JSON.stringify(comments));
     }
 

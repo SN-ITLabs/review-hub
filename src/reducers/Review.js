@@ -10,11 +10,15 @@ import {combineReducers} from 'redux';
 
 export default function reducer(state={
   // configure the default state 
-  userInfo:{},
+  user: {name: "Haribabu Garbhana",
+  id: 23},
   searchCriteria:[],
   updateSets:[],
   changeSets:{},
-  fetching:false
+  fetching:false,
+  relatedUpdateSets:{},
+  toggleDiff:false,
+  reviewers : {}
 },action){
    
     // update the state and return the state based on the action type
@@ -51,6 +55,27 @@ export default function reducer(state={
         case 'DELETE_COMMENT':{
             break;
         }
+        case 'LOGIN_USER':{
+            state = {...state,user:action.payload};
+            break;
+        }
+        case 'FETCH_SETS':{
+            state = {...state,relatedUpdateSets:action.payload};
+            break;
+        }
+        case 'TOGGLE_DIFF':{
+            state = {...state,toggleDiff:action.payload.showDiffer};
+            break;
+        }
+        case 'GET_FILE_REVIEWERS':{
+            state = {...state,reviewers:action.payload};
+            break;
+        } 
+        case ' GET_UPDATE_SET_REVIEWERS':{
+            state = {...state,reviewers:action.payload};
+            break;
+        }
+      
     }
    
     return state;

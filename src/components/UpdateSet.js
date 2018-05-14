@@ -7,38 +7,36 @@ import AccountCircle from 'material-ui/svg-icons/action/account-circle';
 
 import {changesetReviewSuccess,changesetReviewReject} from '../actions/ReviewActions';
 
-import File from './File';
+import File from '../containers/FileContainer';
 
 const nestedStyle = {
     style : {paddingLeft:'50px'}
 }
 
 class UpdateSet extends React.Component{
-    constructor(props){
-        super(props);
-        //this.state={}
+   
+    handleReviewSuccess(e){
+        e.stopPropagation();
+        console.log(e.target);
+       // this.props.dispatch(changesetReviewSuccess(this.props.changeSetName));
     }
 
-    handleUpdateSetProfiles(profiles){
-        this.props.profileHandler(profiles);
-    }
-    
-    handleReviewers(){
-       var changeSet = this.props.changeSet;
-       
-       var reviewer = {};
-       reviewer["changed_by"] = changeSet["created_by"];
-       reviewer["sys_updated_by"] = changeSet["reviewer"];
-       
-       this.props.revieweHandler(reviewer);
+    handleReject(e){
+        e.stopPropagation();
+        console.log(e.target);
+        //this.props.dispatch(changesetReviewReject(this.props.changeSetName));
     }
 
-    handleReviewSuccess(){
-        this.props.dispatch(changesetReviewSuccess(this.props.changeSetName));
+    handleDiffer(isOpen){
+        this.props.differHandler(isOpen);
     }
 
-    handleReject(){
-        this.props.dispatch(changesetReviewReject(this.props.changeSetName));
+    handleUpdateSetReviewers(){
+        var updateSetReviewer = {};
+        updateSetReviewer.reviewer = this.props.changeSet.reviewer;
+        updateSetReviewer.changed_by = this.props.changeSet.changed_by;
+
+        this.props.updateSetReviewers(updateSetReviewer);
     }
 
     render(){
@@ -50,25 +48,33 @@ class UpdateSet extends React.Component{
             nestedListStyle = {nestedStyle.style}
             nestedItems={
                 this.props.changeSet.files.map((fileData, index) =>
-                    <File file={fileData} profileHandler={this.handleUpdateSetProfiles.bind(this)} key={fileData.change_id} changeName={this.props.changeSetName + "_" + index}/>
+                    <File file={fileData} key={fileData.change_id} changeName={this.props.changeSetName + "_" + index} 
+                      differHandler = {this.handleDiffer.bind(this)}
+                    />
                 )
             }
-            secondaryText={this.props.changeSet.instance}
-            onClick={this.handleReviewers.bind(this)}
-            rightIconButton = {
-                <div className="review-buttons-updateset">
-                    <button type='button' className='btn btn-success btn-sm' onClick={this.handleReviewSuccess.bind(this)}>Accept</button>&nbsp;
-                    <button type='button' className='btn btn-danger btn-sm' onClick={this.handleReject.bind(this)}>Reject</button>
-                </div>
+            secondaryText={ this.props.changeSet.instance
+                // <React.Fragment>
+                // <p> {this.props.changeSet.instance} </p>
+                // </React.Fragment>
             }
+             onClick={this.handleUpdateSetReviewers.bind(this)}
+            // rightIconButton = {
+            //     <div className="review-buttons-updateset">
+            //         <button type='button' className='btn btn-success btn-sm' onClick={this.handleReviewSuccess.bind(this)}>Accept</button>&nbsp;
+            //         <button type='button' className='btn btn-danger btn-sm' onClick={this.handleReject.bind(this)}>Reject</button>
+            //     </div>
+            // }
             />
         );
     }
 }
 
-const stateMap = state => {
-    return {
+export default UpdateSet;
+
+// const stateMap = state => {
+//     return {
         
-    };
-};
-export default connect(stateMap)(UpdateSet);
+//     };
+// };
+// export default connect(stateMap)(UpdateSet);

@@ -6,6 +6,40 @@ import { getChangeSetsForReviewSuccess,setLoadingIcon} from "./SearchActions";
 
 // implement your actions here...
 
+export function getLoginUser(){
+    return {
+        type : 'LOGIN_USER',
+        payload: {
+            name: "Haribabu Garbhana",
+            id: 23
+        }
+    }
+}
+
+export function toggleDifferComp(isOpen){
+    return {
+        type : 'TOGGLE_DIFF',
+        payload:{
+            showDiffer : isOpen || true
+        }
+    }
+}
+
+export function getFileReviewers(fileReviewer){
+  return {
+      type : 'GET_FILE_REVIEWERS',
+      payload:fileReviewer
+  }
+}
+
+export function getUpdatesetReviewers(updateSetReviewers){
+    return {
+        type : 'GET_UPDATE_SET_REVIEWERS',
+        payload:updateSetReviewers
+    }
+}
+
+
 export function handlechangesetReviewSuccess() {
     return dispatch => {
         return SNAjax({
