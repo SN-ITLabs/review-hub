@@ -1,16 +1,14 @@
 var axios = require("axios");
 var fs = require("fs");
 
-
 const _httpReq = axios.create({ baseURL: "https://itappsrcr.service-now.com" });
-_httpReq.defaults.headers.put["Content-Type"] = "application/json";
+
+_httpReq.defaults.headers.post["Content-Type"] = "application/json";
+//_httpReq.defaults.headers.put["Content-Type"] = "application/json";
 _httpReq.defaults.headers.common["Authorization"] = "Basic cmV2aWV3Lmh1Yjp0ZXN0MTIz";
 
-function pushJS(jsName){
-    var data = fs.readFileSync(
-        "/Users/haribabu.garbhana/SN/ReviewHub/review-hub/build/static/js/"+jsName,
-        "utf-8"
-    );
+function pushJS(jsName) {
+    var data = fs.readFileSync("./build/static/js/" + jsName, "utf-8");
 
     var _body = {
         script_name: "reviewhub",
@@ -18,7 +16,6 @@ function pushJS(jsName){
         script: data
     };
 
-    
     const res = _httpReq
         .request({
             method: "PUT",
@@ -35,17 +32,14 @@ function pushJS(jsName){
         });
 }
 
-function pushCSS(cssName){
-    var data = fs.readFileSync(
-        "/Users/haribabu.garbhana/SN/ReviewHub/review-hub/build/static/css/"+cssName,
-        "utf-8"
-    );
+function pushCSS(cssName) {
+    var data = fs.readFileSync("./build/static/css/" + cssName, "utf-8");
 
     var _body = {
         description: "Automated push from git - " + new Date(),
         style: data
     };
-    
+
     const res = _httpReq
         .request({
             method: "PUT",
