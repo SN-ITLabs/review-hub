@@ -6,11 +6,7 @@ class LeftBar extends React.Component{
     componentDidMount(){
         this.props.dispatch();
     }
-
-    handleDiffer(isOpen){
-        this.props.differHandler(isOpen);
-    }
-
+    
     render(){
         return(
             <React.Fragment>
@@ -28,7 +24,6 @@ class LeftBar extends React.Component{
                         {this.props.changeSets && Object.keys(this.props.changeSets).map(name =>
                             <UpdateSet changeSetName = {name} 
                             changeSet={this.props.changeSets[name]}
-                            differHandler = {this.handleDiffer.bind(this)}
                         />
                         )}
                     </List>

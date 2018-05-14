@@ -92,9 +92,9 @@ class Line extends React.Component {
 export default class Differ extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            differData: getDifferScript()
-        };
+        // this.state = {
+        //     differData: getDifferScript()
+        // };
         console.log(this.props.change);
     }
     render() {
@@ -102,7 +102,7 @@ export default class Differ extends React.Component {
         return (
             <div className="row">
                 <div className="col-md-12 differ-com">
-                    {this.state.differData.map(function(object, i) {
+                    {this.props.differData && this.props.differData.map(function(object, i) {
                         //console.log(object);
                         return (
                             <Line

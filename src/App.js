@@ -5,8 +5,10 @@ import Footer from './components/Footer';
 import LeftBar from './containers/LeftBarContainer';
 import Header from './containers/HeaderContainer';
 
-import MainDiff from './components/MainDiff';
+import MainDiff from './containers/MainDiffContainer';
 import RightBar from './components/RightBar';
+
+import CircularProgress from 'material-ui/CircularProgress';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -20,21 +22,18 @@ const muiTheme = getMuiTheme({
 
 class App extends React.Component {
 
-    handleDiffer(isOpen){
-      this.props.dispatch(isOpen);
-    }
-
     render() {
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div className="app-container">
+                   { this.props.fetching ? <CircularProgress className="loading_icon"/>  : null}
                     <section className="app-head">
                         <Header/>
                     </section>
                     <aside className="leftbar">
-                        <LeftBar differHandler={this.handleDiffer.bind(this)} />
+                        <LeftBar />
                     </aside>
-                        <MainDiff showDiffer={this.props.showDiffer}/>
+                        <MainDiff/>
                     <aside className="rightbar">
                         <RightBar />
                     </aside>

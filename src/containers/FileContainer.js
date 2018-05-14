@@ -4,8 +4,8 @@ import FileComp from '../components/File';
 import {toggleDifferComp,getFileReviewers} from "../actions/ReviewActions";
 
 const mapDispatchToProps = dispatch => ({
-    dispatch : (isOpen) => {
-        dispatch(toggleDifferComp(isOpen));
+    dispatch : (change_id) => {
+        dispatch(toggleDifferComp(change_id));
     },
     fileReviewers : (fileReviewer) => {
         dispatch(getFileReviewers(fileReviewer));

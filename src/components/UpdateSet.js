@@ -27,10 +27,6 @@ class UpdateSet extends React.Component{
         //this.props.dispatch(changesetReviewReject(this.props.changeSetName));
     }
 
-    handleDiffer(isOpen){
-        this.props.differHandler(isOpen);
-    }
-
     handleUpdateSetReviewers(){
         var updateSetReviewer = {};
         updateSetReviewer.reviewer = this.props.changeSet.reviewer;
@@ -48,8 +44,7 @@ class UpdateSet extends React.Component{
             nestedListStyle = {nestedStyle.style}
             nestedItems={
                 this.props.changeSet.files.map((fileData, index) =>
-                    <File file={fileData} key={fileData.change_id} changeName={this.props.changeSetName + "_" + index} 
-                      differHandler = {this.handleDiffer.bind(this)}
+                    <File file={fileData} key={fileData.change_id} changeName={this.props.changeSetName + "_" + index}
                     />
                 )
             }

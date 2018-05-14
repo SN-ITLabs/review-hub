@@ -17,7 +17,7 @@ export default function reducer(state={
   changeSets:{},
   fetching:false,
   relatedUpdateSets:{},
-  toggleDiff:false,
+  differData:null,
   reviewers : {}
 },action){
    
@@ -64,7 +64,7 @@ export default function reducer(state={
             break;
         }
         case 'TOGGLE_DIFF':{
-            state = {...state,toggleDiff:action.payload.showDiffer};
+            state = {...state,differData:action.payload.differData};
             break;
         }
         case 'GET_FILE_REVIEWERS':{

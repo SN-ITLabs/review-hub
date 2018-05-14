@@ -16,13 +16,39 @@ export function getLoginUser(){
     }
 }
 
-export function toggleDifferComp(isOpen){
+function handleToogleDiffSuccess(data){
     return {
         type : 'TOGGLE_DIFF',
         payload:{
-            showDiffer : isOpen || true
+            differData : data.result
         }
     }
+}
+
+export function toggleDifferComp(change_id){
+    return dispatch => {
+        dispatch(setLoadingIcon(true))
+        return SNAjax({
+            processor: "ChangeSetAjax",
+            action: "getDifferCode",
+            scope: "x_snc_review_hub",
+            params: {
+                sysparam_changeid: change_id
+            }
+        })
+            .getJSON()
+            .then(function(response) {
+                dispatch(handleToogleDiffSuccess(response));
+                console.log("In Success for getdiff");
+                dispatch(setLoadingIcon(false));
+                //console.log(JSON.stringify(response.data));
+            })
+            .catch(function(error) {
+                console.log("In Error");
+                dispatch(setLoadingIcon(false));
+                //console.dir(error.response);
+            });
+    };
 }
 
 export function getFileReviewers(fileReviewer){

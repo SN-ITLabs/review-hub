@@ -18,7 +18,7 @@ class File extends React.Component{
         fileReviewer.reviewer = this.props.file.reviewer;
 
         this.props.fileReviewers(fileReviewer);
-        this.props.dispatch();
+        this.props.dispatch(this.props.file.change_id);
     }
 
     handleReviewSuccess(e){

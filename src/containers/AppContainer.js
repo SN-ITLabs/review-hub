@@ -3,14 +3,14 @@ import AppComp from '../App';
 import {toggleDifferComp} from "../actions/ReviewActions";
 
 const mapDispatchToProps = dispatch => ({
-    dispatch : (isOpen) => {
-        dispatch(toggleDifferComp(isOpen));
+    dispatch : () => {
+        dispatch();
     }
 
 })
 
 const App = connect(state => ({
-    showDiffer: state.toggleDiff
+    fetching: state.fetching
 }),mapDispatchToProps)(AppComp);
 
 export default App;
