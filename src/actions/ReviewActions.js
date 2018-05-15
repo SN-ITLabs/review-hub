@@ -20,7 +20,7 @@ function handleToogleDiffSuccess(data){
     return {
         type : 'TOGGLE_DIFF',
         payload:{
-            differData : data.result
+            differData : data.compare
         }
     }
 }

@@ -64,7 +64,7 @@ export default function reducer(state={
             break;
         }
         case 'TOGGLE_DIFF':{
-            state = {...state,differData:action.payload.differData};
+            state = {...state,differData:action.payload.differData.result};
             break;
         }
         case 'GET_FILE_REVIEWERS':{
