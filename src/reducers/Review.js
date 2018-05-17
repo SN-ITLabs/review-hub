@@ -18,7 +18,8 @@ export default function reducer(state={
   fetching:false,
   relatedUpdateSets:{},
   differData:null,
-  reviewers : {}
+  reviewers : {},
+  change_id : null
 },action){
    
     // update the state and return the state based on the action type
@@ -64,7 +65,7 @@ export default function reducer(state={
             break;
         }
         case 'TOGGLE_DIFF':{
-            state = {...state,differData:action.payload.differData.result};
+            state = {...state,differData:action.payload.differData.result,change_id:action.payload.change_id};
             break;
         }
         case 'GET_FILE_REVIEWERS':{

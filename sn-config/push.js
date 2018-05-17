@@ -1,10 +1,11 @@
 var axios = require("axios");
 var fs = require("fs");
 
-const _httpReq = axios.create({ baseURL: "https://itappsrcr.service-now.com" });
+//const _httpReq = axios.create({ baseURL: "https://itappsrcr.service-now.com" });
+const _httpReq = axios.create({ baseURL: "https://demoplace.service-now.com" });
 
-_httpReq.defaults.headers.post["Content-Type"] = "application/json";
-//_httpReq.defaults.headers.put["Content-Type"] = "application/json";
+//_httpReq.defaults.headers.post["Content-Type"] = "application/json";
+_httpReq.defaults.headers.put["Content-Type"] = "application/json";
 _httpReq.defaults.headers.common["Authorization"] = "Basic cmV2aWV3Lmh1Yjp0ZXN0MTIz";
 
 function pushJS(jsName) {
@@ -56,5 +57,5 @@ function pushCSS(cssName) {
         });
 }
 
-pushJS("main.1444b3be.js");
-pushCSS("main.2fc61ccb.css");
+pushJS("main.65bdd2b6.js");
+pushCSS("main.eaaec696.css");

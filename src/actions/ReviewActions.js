@@ -16,16 +16,17 @@ export function getLoginUser(){
     }
 }
 
-function handleToogleDiffSuccess(data){
+function handleToogleDiffSuccess(data,change){
     return {
         type : 'TOGGLE_DIFF',
         payload:{
-            differData : data.compare
+            differData : data.compare,
+            change_id : change
         }
     }
 }
 
-export function toggleDifferComp(change_id){
+export function toggleDifferComp(change_id,fileId){
     return dispatch => {
         dispatch(setLoadingIcon(true))
         return SNAjax({
@@ -38,7 +39,7 @@ export function toggleDifferComp(change_id){
         })
             .getJSON()
             .then(function(response) {
-                dispatch(handleToogleDiffSuccess(response));
+                dispatch(handleToogleDiffSuccess(response,change_id));
                 console.log("In Success for getdiff");
                 dispatch(setLoadingIcon(false));
                 //console.log(JSON.stringify(response.data));

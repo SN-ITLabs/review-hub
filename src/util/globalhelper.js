@@ -98,9 +98,6 @@ function getAxiosHTTPClient() {
     } else {
         // set X-UserToken
 
-        console.log(window.g_ck);
-        debugger;
-
         //if (typeof g_ck != "undefined" && g_ck != "")
         _httpClient.defaults.headers.common["X-UserToken"] = window.g_ck;
         //_httpClient.defaults.headers.common[""] = "application/json";

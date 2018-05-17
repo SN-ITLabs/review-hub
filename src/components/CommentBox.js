@@ -8,12 +8,12 @@ export default class CommentBox extends React.Component{
             comments: this.commentFactoryInstance.get(this.props.line),
             message: ''
         };
-        console.log(this.state.comments);
+      //  console.log(this.state.comments);
        //// this.hljs = require('highlight.js');
     }
     getComments(){
         var _comments = this.commentFactoryInstance.get(this.props.line)
-        console.log(_comments);
+       // console.log(_comments);
         this.setState({
             comments: _comments
         })
@@ -23,12 +23,17 @@ export default class CommentBox extends React.Component{
             message: event.target.value
         });
     }
+
+    refreshComments(){
+        this.getComments(); 
+    }
+
     setComment(){
-        this.commentFactoryInstance.set(this.props.line, this.state.message, this.props.user);
+        this.commentFactoryInstance.set(this.props.line, this.state.message, this.props.user,this.refreshComments.bind(this));
         this.setState({
             message: ''
         });
-        this.getComments();
+        //this.getComments();
     }
     render(){
         return (

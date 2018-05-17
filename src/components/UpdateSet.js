@@ -1,11 +1,10 @@
 import React from 'react';
-import { connect } from "react-redux";
 
+import AcceptIcon from 'material-ui/svg-icons/action/done'
+import RejectIcon from 'material-ui/svg-icons/content/clear'
 
 import {ListItem} from 'material-ui/List';
 import AccountCircle from 'material-ui/svg-icons/action/account-circle';
-
-import {changesetReviewSuccess,changesetReviewReject} from '../actions/ReviewActions';
 
 import File from '../containers/FileContainer';
 
@@ -15,16 +14,14 @@ const nestedStyle = {
 
 class UpdateSet extends React.Component{
    
-    handleReviewSuccess(e){
+    handleChangesetReviewSuccess(e){
         e.stopPropagation();
-        console.log(e.target);
-       // this.props.dispatch(changesetReviewSuccess(this.props.changeSetName));
+       // this.props.changesetReviewSuccess(this.props.changeSetName);
     }
 
-    handleReject(e){
+    handleChangeSetReject(e){
         e.stopPropagation();
-        console.log(e.target);
-        //this.props.dispatch(changesetReviewReject(this.props.changeSetName));
+       // this.props.changeSetReject(this.props.changeSetName);
     }
 
     handleUpdateSetReviewers(){
@@ -48,10 +45,13 @@ class UpdateSet extends React.Component{
                     />
                 )
             }
-            secondaryText={ this.props.changeSet.instance
-                // <React.Fragment>
-                // <p> {this.props.changeSet.instance} </p>
-                // </React.Fragment>
+            secondaryText={ 
+                <React.Fragment>
+                    <br></br>
+                    {this.props.changeSet.instance} 
+                    <AcceptIcon className="accept-button" onClick={this.handleChangesetReviewSuccess.bind(this)}/>&nbsp;
+                    <RejectIcon className="reject-button" onClick={this.handleChangeSetReject.bind(this)}/>
+                </React.Fragment>
             }
              onClick={this.handleUpdateSetReviewers.bind(this)}
             // rightIconButton = {
@@ -66,10 +66,3 @@ class UpdateSet extends React.Component{
 }
 
 export default UpdateSet;
-
-// const stateMap = state => {
-//     return {
-        
-//     };
-// };
-// export default connect(stateMap)(UpdateSet);

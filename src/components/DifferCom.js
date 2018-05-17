@@ -9,7 +9,6 @@ class Line extends React.Component {
         super(props);
         this.state = {
             showComment: false,
-            commentFactoryInstance: commentsFactory(this.props.file)
         };
         //this.hljs = require('highlight.js');
     }
@@ -43,7 +42,7 @@ class Line extends React.Component {
                             <div className="no-padding col-md-1 line-comment">
                                 <span className="line-comment-action" line-id={this.props.lineNumber} onClick={this.toggleLineComment.bind(this)}/>
                                 {
-                                    this.state.commentFactoryInstance.get(this.props.lineNumber).length > 0 ?
+                                    this.props.commentInstanceRef.get(this.props.lineNumber).length > 0 ?
                                         (<span className="comments-present"/>)
                                     : <span />
                                 }
@@ -64,7 +63,7 @@ class Line extends React.Component {
                                     <div className="no-padding col-md-1" />
                                     <div className="col-md-1" />
                                     <div className="col-md-10">
-                                        <CommentBox user="Haribabu" line={this.props.lineNumber} commentInstance={this.state.commentFactoryInstance}/>
+                                        <CommentBox user="Haribabu" line={this.props.lineNumber} commentInstance={this.props.commentInstanceRef}/>
                                     </div>
                                 </div>
                                 )
@@ -92,10 +91,11 @@ class Line extends React.Component {
 export default class Differ extends React.Component {
     constructor(props) {
         super(props);
-        // this.state = {
-        //     differData: getDifferScript()
-        // };
-        console.log(this.props.change);
+        this.state = {
+           // differData: getDifferScript()
+           commentFactoryInstance: commentsFactory(this.props.change)
+        };
+       // console.log(this.props.change);
     }
     render() {
         var _this = this;
@@ -112,6 +112,7 @@ export default class Differ extends React.Component {
                                 compare={object.compare}
                                 difference={object.difference}
                                 file={_this.props.change}
+                                commentInstanceRef={_this.state.commentFactoryInstance}
                             />
                         );
                     })}

@@ -7,7 +7,8 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const Differ = connect(state => ({
-    differData: state.differData
+    differData: state.differData,
+    change : state.change_id
 }),mapDispatchToProps)(DifferComp);
 
 export default Differ;
