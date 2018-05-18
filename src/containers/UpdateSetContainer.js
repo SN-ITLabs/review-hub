@@ -11,12 +11,12 @@ const mapDispatchToProps = dispatch => ({
         dispatch(getUpdatesetReviewers(updateSetReviewer));
     },
 
-    changesetReviewSuccess : (changesetname) => {
-       dispatch(changesetReviewSuccess(changesetname));
+    changesetReviewSuccess : (changesetname,change_id) => {
+       dispatch(changesetReviewSuccess(changesetname,change_id));
     },
 
-    changeSetReject : (changesetname) => {
-       dispatch(changesetReviewReject(changesetname));
+    changeSetReject : (changesetname,change_id) => {
+       dispatch(changesetReviewReject(changesetname,change_id));
     }
 })
 

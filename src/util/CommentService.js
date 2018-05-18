@@ -1,9 +1,11 @@
 import { SNAjax } from "../util/globalhelper";
 
-export default function commentsFactory(fileKey){
+export default function commentsFactory(changeKey,fileKey){
     console.log(fileKey);
     var comments = {};
     var file = fileKey;
+    var change = changeKey;
+
     var setComment = function(line, message, user,callback){
         var _line = line.toString();
         SNAjax({
@@ -11,7 +13,8 @@ export default function commentsFactory(fileKey){
             action: "setCommentFile",
             scope: "x_snc_review_hub",
             params: {
-                sysparam_changeid: file,
+                sysparam_fileid : file,
+                sysparam_changeid: change,
                 sysparam_linenum: _line,
                 sysparam_message: message,
                 sysparam_user : user
@@ -38,7 +41,8 @@ export default function commentsFactory(fileKey){
             action: "getCommentsforFile",
             scope: "x_snc_review_hub",
             params: {
-                sysparam_changeid: file
+               // sysparam_changeid: change,
+                sysparam_fileid : file
             }
         }).getJSON()
             .then(function(response) {

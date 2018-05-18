@@ -23,14 +23,14 @@ class File extends React.Component{
 
     handleReviewSuccess(e){
         e.stopPropagation();
-        console.log(e.target);
-       // this.props.dispatch(changesetReviewSuccess(this.props.changeSetName));
+        //console.log(e.target);
+        this.props.changesetReviewSuccess('',this.props.file.change_id);
     }
 
     handleReject(e){
         e.stopPropagation();
-        console.log(e.target);
-        //this.props.dispatch(changesetReviewReject(this.props.changeSetName));
+       // console.log(e.target);
+        this.props.changeSetReject('',this.props.file.change_id);
     }
 
 

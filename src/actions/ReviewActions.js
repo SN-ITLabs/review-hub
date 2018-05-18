@@ -16,12 +16,13 @@ export function getLoginUser(){
     }
 }
 
-function handleToogleDiffSuccess(data,change){
+function handleToogleDiffSuccess(data,change,file){
     return {
         type : 'TOGGLE_DIFF',
         payload:{
             differData : data.compare,
-            change_id : change
+            change_id : change,
+            file_id : file
         }
     }
 }
@@ -39,7 +40,7 @@ export function toggleDifferComp(change_id,fileId){
         })
             .getJSON()
             .then(function(response) {
-                dispatch(handleToogleDiffSuccess(response,change_id));
+                dispatch(handleToogleDiffSuccess(response,change_id,fileId));
                 console.log("In Success for getdiff");
                 dispatch(setLoadingIcon(false));
                 //console.log(JSON.stringify(response.data));
@@ -88,7 +89,7 @@ export function handlechangesetReviewSuccess() {
 }
 
 
-export function changesetReviewSuccess(changeset) {
+export function changesetReviewSuccess(changeset,change) {
     return dispatch => {
         dispatch(setLoadingIcon(true))
         return SNAjax({
@@ -97,7 +98,8 @@ export function changesetReviewSuccess(changeset) {
             scope: "x_snc_review_hub",
             params: {
                 sysparam_changeset: changeset,
-                sysparam_state: "surf_codereviewd"
+                sysparam_state: "surf_codereviewd",
+                sysparam_change:change,
             }
         })
             .getJSON()
@@ -114,7 +116,7 @@ export function changesetReviewSuccess(changeset) {
     };
 }
 
-export function changesetReviewReject(changeset) {
+export function changesetReviewReject(changeset,change) {
     return dispatch => {
         dispatch(setLoadingIcon(true))
         return SNAjax({
@@ -123,7 +125,8 @@ export function changesetReviewReject(changeset) {
             scope: "x_snc_review_hub",
             params: {
                 sysparam_changeset: changeset,
-                sysparam_state: "review_failed"
+                sysparam_state: "review_failed",
+                sysparam_change : change
             }
         })
             .getJSON()

@@ -16,12 +16,12 @@ class UpdateSet extends React.Component{
    
     handleChangesetReviewSuccess(e){
         e.stopPropagation();
-       // this.props.changesetReviewSuccess(this.props.changeSetName);
+        this.props.changesetReviewSuccess(this.props.changeSetName,'');
     }
 
     handleChangeSetReject(e){
         e.stopPropagation();
-       // this.props.changeSetReject(this.props.changeSetName);
+        this.props.changeSetReject(this.props.changeSetName,'');
     }
 
     handleUpdateSetReviewers(){

@@ -26,7 +26,8 @@ class LeftBar extends React.Component{
                             changeSet={this.props.changeSets[name]}
                         />
                         )}
-                    </List>
+                    </List> 
+                     {Object.keys(this.props.changeSets).length == 0 ? "No Changesets Found" : null}
                     </div>
                     <div className="tab-pane fade" id="toreview" role="tabpanel" aria-labelledby="toreview-tab">
                          TODO: has to be implemented 

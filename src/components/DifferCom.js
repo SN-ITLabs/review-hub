@@ -93,7 +93,7 @@ export default class Differ extends React.Component {
         super(props);
         this.state = {
            // differData: getDifferScript()
-           commentFactoryInstance: commentsFactory(this.props.change)
+           commentFactoryInstance: commentsFactory(this.props.change,this.props.file)
         };
        // console.log(this.props.change);
     }
@@ -111,7 +111,7 @@ export default class Differ extends React.Component {
                                 key={i}
                                 compare={object.compare}
                                 difference={object.difference}
-                                file={_this.props.change}
+                                // file={_this.props.change}
                                 commentInstanceRef={_this.state.commentFactoryInstance}
                             />
                         );
