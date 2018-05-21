@@ -41,8 +41,8 @@ export default function commentsFactory(changeKey,fileKey){
             action: "getCommentsforFile",
             scope: "x_snc_review_hub",
             params: {
-               // sysparam_changeid: change,
-                sysparam_fileid : file
+                sysparam_changeid: change,
+               // sysparam_fileid : file
             }
         }).getJSON()
             .then(function(response) {
@@ -62,8 +62,10 @@ export default function commentsFactory(changeKey,fileKey){
 
     var getComment = function(line){
         var _line = line.toString();
-        if(comments[file] && comments[file][_line])
-            return comments[file][_line];
+        // if(comments[file] && comments[file][_line])
+        //     return comments[file][_line];
+        if(comments[change] && comments[change][_line])
+            return comments[change][_line];
         return [];
     }
 
