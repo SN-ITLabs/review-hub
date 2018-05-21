@@ -20,7 +20,7 @@ class MainDiff extends React.Component{
             <section className="main">
                { this.props.differData ?
                 <React.Fragment>
-                    <AcceptIcon className="accept-button" onClick={this.handleReviewSuccess.bind(this)}/>&nbsp;
+                    <AcceptIcon className="accept-button" onClick={this.handleReviewSuccess.bind(this)}/>
                     <RejectIcon className="reject-button" onClick={this.handleReject.bind(this)}/>
                     <Differ className="differ"/>
                  </React.Fragment>

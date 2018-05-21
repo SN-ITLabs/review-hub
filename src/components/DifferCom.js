@@ -109,7 +109,7 @@ export default class Differ extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.state = {
+        this.setState = {
             commentFactoryInstance: commentsFactory(nextProps.change,this.props.file)
          };
     }

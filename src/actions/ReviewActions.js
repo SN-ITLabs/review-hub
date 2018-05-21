@@ -6,22 +6,24 @@ import { getChangeSetsForReviewSuccess,setLoadingIcon} from "./SearchActions";
 
 // implement your actions here...
 
+function handleUserInfo(response){
+    return {
+        type : 'USER_INFO',
+        payload: response.name
+    }
+}
+
 export function getUserInfo(){
     return dispatch => {
         return SNAjax({
             processor: "ChangeSetAjax",
             action: "getUserDetails",
-            scope: "x_snc_review_hub",
-            params: {
-            }
+            scope: "x_snc_review_hub"
         })
             .getJSON()
             .then(function(response) {
                 console.log("In Success for getUserInfo");
-                return {
-                    type : 'USER_INFO',
-                    payload: response
-                }
+                dispatch(handleUserInfo(response))
             })
             .catch(function(error) {
                 console.log("In Error");

@@ -49,4 +49,5 @@ float: right;
   border-radius: 50%;
   border: solid 1px black;
   margin-bottom: 3px;
+  cursor: pointer;
 }
