@@ -15,9 +15,9 @@ class Header extends React.Component {
                     <img src={logoSRC} alt="Service Now" className="HeaderLogo"/>
                     <div className="HeaderTitle">Review Central</div>
                 </div>
-                <div className="loginSection">
+                {/* <div className="loginSection">
                    <span>{this.props.user.name}</span>
-                </div>
+                </div> */}
             </React.Fragment>
         )
     }

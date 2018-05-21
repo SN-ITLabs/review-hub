@@ -17,7 +17,7 @@ export default function commentsFactory(changeKey,fileKey){
                 sysparam_changeid: change,
                 sysparam_linenum: _line,
                 sysparam_message: message,
-                sysparam_user : user
+               // sysparam_user : user
             }
         }).getJSON()
             .then(function(response) {

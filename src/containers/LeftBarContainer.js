@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 import Navigator from '../components/Navigator';
-import LeftBarComp from '../components/LeftBar';
+// import LeftBarComp from '../components/LeftBar';
 
 import {getChangeSetsForReview } from "../actions/SearchActions";
 import {toggleDifferComp,getFileReviewers,changesetReviewSuccess,changesetReviewReject} from "../actions/ReviewActions";

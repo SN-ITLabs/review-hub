@@ -14,6 +14,13 @@ export default class extends React.Component{
     componentDidMount(){
         this.props.loadPendingReviews();        
     }
+
+    generateFileReviewer(node){
+        var fileReviewer = {};
+        fileReviewer.changed_by = node.developer;
+        fileReviewer.reviewer = node.reviewer;
+        return fileReviewer;
+    }
         
     onToggle(node, toggled){
         if(this.state.cursor){this.state.cursor.active = false;}
@@ -23,8 +30,9 @@ export default class extends React.Component{
         console.log(node);
         this.setState({ cursor: node });
         if(node.change_id) {
-            this.props.toggleDifferComp(node.change_id, node.file_id);           
-            this.props.fileReviewers(node.reviewer);    
+            this.props.toggleDifferComp(node.change_id, node.file_id);  
+            var reviewer = this.generateFileReviewer(node);
+            this.props.fileReviewers(reviewer);    
         }else {
             this.props.toggleDifferComp('','');           
             this.props.fileReviewers('');    

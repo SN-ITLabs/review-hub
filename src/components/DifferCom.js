@@ -2,6 +2,7 @@ import React from "react";
 import getDifferScript from "../util/DifferService";
 import CommentBox from "./CommentBox";
 import commentsFactory from "../util/CommentService"
+
 //var hl = require("highlight").Highlight;
 
 class Line extends React.Component {
@@ -19,21 +20,26 @@ class Line extends React.Component {
 
        // console.log(this.state.showComment);
     }
+
     render() {
         //console.log(this.props.difference);
-        if (this.props.compare && this.props.difference) {
-            var _differenceCode = this.props.difference;
-            _differenceCode = _differenceCode.replace(/<ins>/g, "_ins_");
-            _differenceCode = _differenceCode.replace(/<\/ins>/g, "_inse_");
-            _differenceCode = _differenceCode.replace(/<del>/g, "_del_");
-            _differenceCode = _differenceCode.replace(/<\/del>/g, "_dele_");
-
-            // _differenceCode = this.hljs.highlightAuto(_differenceCode).value;
-
-            _differenceCode = _differenceCode.replace(/_ins_/g, "<ins>");
-            _differenceCode = _differenceCode.replace(/_inse_/g, "</ins>");
-            _differenceCode = _differenceCode.replace(/_del_/g, "<del>");
-            _differenceCode = _differenceCode.replace(/_dele_/g, "</del>");
+      //  if (this.props.compare && this.props.difference) {
+            var _differenceCode = "";
+            if(this.props.difference){
+                _differenceCode = this.props.difference;
+                _differenceCode = _differenceCode.replace(/<ins>/g, "_ins_");
+                _differenceCode = _differenceCode.replace(/<\/ins>/g, "_inse_");
+                _differenceCode = _differenceCode.replace(/<del>/g, "_del_");
+                _differenceCode = _differenceCode.replace(/<\/del>/g, "_dele_");
+    
+                // _differenceCode = this.hljs.highlightAuto(_differenceCode).value;
+    
+                _differenceCode = _differenceCode.replace(/_ins_/g, "<ins>");
+                _differenceCode = _differenceCode.replace(/_inse_/g, "</ins>");
+                _differenceCode = _differenceCode.replace(/_del_/g, "<del>");
+                _differenceCode = _differenceCode.replace(/_dele_/g, "</del>");
+            }
+            
             
             return (
                 <div className="row highlight-row">
@@ -63,7 +69,7 @@ class Line extends React.Component {
                                     <div className="no-padding col-md-1" />
                                     <div className="col-md-1" />
                                     <div className="col-md-10">
-                                        <CommentBox user="Haribabu" line={this.props.lineNumber} commentInstance={this.props.commentInstanceRef}/>
+                                        <CommentBox user={this.props.user} line={this.props.lineNumber} commentInstance={this.props.commentInstanceRef}/>
                                     </div>
                                 </div>
                                 )
@@ -72,19 +78,19 @@ class Line extends React.Component {
                     </div>
                 </div>
             );
-        }
-        return (
-            <div className="row">
-                <div className="no-padding col-md-12">
-                    <div className="row script-code">
-                        <div className="no-padding col-md-1 line-comment" />
-                        <div className="col-md-1 line-number">{this.props.lineNumber}</div>
-                        {/* <div className="col-md-10 line-code" dangerouslySetInnerHTML={{__html: this.hljs.highlightAuto(this.props.script).value}}></div> */}
-                        <div className="col-md-10 line-code" dangerouslySetInnerHTML={{__html: this.props.script}}></div>
-                    </div>
-                </div>
-            </div>
-        );
+        // }
+        // return (
+        //     <div className="row">
+        //         <div className="no-padding col-md-12">
+        //             <div className="row script-code">
+        //                 <div className="no-padding col-md-1 line-comment" />
+        //                 <div className="col-md-1 line-number">{this.props.lineNumber}</div>
+        //                 {/* <div className="col-md-10 line-code" dangerouslySetInnerHTML={{__html: this.hljs.highlightAuto(this.props.script).value}}></div> */}
+        //                 <div className="col-md-10 line-code" dangerouslySetInnerHTML={{__html: this.props.script}}></div>
+        //             </div>
+        //         </div>
+        //     </div>
+        // );
     }
 }
 
@@ -97,6 +103,17 @@ export default class Differ extends React.Component {
         };
        // console.log(this.props.change);
     }
+
+    componentDidMount(){
+        this.props.userInfo();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.state = {
+            commentFactoryInstance: commentsFactory(nextProps.change,this.props.file)
+         };
+    }
+
     render() {
         var _this = this;
         return (
@@ -113,6 +130,7 @@ export default class Differ extends React.Component {
                                 difference={object.difference}
                                 // file={_this.props.change}
                                 commentInstanceRef={_this.state.commentFactoryInstance}
+                                user = {_this.props.user}
                             />
                         );
                     })}

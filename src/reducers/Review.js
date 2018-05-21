@@ -20,7 +20,8 @@ export default function reducer(state={
   differData:null,
   reviewers : {},
   change_id : null,
-  file_id : null
+  file_id : null,
+  userName : "Haribabu"
 },action){
    
     // update the state and return the state based on the action type
@@ -37,7 +38,7 @@ export default function reducer(state={
             break;
         }
         case 'FETCH_ALL_CHANGE_SETS':{
-            state = {...state,changeSets:action.payload.data,fetching:false};
+            state = {...state,changeSets:action.payload.data,fetching:false,differData:null,change_id:null,file_id:null};
             break;
         }
         case 'LOADING_INDICATOR':{
@@ -73,11 +74,15 @@ export default function reducer(state={
             state = {...state,reviewers:action.payload};
             break;
         } 
-        case ' GET_UPDATE_SET_REVIEWERS':{
+        case 'GET_UPDATE_SET_REVIEWERS':{
             state = {...state,reviewers:action.payload};
             break;
         }
-      
+        case 'USER_INFO':{
+            state = {...state,userName:action.payload};
+            break;
+        }
+        
     }
    
     return state;
