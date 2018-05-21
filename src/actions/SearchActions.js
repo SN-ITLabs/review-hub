@@ -37,7 +37,7 @@ export function getChangeSetsForReview() {
             })
             .catch(function(error) {
                 console.log("In Error");
-                dispatch(setLoadingIcon(false));
+                dispatch(setLoadingIcon(false));                
                 //console.dir(error.response);
             });
     };

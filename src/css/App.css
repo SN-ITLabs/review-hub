@@ -1,0 +1,49 @@
+
+.app-container{
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
+.persona {
+  display:block;
+  width: 100vw;
+}
+
+.app-head{
+  grid-column-start: 1;
+  grid-column-end : 4;
+}
+
+.footer{
+  grid-column-start: 1;
+  grid-column-end : 4;
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+}
+
+.app-head, .footer {
+  height: 7em;
+  color: white;
+  width: 100vw;
+}
+
+.main-text{
+  font-size: 18px;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.accept-button{
+ float: right;
+ margin-left: 5px;
+}
+
+.reject-button{
+float: right;
+}
+
+.accept-button, .reject-button{
+  border-radius: 50%;
+  border: solid 1px black;
+}

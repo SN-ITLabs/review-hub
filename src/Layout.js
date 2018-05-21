@@ -7,6 +7,7 @@ import Header from './containers/HeaderContainer';
 
 import MainDiff from './containers/MainDiffContainer';
 import RightBar from './components/RightBar';
+import Persona from './components/Persona';
 
 import CircularProgress from 'material-ui/CircularProgress';
 
@@ -24,22 +25,15 @@ class App extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider muiTheme={muiTheme}>
+            <MuiThemeProvider muiTheme={muiTheme}>            
                 <div className="app-container">
                    { this.props.fetching ? <CircularProgress className="loading_icon"/>  : null}
                     <section className="app-head">
-                        <Header/>
+                        <Header/>                        
                     </section>
-                    <aside className="leftbar">
-                        <LeftBar />
-                    </aside>
-                        <MainDiff/>
-                    <aside className="rightbar">
-                        <RightBar />
-                    </aside>
-                    <section className="footer">
-                    <Footer/>
-                    </section>
+                    <section className="persona">   
+                        <Persona/>                 
+                    </section>                    
                 </div>
             </MuiThemeProvider>
         )

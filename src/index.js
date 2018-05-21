@@ -5,7 +5,7 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 
 
-import "./index.css";
+import './css/index.css'
 import App from "./containers/AppContainer";
 import registerServiceWorker from "./registerServiceWorker";
 

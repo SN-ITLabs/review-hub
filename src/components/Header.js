@@ -1,4 +1,5 @@
 import React from "react";
+import '../css/Header.css';
 
 class Header extends React.Component {
 
@@ -7,12 +8,12 @@ class Header extends React.Component {
     // } 
 
     render() {
-        const logoSRC = "/images/logos/logo_service-now_light.png";
+        const logoSRC = "/images/logos/snow_logo.png";
         return (
             <React.Fragment>
-                <div className="logoSection">
-                    <img src={logoSRC} alt="Service Now" />
-                    <h6 className="logo_header">ReviewHub</h6>
+                <div className="Logo">
+                    <img src={logoSRC} alt="Service Now" className="HeaderLogo"/>
+                    <div className="HeaderTitle">Review Central</div>
                 </div>
                 <div className="loginSection">
                    <span>{this.props.user.name}</span>

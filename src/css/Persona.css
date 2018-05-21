@@ -1,0 +1,41 @@
+.Persona-ul {
+    display: inline-block;
+    font-size: large;
+    position: relative;
+    width: 100%;
+    clear: both;
+}
+
+.Persona-li {
+    float: left;
+    width: 30%;
+    text-align: center;
+    margin-left: 10px;
+    border-bottom: 1px solid grey;
+    min-width: 200px;
+    height: 3vw;
+}
+
+.Persona-li-active {
+    float: left;
+    width: 30%;
+    text-align: center;
+    margin-left: 10px;
+    border-bottom: 1px solid grey;
+    min-width: 200px;
+    background-color: #80b6a1;
+    height: 3vw;
+}
+.Persona-li:hover {
+    color: rebeccapurple;
+}
+
+.Persona-li:hover, .Persona-li-active:hover {
+    cursor: pointer;
+}
+
+.ContentArea {
+    clear:both;
+    width:100%;
+    position:relative;    
+}

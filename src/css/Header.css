@@ -1,0 +1,29 @@
+.HeaderLogo {
+    width: 10em;
+    height: 4em;
+    position: absolute;
+    left: 1vw;
+    top: 0px;
+}
+
+.HeaderTitle {
+    margin-left: 160px;
+    float: left;
+    font-size: xx-large;
+    color: #7b0404;
+    font-style: italic;
+}
+
+.Logo {
+    position: absolute;
+    left: 0px;
+    top: 12px;
+    width: 50vw;
+}
+
+.loginSection {
+    float: right;
+    width: 10vw;
+    color: black;
+    top: 1vh;
+}

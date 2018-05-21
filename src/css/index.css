@@ -1,4 +1,4 @@
-@import url("../node_modules/font-awesome/css/font-awesome.min.css");
+@import url("../../node_modules/font-awesome/css/font-awesome.min.css");
 
 *{
     box-sizing: border-box;
@@ -33,28 +33,6 @@ ul {
 .mainContent {
     float: left;
     min-height: 90vh;
-}
-
-.logoSection img {
-    /* padding: 20px; */
-    width: 170px;
-    position: absolute;
-    left:10px;
-}
-.logoSection .logo_header {
-    /* float: right; */
-    /* padding-top: 25px; */
-    color: #dfdfdf;
-    margin-left: 160px;
-    /* padding-top: 7px; */
-    position: absolute;
-}
-
-
-.loginSection{
-    position: absolute;
-    right: 10px;
-    top: 12px;
 }
 
 /** 

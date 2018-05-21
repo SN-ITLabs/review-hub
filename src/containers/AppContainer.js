@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import AppComp from '../App';
+import AppComp from '../Layout';
 import {toggleDifferComp} from "../actions/ReviewActions";
 
 const mapDispatchToProps = dispatch => ({
