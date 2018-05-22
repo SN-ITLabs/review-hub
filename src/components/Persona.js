@@ -1,16 +1,9 @@
-<<<<<<< HEAD
-import React from 'react'
-import '../css/Persona.css'
-import ReviewerContent from './ReviewerContent'
-import DeveloperContent from './DeveloperContent'
-import '../css/ReviewerContent.css'
-=======
 import React from 'react';
 import '../css/Persona.css';
 import ReviewerContent from './ReviewerContent';
+import DeveloperContent from './DeveloperContent'
 import HomeContent from './HomeContent';
 import '../css/ReviewerContent.css';
->>>>>>> Added the LiveStream Template
 
 export default class Persona extends React.Component{
     constructor(props, context) {
