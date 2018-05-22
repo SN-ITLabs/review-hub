@@ -21,7 +21,8 @@ export default function reducer(state={
   reviewers : {},
   change_id : null,
   file_id : null,
-  userName : "Haribabu"
+  userName : "Haribabu",
+  contentMode: "ActivityStream"
 },action){
    
     // update the state and return the state based on the action type
@@ -29,6 +30,20 @@ export default function reducer(state={
     // use action.payload to get the payload information
     
     switch(action.type){
+
+        case 'SET_CONTENT_MODE': {
+            console.log('in setContentMode Reducer!');
+            var mode = action.payload;
+            if(!mode) {
+                mode = 'Differ'
+            }
+            state = {...state,contentMode:mode}
+            break;
+        }
+        case 'GET_ACTIVITY_STREAM': {
+            state = {...state,activityStream:action.payload.activityStream}
+            break;
+        }
         case 'DEFAULT_SEARCH':{
             state =  {...state,searchCriteria:action.payload.teams};
             break;

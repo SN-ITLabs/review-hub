@@ -16,9 +16,8 @@ class MainDiff extends React.Component{
     }
 
     render(){
-        return(
-            <section className="main">
-               { this.props.differData ?
+        return(<section className="main">
+                { this.props.differData ?
                 <React.Fragment>
                     <div className="button-bar">
                         <AcceptIcon className="accept-button" onClick={this.handleReviewSuccess.bind(this)}/>
@@ -29,8 +28,7 @@ class MainDiff extends React.Component{
                 : 
                 <p className="main-text">Please select a file to see the difference</p>
                 }
-            </section>
-        )
+            </section>);
     }
 }
 

@@ -1,7 +1,7 @@
 import React from "react";
 
 import LeftBar from '../containers/LeftBarContainer';
-import MainDiff from '../containers/MainDiffContainer';
+import MainContent from '../containers/MainContainer';
 import RightBar from './RightBar';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -14,12 +14,15 @@ const muiTheme = getMuiTheme({
 });
 
 export default class extends React.Component {
+
     render() {
         return (<MuiThemeProvider muiTheme={muiTheme}>
                     <aside className="leftbar">
                         <LeftBar />
                     </aside>
-                    <MainDiff />
+                    <aside className="main">
+                        <MainContent/>
+                    </aside>                    
                     <aside className="rightbar">
                         <RightBar />
                     </aside>
