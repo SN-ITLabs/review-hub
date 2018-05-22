@@ -1,7 +1,8 @@
-import React from 'react';
-import '../css/Persona.css';
-import ReviewerContent from './ReviewerContent';
-import '../css/ReviewerContent.css';
+import React from 'react'
+import '../css/Persona.css'
+import ReviewerContent from './ReviewerContent'
+import DeveloperContent from './DeveloperContent'
+import '../css/ReviewerContent.css'
 
 export default class Persona extends React.Component{
     constructor(props, context) {
@@ -54,7 +55,7 @@ export default class Persona extends React.Component{
                 content = (<ReviewerContent/>);
                 break;
             case 'Developer': 
-                content = (<div>In Developer page</div>);
+                content = (<DeveloperContent/>);
                 break;
         }
         console.log(content);

@@ -18,7 +18,7 @@ export default class extends React.Component {
     render() {
         return (<MuiThemeProvider muiTheme={muiTheme}>
                     <aside className="leftbar">
-                        <LeftBar personne="Reviewer"/>
+                        <LeftBar personne="Developer"/>
                     </aside>
                     <aside className="main">
                         <MainContent/>

@@ -50,8 +50,8 @@ float: right;
 }
 
 .accept-button, .reject-button{
-  width: 32px !important;
-  height: 32px !important;
+  /* width: 32px !important;
+  height: 32px !important; */
   /* border-radius: 50%;
   border: solid 1px black; */
   margin-bottom: 3px;

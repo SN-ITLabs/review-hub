@@ -6,8 +6,8 @@ import {getChangeSetsForReview } from "../actions/SearchActions";
 import {toggleDifferComp,getFileReviewers,changesetReviewSuccess,changesetReviewReject,refreshActivityStream,setContentMode} from "../actions/ReviewActions";
 
 const mapDispatchToProps = dispatch => ({
-    loadPendingReviews : () => {
-        dispatch(getChangeSetsForReview());
+    loadPendingReviews : (personne) => {
+        dispatch(getChangeSetsForReview(personne));
     },
     toggleDifferComp : (change_id,fileId) => {
         dispatch(toggleDifferComp(change_id,fileId));

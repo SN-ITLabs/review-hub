@@ -12,7 +12,7 @@ export default class extends React.Component{
     }
     
     componentDidMount(){
-        this.props.loadPendingReviews();        
+        this.props.loadPendingReviews(this.props.personne);        
     }
 
     generateFileReviewer(node){
@@ -38,10 +38,10 @@ export default class extends React.Component{
                 this.props.toggleDifferComp(node.change_id, node.file_id);  
                 var reviewer = this.generateFileReviewer(node);
                 this.props.fileReviewers(reviewer);    
-            }else {
+            }/*else {
                 this.props.toggleDifferComp('','');           
                 this.props.fileReviewers('');    
-            }  
+            } */
         }   
     }
 
