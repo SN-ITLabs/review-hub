@@ -39,6 +39,11 @@ ul {
   Differ Components CSS
 **/
 
+.differ {
+    clear: both;
+    float:left;
+}
+
 .differ-com {
     padding: 5%;
     font-size: 1rem;

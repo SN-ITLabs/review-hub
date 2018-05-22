@@ -34,6 +34,12 @@
   margin-top: 40px;
 }
 
+.button-bar {
+  display: block;
+  width: 60vw;
+  height: 3vw;
+}
+
 .accept-button{
  float: right;
  margin-left: 10px;
