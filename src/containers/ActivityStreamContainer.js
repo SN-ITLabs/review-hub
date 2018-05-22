@@ -4,7 +4,8 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const ActivityStreamContainer = connect(state => ({    
-    contentMode: state.contentMode
+    contentMode: state.contentMode,
+    activityStream: state.activityStream
 }),mapDispatchToProps)(ActivityStreamComp);
 
 export default ActivityStreamContainer;

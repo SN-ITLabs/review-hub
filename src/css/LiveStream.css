@@ -1,0 +1,105 @@
+.NewComment {
+    margin-top: 20px;
+    clear: both;
+    float: left;
+    font-size: small;
+    display: block;
+    width: 100%;
+}
+
+.StreamTitle {
+    display: block;
+    margin-left: 5px;
+    font-size: large;
+    float: left;
+    font-weight: 400;
+    text-align: center;
+}
+
+.userName {
+    font-style: italic;
+    color: blue;
+    float: left;
+    margin-right: 5px;
+}
+
+.commentDescription {
+    color: black;
+    background-color: #f9f9f9;
+    text-align: left;
+    font-style: italic;
+    float: left;
+}
+
+.endComment:before {
+    content: "@";
+    font-weight: bold;
+    float: left;
+}
+
+.commentOn:before, .commentOn-min:before {
+    content: "on";
+    font-weight: bold;
+    margin-left: 2px;
+    margin-right: 2px;
+    float: left;
+}
+
+.commentConjunction:before {
+    content: "has commented ";
+    float: left;
+    font-weight: bold;
+}
+
+.commentOn, .commentOn-min{
+    float: left;
+}
+
+.dateTime {
+    font-size: small;
+    font-style: italic;
+    float: left;
+    color: blue;
+}
+
+.streamContent {
+    margin-top: 20px;
+}
+
+.NotificationBell {
+    float: left;
+    margin-left: 3px;
+}
+
+a.fa-bell {
+    position: relative;
+    font-size: 2em;
+    border: blue;
+    cursor: pointer;
+}
+
+span.fa-comment {
+    position: absolute;
+    font-size: 0.6em;
+    top: -4px;
+    color: red;
+    right: -4px;
+}
+
+span.num {
+    position: absolute;
+    font-size: 0.3em;
+    top: 1px;
+    color: #fff;
+    right: 2px;
+}
+
+.commentOn-min a {
+    color: #337ab7;
+    text-decoration: none;
+    width: 30%;
+    display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

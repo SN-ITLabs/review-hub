@@ -16,7 +16,7 @@ class MainDiff extends React.Component{
     }
 
     render(){
-        return(<section className="main">
+        return(<section>
                 { this.props.differData ?
                 <React.Fragment>
                     <div className="button-bar">

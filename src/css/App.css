@@ -1,12 +1,45 @@
+.app-container-min {
+  width: 75%;
+  position:fixed;
+  float:left;
+  left: 0%;
+  display: block;
+  min-width:75%;
+}
 
-.app-container{
-  display: grid;
-  grid-template-columns: 1fr 2fr;
+.app-container-max {
+  width: 93%;
+  position:fixed;
+  float:left;
+  left: 0%;
+  display: block;
+  min-width:75%;
+}
+
+.app-livestream {
+  width: 20%;
+  position: fixed;
+  display: block;
+  float: left;
+  left: 80%;
+  height: 100vh;
+  padding: 5px;
+  box-shadow: 0px 0px 5px 0px #888888;
+}
+
+.app-livestream-minimize {
+  width: 5%;
+  position:fixed;
+  float:left;
+  left: 95%;
+  height:100vh;
+  padding: 5px;
+  box-shadow: 0px 0px 5px 0px #888888;
 }
 
 .persona {
   display:block;
-  width: 100vw;
+  width: 100%;
 }
 
 .app-head{
@@ -22,10 +55,22 @@
   width: 100vw;
 }
 
+.minimizeStream {
+  float: left;
+  font-size:large;
+  position: relative;
+  z-index: 999;
+  color:black;
+}
+
+.minimizeStream:hover {
+  cursor: pointer;
+}
+
 .app-head, .footer {
   height: 7em;
   color: white;
-  width: 100vw;
+  width: 100%;
 }
 
 .main-text{

@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 import React from 'react'
 import '../css/Persona.css'
 import ReviewerContent from './ReviewerContent'
 import DeveloperContent from './DeveloperContent'
 import '../css/ReviewerContent.css'
+=======
+import React from 'react';
+import '../css/Persona.css';
+import ReviewerContent from './ReviewerContent';
+import HomeContent from './HomeContent';
+import '../css/ReviewerContent.css';
+>>>>>>> Added the LiveStream Template
 
 export default class Persona extends React.Component{
     constructor(props, context) {
@@ -49,7 +57,7 @@ export default class Persona extends React.Component{
         var content;
         switch(this.state.activeTab) {
             case 'Home': 
-                content = (<div>In Home page</div>);
+                content = (<HomeContent/>);
                 break;
             case 'Reviewer':
                 content = (<ReviewerContent/>);
