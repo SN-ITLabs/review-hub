@@ -13,6 +13,37 @@ function handleUserInfo(response){
     }
 }
 
+export function setContentMode(modeType) {
+    return {
+        type: 'SET_CONTENT_MODE',
+        payload: modeType
+    }    
+}
+
+export function refreshActivityStream(currentUser) {    
+    return {
+        type: 'GET_ACTIVITY_STREAM',
+        payload: {activityStream: [
+            {
+                "Reviewer": "Reviewer1",
+                "Developer": "Dev1", 
+                "Message": "This is a sample Review comment!",
+                "Timestamp": 1526955845262,
+                "changeset_id": "1233",
+                "file_id": "23112"
+            },
+            {
+                "Reviewer": "Reviewer2",
+                "Developer": "Dev1", 
+                "Message": "This is another sample Review comment!",
+                "Timestamp": 1526955845264,
+                "changeset_id": "4232",
+                "file_id": "42325"
+            }
+        ]}
+    }    
+}
+
 export function getUserInfo(){
     return dispatch => {
         return SNAjax({

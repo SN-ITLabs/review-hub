@@ -26,17 +26,23 @@ export default class extends React.Component{
         if(this.state.cursor){this.state.cursor.active = false;}
         node.active = true;
         if(node.children){ node.toggled = toggled; }
-        console.log('in onToggle - ');
-        console.log(node);
         this.setState({ cursor: node });
-        if(node.change_id) {
-            this.props.toggleDifferComp(node.change_id, node.file_id);  
-            var reviewer = this.generateFileReviewer(node);
-            this.props.fileReviewers(reviewer);    
-        }else {
-            this.props.toggleDifferComp('','');           
-            this.props.fileReviewers('');    
-        }     
+
+        if("Activity Stream" == node.id) {
+            console.log('Clicked Activity Stream!');
+            this.props.setContentMode("ActivityStream");
+            this.props.refreshActivityStream('currentUser');
+        } else {
+            this.props.setContentMode("Differ");
+            if(node.change_id) {
+                this.props.toggleDifferComp(node.change_id, node.file_id);  
+                var reviewer = this.generateFileReviewer(node);
+                this.props.fileReviewers(reviewer);    
+            }else {
+                this.props.toggleDifferComp('','');           
+                this.props.fileReviewers('');    
+            }  
+        }   
     }
 
     loadData() {
