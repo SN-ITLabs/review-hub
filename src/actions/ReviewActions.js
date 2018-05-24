@@ -44,6 +44,31 @@ export function refreshActivityStream(currentUser) {
     }    
 }
 
+function handleUserComments(response){
+   return {
+    type : 'LOAD_COMMENTS',
+    payload: response.comments
+   }
+}
+
+export function loadUserComments(){
+    return dispatch => {
+        return SNAjax({
+            processor: "ChangeSetAjax",
+            action: "getCommentsForUser",
+            scope: "x_snc_review_hub"
+        })
+            .getJSON()
+            .then(function(response) {
+                console.log("In Success for loadUserComments");
+                dispatch(handleUserComments(response))
+            })
+            .catch(function(error) {
+                console.log("In Error loadUserComments");
+            });
+    };
+}
+
 export function getUserInfo(){
     return dispatch => {
         return SNAjax({

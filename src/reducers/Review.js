@@ -7,13 +7,8 @@ import {combineReducers} from 'redux';
 // import the reduces which are being combined here
 */
 
-
-export default function reducer(state={
+export default function Review(state={
   // configure the default state 
-  user: {name: "Haribabu Garbhana",
-  id: 23},
-  searchCriteria:[],
-  updateSets:[],
   changeSets:{},
   fetching:false,
   relatedUpdateSets:{},
@@ -21,8 +16,7 @@ export default function reducer(state={
   reviewers : {},
   change_id : null,
   file_id : null,
-  userName : "Haribabu",
-  contentMode: "ActivityStream"
+  userName : "Haribabu"
 },action){
    
     // update the state and return the state based on the action type
@@ -60,8 +54,8 @@ export default function reducer(state={
             state = {...state,fetching:action.payload.fetching};
             break;
         }
-        case 'CHANGE_SET_REVIEW_SUCCESS':{
-            state = {...state};
+        case 'LOAD_COMMENTS':{
+            state = {...state,comments:action.payload};
             break;
         }
         case 'ADD_COMMENT':{

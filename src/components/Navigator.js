@@ -98,13 +98,13 @@ export default class extends React.Component{
                 id: 'Pending Review',
                 toggled: true,
                 children: pendingReviews
-            },  
+            }/*,  
             {
                 name: 'Activity Stream',
                 id: 'Activity Stream',
                 toggled: true,
                 childern: []
-            },  
+            }*/,  
             {
                 name: 'History',
                 id: 'History',

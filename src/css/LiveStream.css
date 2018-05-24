@@ -67,8 +67,10 @@
 }
 
 .NotificationBell {
-    float: left;
-    margin-left: 3px;
+    /* float: left;
+    margin-left: 3px; */
+    float: right;
+    margin: 15px 20px 0px 0px;
 }
 
 a.fa-bell {

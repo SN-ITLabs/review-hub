@@ -39,13 +39,16 @@ ul {
   Differ Components CSS
 **/
 
-.differ {
+/* .differ {
     clear: both;
     float:left;
+} */
+.differ-main-com{
+    width: 60vw;
+    height: 100vh
 }
-
 .differ-com {
-    padding: 5%;
+     padding: 5%; 
     font-size: 1rem;
     font-family: Courier New, Courier, monospace;
     border: 1px solid #f2f2f2;

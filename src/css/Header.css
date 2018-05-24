@@ -1,13 +1,13 @@
 .HeaderLogo {
-    width: 10em;
-    height: 4em;
+    width: 182px;
+    height: 66px;
     position: absolute;
     left: 1vw;
     top: 0px;
 }
 
 .HeaderTitle {
-    margin-left: 160px;
+    margin-left: 210px;
     float: left;
     font-size: xx-large;
     color: #7b0404;

@@ -1,6 +1,6 @@
 import React from "react";
 import '../css/Header.css';
-
+import { HUB_CONST } from "../util/Constants"
 class Header extends React.Component {
 
     // componentDidMount(){
@@ -8,7 +8,12 @@ class Header extends React.Component {
     // } 
 
     render() {
-        const logoSRC = "/images/logos/snow_logo.png";
+        let logoSRC = "NewLogo.png";
+
+        if (HUB_CONST.IS_LOCAL){
+            logoSRC =  "/images/logos/snow_logo.png";
+        }
+
         return (
             <React.Fragment>
                 <div className="Logo">

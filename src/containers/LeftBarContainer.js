@@ -34,9 +34,9 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const LeftBar = connect(state => ({
-    changeSets: state.changeSets,
-    showDiffer: state.toggleDiff,
-    myActivityStream: state.activityStream
+    changeSets: state.Review.changeSets,
+    showDiffer: state.Review.toggleDiff
+    // myActivityStream: state.Review.activityStream
 }),mapDispatchToProps)(Navigator);
 
 export default LeftBar;

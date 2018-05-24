@@ -9,7 +9,7 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const UserProfileComp = connect(state =>({
-    reviewers : state.reviewers
+    reviewers : state.Review.reviewers
 }),()=>({}))(UserProfile);
 
 export default UserProfileComp;

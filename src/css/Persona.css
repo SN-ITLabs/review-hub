@@ -35,7 +35,10 @@
 }
 
 .ContentArea {
-    clear:both;
+    /* clear:both;
     width:100%;
-    position:relative;    
+    position:relative; */
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    width:100%;
 }

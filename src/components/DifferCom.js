@@ -117,7 +117,7 @@ export default class Differ extends React.Component {
     render() {
         var _this = this;
         return (
-            <div className="row">
+            <div className="row differ-main-com">
                 <div className="col-md-12 differ-com">
                     {this.props.differData && this.props.differData.map(function(object, i) {
                         //console.log(object);

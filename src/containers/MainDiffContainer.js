@@ -13,9 +13,9 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const MainDiffCont = connect(state => ({
-    differData: state.differData,
-    change : state.change_id,
-    contentMode: state.contentMode
+    differData: state.Review.differData,
+    change : state.Review.change_id
+    // contentMode: state.Activity.contentMode
 }),mapDispatchToProps)(MainDiff);
 
 export default MainDiffCont;

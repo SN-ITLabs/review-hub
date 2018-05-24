@@ -10,7 +10,7 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const Header = connect(state => ({
-   user : state.user
+   user : state.Review.user
 }),mapDispatchToProps)(HeaderComp);
 
 export default Header;

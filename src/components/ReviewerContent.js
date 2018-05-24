@@ -1,7 +1,9 @@
 import React from "react";
 
 import LeftBar from '../containers/LeftBarContainer';
-import MainContent from '../containers/MainContainer';
+//import MainContent from '../containers/MainContainer';
+import MainDiff from '../containers/MainDiffContainer';
+
 import RightBar from './RightBar';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -20,9 +22,9 @@ export default class extends React.Component {
                     <aside className="leftbar">
                         <LeftBar personne="Reviewer"/>
                     </aside>
-                    <aside className="main">
-                        <MainContent/>
-                    </aside>                    
+                    <div className="main">
+                        <MainDiff/>
+                    </div>                    
                     <aside className="rightbar">
                         <RightBar />
                     </aside>

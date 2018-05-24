@@ -20,7 +20,7 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const File = connect(state => ({
-    showDiffer: state.toggleDiff,
+    showDiffer: state.Review.toggleDiff,
 }),mapDispatchToProps)(FileComp);
 
 export default File;
