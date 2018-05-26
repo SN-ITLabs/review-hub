@@ -39,20 +39,22 @@ ul {
     width: 60vw;
     height: 70vh;    
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .differ-main-com-expandmode {
     width: 98%;
-    overflow-y: visible;
+    overflow-y: auto;
     overflow-x: hidden;
-    height: auto;
+    background-color: #f2f2f2;
+    height: 73vh;
 }
 
 .differ-com {
     margin-bottom: 2px;
     font-size: 1rem;
     font-family: Courier New, Courier, monospace;
-    border: 1px solid #f2f2f2;
+    border: 1px solid #f2f2f2;    
 }
 
 .no-padding {
@@ -191,3 +193,23 @@ ul {
     opacity: 0.4;
 }
 
+/* width */
+::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #d2efcb; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: green; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: darkgreen; 
+}
