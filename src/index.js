@@ -13,7 +13,7 @@ import store from "./store";
 
 const app = document.getElementById("root");
 
-ReactDOM.render(
+ReactDOM.render(    
     <Provider store={store}>
         <App />
     </Provider>,

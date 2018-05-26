@@ -9,6 +9,7 @@
 
 .StreamTitle {
     display: block;
+    color: white;
     margin-left: 5px;
     font-size: large;
     float: left;
@@ -18,14 +19,14 @@
 
 .userName {
     font-style: italic;
-    color: blue;
+    color: #e7e7ff;
     float: left;
     margin-right: 5px;
 }
 
 .commentDescription {
-    color: black;
-    background-color: #f9f9f9;
+    margin-left: 5px;
+    color: white;
     text-align: left;
     font-style: italic;
     float: left;
@@ -48,7 +49,7 @@
 .commentConjunction:before {
     content: "has commented ";
     float: left;
-    font-weight: bold;
+    margin-left: 2px;
 }
 
 .commentOn, .commentOn-min{
@@ -59,11 +60,12 @@
     font-size: small;
     font-style: italic;
     float: left;
-    color: blue;
+    color: white;
 }
 
 .streamContent {
     margin-top: 20px;
+    color: white;
 }
 
 .NotificationBell {
@@ -71,6 +73,10 @@
     margin-left: 3px; */
     float: right;
     margin: 15px 20px 0px 0px;
+}
+
+.NotificationBellHide {
+    display: none;
 }
 
 a.fa-bell {

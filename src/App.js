@@ -12,7 +12,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-
+import './css/App.css'
 const muiTheme = getMuiTheme({
     palette: {
         // primary1Color: grey900
@@ -22,7 +22,7 @@ const muiTheme = getMuiTheme({
 
 class App extends React.Component {
 
-    render() {
+    render() {        
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div className="app-container">

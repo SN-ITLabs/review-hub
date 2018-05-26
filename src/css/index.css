@@ -35,24 +35,26 @@ ul {
     min-height: 90vh;
 }
 
-/** 
-  Differ Components CSS
-**/
-
-/* .differ {
-    clear: both;
-    float:left;
-} */
-.differ-main-com{
+.differ-main-com {
     width: 60vw;
-    height: 100vh
+    height: 70vh;    
+    overflow-y: scroll;
 }
+
+.differ-main-com-expandmode {
+    width: 98%;
+    overflow-y: visible;
+    overflow-x: hidden;
+    height: auto;
+}
+
 .differ-com {
-     padding: 5%; 
+    margin-bottom: 2px;
     font-size: 1rem;
     font-family: Courier New, Courier, monospace;
     border: 1px solid #f2f2f2;
 }
+
 .no-padding {
     padding: 0 !important;
 }
@@ -145,9 +147,12 @@ ul {
 }
 
 .comment-box .comment-box-post-button {
-    border: 1px solid #6086c1;
-    color: #6086c1;
-    font-weight: bold;
+    border: 1px solid #007f00;
+    width: 50px;
+    font-size: small;
+    height: 30px;
+    font-weight: 600;
+    color: #007f00;
     cursor: pointer;
 }
 
@@ -185,3 +190,4 @@ ul {
     z-index: 1;
     opacity: 0.4;
 }
+

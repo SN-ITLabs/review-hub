@@ -1,9 +1,9 @@
 import React from "react";
-import './css/App.css';
-import './css/LiveStream.css';
+import '../css/App.css';
+import '../css/LiveStream.css';
 
-import Header from './containers/HeaderContainer';
-import Persona from './components/Persona';
+import Header from '../containers/HeaderContainer';
+import Persona from './Persona';
 
 import CircularProgress from 'material-ui/CircularProgress';
 
@@ -17,7 +17,7 @@ const muiTheme = getMuiTheme({
 });
 
 
-class App extends React.Component {
+class App extends React.Component {    
     constructor(props, context) {
         super(props);
         this.state = {
@@ -25,7 +25,8 @@ class App extends React.Component {
             appContainerClassName: 'app-container-max',
             liveStreamClassName: 'app-livestream-minimize',
             liveStreamTobe: '[--]',
-            commentOnClassName: 'commentOn'
+            commentOnClassName: 'commentOn',
+            expandMode: this.props.expandMode
         }
 
         this.toggleLiveStream = this.toggleLiveStream.bind(this);
@@ -36,10 +37,13 @@ class App extends React.Component {
         this.props.dispatch();
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({expandMode: nextProps.expandMode});
+    }
+
     toggleLiveStream() {
         var liveStreamClassName = (!this.state.showingLiveStream)?'app-livestream': 'app-livestream-minimize';
-        var appContainerClassName = (!this.state.showingLiveStream)?'app-container-min':'app-container-max';
-
+        var appContainerClassName = (!this.state.showingLiveStream)?'app-container-min':'app-container-max';                
        /* var liveStreamTobe = (!this.state.showingLiveStream)?'[--]':'[+]';
         var appContainerClassName = (!this.state.showingLiveStream)?'app-container-min':'app-container-max';
         var commentOnClassName = (!this.state.showingLiveStream)?'commentOn':'commentOn-min';
@@ -55,12 +59,23 @@ class App extends React.Component {
 
     }
 
-    render() {
+    render() {        
         var showing = this.state.showingLiveStream;
-     return (
+        var bellClassName = "NotificationBell";
+        var appContainerClassName = this.state.appContainerClassName;
+        if("full_screen" == this.state.expandMode) {
+            bellClassName = "NotificationBellHide", 
+            appContainerClassName = appContainerClassName + " removeSroll";
+        }else {
+            appContainerClassName = appContainerClassName + " addSroll";
+        }
+
+
+
+        return (
             <MuiThemeProvider muiTheme={muiTheme}> 
                <React.Fragment>       
-                <div className={this.state.appContainerClassName}>
+                <div className={appContainerClassName}>
                    { this.props.fetching ? <CircularProgress className="loading_icon"/>  : null}
                     <section className="app-head">
                         <Header/>                        
@@ -69,7 +84,7 @@ class App extends React.Component {
                         <Persona/>                 
                     </section>                    
                 </div>
-                <div className="NotificationBell" onClick={() => this.toggleLiveStream()}>
+                <div className={bellClassName} onClick={() => this.toggleLiveStream()}>
                         <a className="fa fa-bell">
                             <span className="fa fa-comment"></span>
                             <span className="num">2</span>

@@ -1,7 +1,7 @@
 import React from 'react';
 import '../css/Persona.css';
-import ReviewerContent from './ReviewerContent';
-import DeveloperContent from './DeveloperContent'
+import ReviewerContainer from '../containers/ReviewContainer';
+import DeveloperContainer from '../containers/DeveloperContainer'
 import HomeContent from './HomeContent';
 import '../css/ReviewerContent.css';
 
@@ -53,10 +53,10 @@ export default class Persona extends React.Component{
                 content = (<HomeContent/>);
                 break;
             case 'Reviewer':
-                content = (<ReviewerContent/>);
+                content = (<ReviewerContainer/>);
                 break;
             case 'Developer': 
-                content = (<DeveloperContent/>);
+                content = (<DeveloperContainer/>);
                 break;
         }
         console.log(content);

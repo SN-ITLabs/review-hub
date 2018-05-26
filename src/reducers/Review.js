@@ -16,7 +16,8 @@ export default function Review(state={
   reviewers : {},
   change_id : null,
   file_id : null,
-  userName : "Haribabu"
+  userName : "Haribabu",
+  expandMode: "default"
 },action){
    
     // update the state and return the state based on the action type
@@ -24,7 +25,18 @@ export default function Review(state={
     // use action.payload to get the payload information
     
     switch(action.type){
+        case 'TOGGLE_DIFFER_VIEW_MODE': {
+            var mode = state.expandMode;
+            
+            if("full_screen" == state.expandMode) {
+                mode = 'default';
+            }else {
+                mode = 'full_screen';                
+            }            
 
+            state = {...state,expandMode:mode}
+            break;
+        }
         case 'SET_CONTENT_MODE': {
             console.log('in setContentMode Reducer!');
             var mode = action.payload;
