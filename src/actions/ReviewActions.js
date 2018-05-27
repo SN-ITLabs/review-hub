@@ -12,6 +12,13 @@ export function toggleMode() {
     }
 }
 
+export function toggleLiveStream(value) {
+    return {
+        type: 'TOGGLE_LIVE_STREAM',
+        payload: value
+    }
+}
+
 function handleUserInfo(response){
     return {
         type : 'USER_INFO',

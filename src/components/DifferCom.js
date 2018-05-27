@@ -100,7 +100,8 @@ export default class Differ extends React.Component {
         this.state = {
            // differData: getDifferScript()
            commentFactoryInstance: commentsFactory(this.props.change,this.props.file),
-           expandMode: this.props.expandMode
+           expandMode: this.props.expandMode, 
+           showLiveStream: this.props.showLiveStream
         };
        // console.log(this.props.change);
     }
@@ -112,16 +113,21 @@ export default class Differ extends React.Component {
     componentWillReceiveProps(nextProps) {
         this.setState({
             commentFactoryInstance: commentsFactory(nextProps.change,this.props.file),
-            expandMode: nextProps.expandMode
+            expandMode: nextProps.expandMode,
+            showLiveStream: nextProps.showLiveStream
          });
     }
 
     render() {
         var _this = this;
-        var topClassName = "row differ-main-com";
+        var topClassName = "row differ-main-com";        
+
+        if(false == this.state.showLiveStream) {
+            topClassName = "row differ-main-com-streamActive"
+        }
         if("full_screen" == this.state.expandMode) {
             topClassName = "row differ-main-com-expandmode"
-        }
+        }        
         return (
             <div className={topClassName}>
                 <div className="col-md-12 differ-com">

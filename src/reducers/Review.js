@@ -17,7 +17,8 @@ export default function Review(state={
   change_id : null,
   file_id : null,
   userName : "Haribabu",
-  expandMode: "default"
+  expandMode: "default",
+  showLiveStream: false
 },action){
    
     // update the state and return the state based on the action type
@@ -25,6 +26,11 @@ export default function Review(state={
     // use action.payload to get the payload information
     
     switch(action.type){
+
+        case 'TOGGLE_LIVE_STREAM': {
+            state = {...state,showLiveStream:action.payload}
+            break;
+        }        
         case 'TOGGLE_DIFFER_VIEW_MODE': {
             var mode = state.expandMode;
             

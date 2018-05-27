@@ -42,6 +42,7 @@ class App extends React.Component {
     }
 
     toggleLiveStream() {
+        this.props.toggleLiveStream(this.state.showingLiveStream);
         var liveStreamClassName = (!this.state.showingLiveStream)?'app-livestream': 'app-livestream-minimize';
         var appContainerClassName = (!this.state.showingLiveStream)?'app-container-min':'app-container-max';                
        /* var liveStreamTobe = (!this.state.showingLiveStream)?'[--]':'[+]';

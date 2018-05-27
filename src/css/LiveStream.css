@@ -103,11 +103,19 @@ span.num {
 }
 
 .commentOn-min a {
-    color: #337ab7;
+    color: #7fb7a1;
     text-decoration: none;
     width: 30%;
     display: block;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+}
+
+.NotificationBell a.fa-bell {
+    color: #7fb7a1;
+}
+
+.commentOn a {
+    color: #7fb7a1;
 }

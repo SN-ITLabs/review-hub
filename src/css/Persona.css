@@ -42,3 +42,10 @@
     grid-template-columns: 1fr 2fr 1fr;
     width:100%;
 }
+
+.being:before {
+    content: "being a ";
+    font-style: italic;
+    color: #2a3e40;
+    font-size: small;
+}

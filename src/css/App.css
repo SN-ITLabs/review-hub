@@ -27,7 +27,7 @@
 }
 
 .addSroll {
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
 
 .app-livestream {
@@ -44,7 +44,7 @@
   -webkit-transition: 0.5s;
   -o-transition: 0.5s;
   transition: 0.5s;
-  padding-top: 60px;
+  padding: 15px;
 }
 
 .app-livestream-minimize{
@@ -63,7 +63,7 @@
 } 
 
 @media screen and (max-height: 450px) {
-.app-livestream  {padding-top: 15px;}
+.app-livestream  {padding: 15px;}
 }
 
 .minimizeStream {
@@ -93,7 +93,7 @@
 .button-bar {
   /* display: block;
   float: right; */
-  width: 60vw;
+  width: 96%;
   height: 3vw;
 }
 

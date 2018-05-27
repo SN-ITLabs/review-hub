@@ -37,10 +37,18 @@ ul {
 
 .differ-main-com {
     width: 60vw;
-    height: 70vh;    
+    height: 68vh;
     overflow-y: scroll;
     overflow-x: hidden;
 }
+
+.differ-main-com-streamActive {
+    width: 48vw;
+    height: 68vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
 
 .differ-main-com-expandmode {
     width: 98%;

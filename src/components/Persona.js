@@ -16,11 +16,13 @@ export default class Persona extends React.Component{
                 },
                 {
                     'name': 'Reviewer',
-                    'className': 'Persona-li'
+                    'className': 'Persona-li',
+                    'persona': true
                 },
                 {
                     'name': 'Developer',
-                    'className': 'Persona-li'
+                    'className': 'Persona-li',
+                    'persona': true
                 }
             ],
             'activeTab': 'Home'
@@ -67,7 +69,7 @@ export default class Persona extends React.Component{
         var tabs2render = [];
         var self = this;
         this.state.tabs.forEach(function(tab) {
-            tabs2render.push((<li className={tab.className} onClick={() => self.makeTabActive(tab.name)} key={tab.name}>{tab.name}</li>));
+            tabs2render.push((<li className={tab.className} onClick={() => self.makeTabActive(tab.name)} key={tab.name}>{(tab.persona == true)?<div className="being">{tab.name}</div>:tab.name}</li>));
         })
         return tabs2render;
     }
