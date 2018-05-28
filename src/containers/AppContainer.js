@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import AppComp from '../Layout'
+import AppComp from './LayoutContainer'
 import {loadUserComments} from "../actions/ReviewActions"
 
 

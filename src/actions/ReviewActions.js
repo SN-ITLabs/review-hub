@@ -6,6 +6,19 @@ import { getChangeSetsForReviewSuccess,setLoadingIcon} from "./SearchActions";
 
 // implement your actions here...
 
+export function toggleMode() {
+    return {
+        type: 'TOGGLE_DIFFER_VIEW_MODE'
+    }
+}
+
+export function toggleLiveStream(value) {
+    return {
+        type: 'TOGGLE_LIVE_STREAM',
+        payload: value
+    }
+}
+
 function handleUserInfo(response){
     return {
         type : 'USER_INFO',

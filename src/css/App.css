@@ -19,9 +19,15 @@
   /* display: block; */
   min-width:75%;
   height: fit-content;
-  max-height: 100vh;
-  overflow-y: auto;
   margin-right: 0;
+}
+
+.removeSroll {
+  overflow: hidden;
+}
+
+.addSroll {
+  overflow-y: hidden;
 }
 
 .app-livestream {
@@ -31,11 +37,15 @@
   z-index: -1;
   top: 0;
   left: 80%;
-  background-color : lightgray;
+  right: 0;
+  background-color: #2a3e40;
   overflow-x: hidden;
+  -webkit-box-shadow: 0px 0px 5px 0px #888888;
   box-shadow: 0px 0px 5px 0px #888888;
+  -webkit-transition: 0.5s;
+  -o-transition: 0.5s;
   transition: 0.5s;
-  padding-top: 60px;
+  padding: 15px;
 }
 
 
@@ -58,49 +68,9 @@
 } 
 
 @media screen and (max-height: 450px) {
-.app-livestream  {padding-top: 15px;}
+.app-livestream  {padding: 15px;}
 }
 
-/*
-.app-livestream {
-  width: 20%;
-  position: fixed;
-  display: block;
-  float: left;
-  left: 80%;
-  height: 100vh;
-  padding: 5px;
-  box-shadow: 0px 0px 5px 0px #888888;
-}
-
-.app-livestream-minimize {
-  width: 5%;
-  position:fixed;
-  float:left;
-  left: 95%;
-  height:100vh;
-  padding: 5px;
-  box-shadow: 0px 0px 5px 0px #888888;
-}
-*/
-/* .persona {
-  display:block;
-  width: 100%;
-} */
-/*
-.app-head{
-  grid-column-start: 1;
-  grid-column-end : 4;
-}
-
-.footer{
-  grid-column-start: 1;
-  grid-column-end : 4;
-  position: fixed;
-  bottom: 0;
-  width: 100vw;
-}
-*/
 .minimizeStream {
   float: left;
   font-size:large;
@@ -128,8 +98,23 @@
 .button-bar {
   /* display: block;
   float: right; */
-  width: 60vw;
+  width: 96%;
   height: 3vw;
+}
+
+.button-bar-expandmode {
+  width: 97vw;
+  height: 3vw;
+  border-bottom: 2px solid green;
+  margin-bottom: 1px;
+  background-color: #d4efcb;
+}
+
+.button-bar-expandmode:before {
+  content: "Review Central";
+  font-size: xx-large;
+  color: #7b0404;
+  font-style: italic;
 }
 
 .accept-button{
@@ -149,3 +134,16 @@ float: right;
   margin-bottom: 3px;
   cursor: pointer;
 }
+
+.overlay {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  z-index: 999;
+}
+
+.script-code {
+  background-color: #f2f2f2;
+} 

@@ -17,14 +17,32 @@ const muiTheme = getMuiTheme({
 
 export default class extends React.Component {
 
+    constructor(props, context) {
+        super(props);
+        this.state = {
+            expandMode: this.props.expandMode
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({expandMode: nextProps.expandMode});
+    }
+
     render() {
+        var overlayPane, mainClassName = "main";
+        if('full_screen' == this.props.expandMode) {
+            overlayPane = (<div class="overlay"></div>);
+            mainClassName = "main-expandmode";
+        }
+    
         return (<MuiThemeProvider muiTheme={muiTheme}>
+                    {overlayPane}
                     <aside className="leftbar">
                         <LeftBar personne="Developer"/>
                     </aside>
-                    <aside className="main">
+                    <div className={mainClassName}>
                         <MainDiff/>
-                    </aside>                    
+                    </div>                    
                     <aside className="rightbar">
                         <RightBar />
                     </aside>

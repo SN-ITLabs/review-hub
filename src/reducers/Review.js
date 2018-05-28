@@ -16,7 +16,9 @@ export default function Review(state={
   reviewers : {},
   change_id : null,
   file_id : null,
-  userName : "Haribabu"
+  userName : "Haribabu",
+  expandMode: "default",
+  showLiveStream: false
 },action){
    
     // update the state and return the state based on the action type
@@ -25,6 +27,22 @@ export default function Review(state={
     
     switch(action.type){
 
+        case 'TOGGLE_LIVE_STREAM': {
+            state = {...state,showLiveStream:action.payload}
+            break;
+        }        
+        case 'TOGGLE_DIFFER_VIEW_MODE': {
+            var mode = state.expandMode;
+            
+            if("full_screen" == state.expandMode) {
+                mode = 'default';
+            }else {
+                mode = 'full_screen';                
+            }            
+
+            state = {...state,expandMode:mode}
+            break;
+        }
         case 'SET_CONTENT_MODE': {
             console.log('in setContentMode Reducer!');
             var mode = action.payload;

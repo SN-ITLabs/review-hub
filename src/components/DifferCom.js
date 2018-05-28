@@ -9,7 +9,7 @@ class Line extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showComment: false,
+            showComment: false
         };
         //this.hljs = require('highlight.js');
     }
@@ -99,7 +99,9 @@ export default class Differ extends React.Component {
         super(props);
         this.state = {
            // differData: getDifferScript()
-           commentFactoryInstance: commentsFactory(this.props.change,this.props.file)
+           commentFactoryInstance: commentsFactory(this.props.change,this.props.file),
+           expandMode: this.props.expandMode, 
+           showLiveStream: this.props.showLiveStream
         };
        // console.log(this.props.change);
     }
@@ -109,15 +111,25 @@ export default class Differ extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState = {
-            commentFactoryInstance: commentsFactory(nextProps.change,this.props.file)
-         };
+        this.setState({
+            commentFactoryInstance: commentsFactory(nextProps.change,this.props.file),
+            expandMode: nextProps.expandMode,
+            showLiveStream: nextProps.showLiveStream
+         });
     }
 
     render() {
         var _this = this;
+        var topClassName = "row differ-main-com";        
+
+        if(false == this.state.showLiveStream) {
+            topClassName = "row differ-main-com-streamActive"
+        }
+        if("full_screen" == this.state.expandMode) {
+            topClassName = "row differ-main-com-expandmode"
+        }        
         return (
-            <div className="row differ-main-com">
+            <div className={topClassName}>
                 <div className="col-md-12 differ-com">
                     {this.props.differData && this.props.differData.map(function(object, i) {
                         //console.log(object);
