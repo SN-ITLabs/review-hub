@@ -28,21 +28,12 @@ export default class extends React.Component{
         if(node.children){ node.toggled = toggled; }
         this.setState({ cursor: node });
 
-        if("Activity Stream" == node.id) {
-            console.log('Clicked Activity Stream!');
-            this.props.setContentMode("ActivityStream");
-            this.props.refreshActivityStream('currentUser');
-        } else {
-            this.props.setContentMode("Differ");
-            if(node.change_id) {
-                this.props.toggleDifferComp(node.change_id, node.file_id);  
-                var reviewer = this.generateFileReviewer(node);
-                this.props.fileReviewers(reviewer);    
-            }/*else {
-                this.props.toggleDifferComp('','');           
-                this.props.fileReviewers('');    
-            } */
-        }   
+        this.props.setContentMode("Differ");
+        if(node.change_id) {
+            this.props.toggleDifferComp(node.change_id, node.file_id);  
+            var reviewer = this.generateFileReviewer(node);
+            this.props.fileReviewers(reviewer);    
+        }
     }
 
     loadData() {

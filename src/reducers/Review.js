@@ -18,7 +18,8 @@ export default function Review(state={
   file_id : null,
   userName : "Haribabu",
   expandMode: "default",
-  showLiveStream: false
+  showLiveStream: false,
+  personaTab: "Home"
 },action){
    
     // update the state and return the state based on the action type
@@ -26,7 +27,11 @@ export default function Review(state={
     // use action.payload to get the payload information
     
     switch(action.type){
-
+        
+        case 'SWITCH_PERSONA': {
+            state = {...state,personaTab:action.payload}
+            break;
+        }
         case 'TOGGLE_LIVE_STREAM': {
             state = {...state,showLiveStream:action.payload}
             break;

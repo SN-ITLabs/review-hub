@@ -3,7 +3,7 @@ import '../css/App.css';
 import '../css/LiveStream.css';
 
 import Header from '../containers/HeaderContainer';
-import Persona from './Persona';
+import Persona from '../containers/PersonaContainer';
 
 import CircularProgress from 'material-ui/CircularProgress';
 
@@ -62,7 +62,27 @@ class App extends React.Component {
 
     }
 
+    openFile(commentObj) {
+        console.log('In openFile...');
+        console.log(commentObj);
+        this.props.setContentMode("Differ");
+        if(commentObj.changeId) {
+            this.props.toggleDifferComp(commentObj.changeId, commentObj.fileId);  
+            var reviewer = this.generateFileReviewer(commentObj);
+            this.props.fileReviewers(reviewer);   
+            this.props.switchPersona('Reviewer');
+        }
+    }
+
+    generateFileReviewer(node){
+        var fileReviewer = {};
+        fileReviewer.changed_by = node.developer;
+        fileReviewer.reviewer = node.reviewer;
+        return fileReviewer;
+    }
+
     render() {        
+        var self = this;
         var showing = this.state.showingLiveStream;
         var commentOn = this.state.commentOnClassName;
         var bellClassName = "NotificationBell";
@@ -111,7 +131,7 @@ class App extends React.Component {
                                     {comment.desc}  
                                 </div>):""}
                                 <div className={commentOn}>
-                                   <a href="#">{comment.changeName}</a>
+                                   <a href="#" onClick={()=>self.openFile(comment)}>{comment.changeName}</a>
                                 </div>                            
                                 <div className="endComment"/>
                                 <div className="dateTime">{comment.commentedOn}</div>                                    
