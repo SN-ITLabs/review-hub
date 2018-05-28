@@ -62,17 +62,21 @@ class App extends React.Component {
 
     }
 
-    render() {        
+    render() {  
+
         var showing = this.state.showingLiveStream;
         var commentOn = this.state.commentOnClassName;
         var bellClassName = "NotificationBell";
         var appContainerClassName = this.state.appContainerClassName;
+      
         if("full_screen" == this.state.expandMode) {
             bellClassName = "NotificationBellHide", 
             appContainerClassName = appContainerClassName + " removeSroll";
         }else {
             appContainerClassName = appContainerClassName + " addSroll";
         }
+
+        var commentsCount = this.props.comments ? this.props.comments.length : 0;
         return (
             <MuiThemeProvider muiTheme={muiTheme}> 
                <React.Fragment>       
@@ -88,7 +92,7 @@ class App extends React.Component {
                 <div className={bellClassName} onClick={() => this.toggleLiveStream()}>
                         <a className="fa fa-bell">
                             <span className="fa fa-comment"></span>
-                            <span className="num">2</span>
+                            <span className="num">{commentsCount}</span>
                         </a>
                 </div>
                 <div className={this.state.liveStreamClassName}>

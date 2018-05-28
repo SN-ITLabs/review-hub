@@ -117,15 +117,6 @@
   font-style: italic;
 }
 
-.accept-button{
- float: right;
- margin-left: 10px;
-}
-
-.reject-button{
-float: right;
-}
-
 .accept-button, .reject-button{
   /* width: 32px !important;
   height: 32px !important; */
@@ -133,6 +124,9 @@ float: right;
   border: solid 1px black; */
   margin-bottom: 3px;
   cursor: pointer;
+  margin-left: 10px;
+  float: right;
+
 }
 
 .overlay {

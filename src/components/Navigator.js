@@ -32,6 +32,8 @@ export default class extends React.Component{
             console.log('Clicked Activity Stream!');
             this.props.setContentMode("ActivityStream");
             this.props.refreshActivityStream('currentUser');
+        }else if('review_completed' == node.status){
+          return;
         } else {
             this.props.setContentMode("Differ");
             if(node.change_id) {
@@ -47,7 +49,8 @@ export default class extends React.Component{
 
     loadData() {
         var pendingReviews = [];        
-    
+        var completedChanges = [];
+
         var navigationTree = this.state.navigationTree;
         if(navigationTree && navigationTree.length > 0) {
             return navigationTree;
@@ -61,13 +64,19 @@ export default class extends React.Component{
         console.log(changeSetNames);
         if(changeSetNames) {
             changeSetNames.forEach(function(changeSetName) {
-                var changeSetObj = {'name': changeSetName, 'id': changeSetName};
+
+                var pendingChangesetObj = {'name': changeSetName, 'id': changeSetName};
+                var completedChangesetObj = {'name': changeSetName, 'id': changeSetName};
+
                 if(changeSets[changeSetName].files) {
                     var filesByType = [];
+                    
                     changeSets[changeSetName].files.forEach(function(file) {
                         var fileName = file.file_name;
                         var type = file.type;
                         var isNew = false;
+                        var status = file.status;
+
                         var instancesByType = filesByType.filter(obj=>obj.name == type);
                         if(instancesByType && instancesByType.length > 0) {
                             instancesByType = instancesByType[0];
@@ -76,9 +85,10 @@ export default class extends React.Component{
                             instancesByType = {};
                             instancesByType['name'] = type;
                             instancesByType['id'] = type;
+                            instancesByType['status'] = status;
                             instancesByType['children'] = [];
                         }
-                        instancesByType['children'].push({'name': fileName, 'id': fileName, 'change_id': file.change_id, 'file_id': file.file_id, 'reviewer': file.reviewer});
+                        instancesByType['children'].push({'name': fileName, 'id': fileName, 'change_id': file.change_id, 'file_id': file.file_id, 'reviewer': file.reviewer,'status':status});
                         if(isNew) {
                             console.log('in loop - instancesByType = ' );
                             console.log(instancesByType);
@@ -86,9 +96,20 @@ export default class extends React.Component{
                             console.log(filesByType);
                         }                        
                     });
-                    changeSetObj['children'] = filesByType;
+
+                    var pendingFiles = filesByType.filter(obj=>obj.status == 'review_in_progress');
+                    var compltedFiles = filesByType.filter(obj=>obj.status == 'review_completed');
+
+                    pendingChangesetObj['children'] = pendingFiles;
+                    completedChangesetObj['children'] = compltedFiles;
                 }
-                pendingReviews.push(changeSetObj);
+                if(pendingChangesetObj.children.length > 0){
+                    pendingReviews.push(pendingChangesetObj);
+                }
+                if(completedChangesetObj.children.length > 0){
+                    completedChanges.push(completedChangesetObj);
+                }
+
             });
         }
 
@@ -113,7 +134,7 @@ export default class extends React.Component{
                     {
                         name: 'Completed ChangeSets',
                         id: 'Completed ChangeSets',
-                        children: []
+                        children: completedChanges
                     }
                 ]
             }
