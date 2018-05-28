@@ -4,7 +4,7 @@
     width: 97vw;
     border: 1px solid #d4efcb;
     height: 10em;
-    background-color: #ffffff;
+    background-color: #f2f2f2;
 }
 
 .tabsPane {
@@ -16,6 +16,7 @@
 }
 
 .activeTab, .Tab {
+    display: inline-flex;
     border-left: 1px solid #6a9160;
     border-right: 1px solid #6a9160;
     border-top: 1px solid #6a9160;
@@ -31,5 +32,5 @@
 }
 
 .activeTab {
-    background-color: white;
+    background-color: #d5efcb;
 }

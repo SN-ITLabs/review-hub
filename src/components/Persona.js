@@ -25,11 +25,15 @@ export default class Persona extends React.Component{
                     'persona': true
                 }
             ],
-            'activeTab': 'Home'
+            'activeTab': this.props.personaTab
         };
         this.getTabs = this.getTabs.bind(this);
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({activeTab:nextProps.personaTab});
+        this.makeTabActive(nextProps.personaTab);
+    }
 
     makeTabActive(tabName) {
         var self = this;

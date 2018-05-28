@@ -6,6 +6,13 @@ import { getChangeSetsForReviewSuccess,setLoadingIcon} from "./SearchActions";
 
 // implement your actions here...
 
+export function switchPersona(value) {
+    return {
+        type: 'SWITCH_PERSONA', 
+        payload: value
+    }
+}
+
 export function toggleMode() {
     return {
         type: 'TOGGLE_DIFFER_VIEW_MODE'
