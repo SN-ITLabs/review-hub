@@ -39,7 +39,7 @@ class App extends React.Component {
     toggleLiveStream() {
         var liveStreamClassName = (!this.state.showingLiveStream)?'app-livestream': 'app-livestream-minimize';
         var appContainerClassName = (!this.state.showingLiveStream)?'app-container-min':'app-container-max';
-
+        var commentOnClassName = (!this.state.showingLiveStream)?'commentOn':'commentOn-min';
        /* var liveStreamTobe = (!this.state.showingLiveStream)?'[--]':'[+]';
         var appContainerClassName = (!this.state.showingLiveStream)?'app-container-min':'app-container-max';
         var commentOnClassName = (!this.state.showingLiveStream)?'commentOn':'commentOn-min';
@@ -50,13 +50,15 @@ class App extends React.Component {
             ...this.state,
             showingLiveStream: !this.state.showingLiveStream,
             liveStreamClassName: liveStreamClassName,
-            appContainerClassName:appContainerClassName
+            appContainerClassName:appContainerClassName,
+            commentOnClassName:commentOnClassName
         });
 
     }
 
     render() {
         var showing = this.state.showingLiveStream;
+        var commentOn = this.state.commentOnClassName;
      return (
             <MuiThemeProvider muiTheme={muiTheme}> 
                <React.Fragment>       
@@ -94,11 +96,11 @@ class App extends React.Component {
                                 (<div className="commentDescription">                                    
                                     {comment.desc}  
                                 </div>):""}
-                                <div className="commentOn">
+                                <div className={commentOn}>
                                    <a href="#">{comment.changeName}</a>
                                 </div>                            
                                 <div className="endComment"/>
-                                <div className="dateTime">{comment.dateTime}</div>                                    
+                                <div className="dateTime">{comment.commentedOn}</div>                                    
                             </div>
                            )
                          })
