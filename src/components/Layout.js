@@ -1,14 +1,12 @@
-import React from "react";
-import '../css/App.css';
-import '../css/LiveStream.css';
+import React from "react"
+import '../css/App.css'
+import '../css/LiveStream.css'
 
-import Header from '../containers/HeaderContainer';
-import Persona from './Persona';
-
-import CircularProgress from 'material-ui/CircularProgress';
-
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import Header from '../containers/HeaderContainer'
+import Persona from './Persona'
+import CircularProgress from 'material-ui/CircularProgress'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
 
 const muiTheme = getMuiTheme({
     palette: {
