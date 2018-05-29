@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Differ from '../containers/DifferContainer';
-import PropertiesPane from './PropertiesPane'
+import Differ from '../containers/DifferContainer'
+import PropertiesPane from '../containers/PropertiesContainer'
 import AcceptIcon from 'material-ui/svg-icons/action/done'
 import ConfigurationIcon from 'material-ui/svg-icons/action/settings-input-composite'
 import ScriptIcon from 'material-ui/svg-icons/action/code'

@@ -20,7 +20,7 @@ function pushJS(jsName) {
     const res = _httpReq
         .request({
             method: "PUT",
-            url: "/api/now/table/sys_ui_script/7510ba2edbc49f00a86a5404ce9619ae",
+            url: "/api/now/table/sys_ui_script/24902036dbd61700b557f9151d9619c5",
             data: JSON.stringify(_body)
         })
         .then(function(res) {
@@ -57,5 +57,5 @@ function pushCSS(cssName) {
         });
 }
 
-pushJS("main.30ed7023.js");
-pushCSS("main.82ad9500.css");
+pushJS("main.6a03e9ba.js");
+pushCSS("main.f4bdff06.css");
