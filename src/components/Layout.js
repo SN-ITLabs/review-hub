@@ -71,6 +71,7 @@ class App extends React.Component {
             var reviewer = this.generateFileReviewer(commentObj);
             this.props.fileReviewers(reviewer);   
             this.props.switchPersona('Reviewer');
+            this.props.setCommentRead(commentObj.commentId);
         }
     }
 

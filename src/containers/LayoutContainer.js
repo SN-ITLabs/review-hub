@@ -2,6 +2,8 @@ import {connect} from 'react-redux';
 import Layout from '../components/Layout'
 import {switchPersona, toggleLiveStream, toggleDifferComp,getFileReviewers,changesetReviewSuccess,changesetReviewReject,refreshActivityStream,setContentMode} from "../actions/ReviewActions";
 
+import {setCommentAsRead} from '../actions/ActivityActions'
+
 const mapDispatchToProps = dispatch => ({
     switchPersona : (name) => {
         dispatch(switchPersona(name));
@@ -20,7 +22,10 @@ const mapDispatchToProps = dispatch => ({
     },
     setContentMode: (modeType) => {
          dispatch(setContentMode(modeType));
-     }
+    },
+    setCommentRead : (commentId) => {
+        dispatch(setCommentAsRead(commentId));
+    }
 })
 
 const LayoutCont = connect(state => ({

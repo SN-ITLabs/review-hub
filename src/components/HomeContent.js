@@ -4,7 +4,7 @@ import '../css/Home.css'
 export default class extends React.Component {
 
     render() {
-        return (<div className="HomeDashboard">
+        return (<React.Fragment>
                     <div className="SingleScore Score1">
                         <div className="ScoreImg">
                             <img src="images/participation.png"/>
@@ -37,6 +37,6 @@ export default class extends React.Component {
                         <div className="ScoreValueMetric">Percentile</div>
                         <div className="ScoreTitle">SLA Score</div>
                     </div>
-                </div>)
+                </React.Fragment>)
     }
 }

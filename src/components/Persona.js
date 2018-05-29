@@ -28,6 +28,7 @@ export default class Persona extends React.Component{
             'activeTab': this.props.personaTab
         };
         this.getTabs = this.getTabs.bind(this);
+        this.containerClassName = 'homeContentArea';
     }
 
     componentWillReceiveProps(nextProps) {
@@ -57,12 +58,15 @@ export default class Persona extends React.Component{
         switch(this.state.activeTab) {
             case 'Home': 
                 content = (<HomeContent/>);
+                this.containerClassName = 'homeContentArea';
                 break;
             case 'Reviewer':
                 content = (<ReviewerContainer/>);
+                this.containerClassName = 'ContentArea';
                 break;
             case 'Developer': 
                 content = (<DeveloperContainer/>);
+                this.containerClassName = 'ContentArea';
                 break;
         }
         console.log(content);
@@ -87,7 +91,7 @@ export default class Persona extends React.Component{
                 <ul className="Persona-ul">   
                     {tabs}                 
                 </ul>   
-                <ul className="ContentArea">      
+                <ul className={this.containerClassName}>      
                     {mainContent}
                 </ul>
             </div>
