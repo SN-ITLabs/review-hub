@@ -2,7 +2,7 @@ import {connect} from 'react-redux';
 import Layout from '../components/Layout'
 import {switchPersona, toggleLiveStream, toggleDifferComp,getFileReviewers,changesetReviewSuccess,changesetReviewReject,refreshActivityStream,setContentMode} from "../actions/ReviewActions";
 
-import {setCommentAsRead} from '../actions/ActivityActions'
+import {setCommentAsRead,getReviewerDetails} from '../actions/ActivityActions'
 
 const mapDispatchToProps = dispatch => ({
     switchPersona : (name) => {
@@ -14,9 +14,9 @@ const mapDispatchToProps = dispatch => ({
     toggleDifferComp : (change_id,fileId) => {
         dispatch(toggleDifferComp(change_id,fileId));
     },
-    fileReviewers : (fileReviewer) => {
-        dispatch(getFileReviewers(fileReviewer));
-    },
+    // fileReviewers : (fileReviewer) => {
+    //     dispatch(getFileReviewers(fileReviewer));
+    // },
     refreshActivityStream: (currentUser) => {
          dispatch(refreshActivityStream(currentUser));
     },
@@ -25,6 +25,9 @@ const mapDispatchToProps = dispatch => ({
     },
     setCommentRead : (commentId) => {
         dispatch(setCommentAsRead(commentId));
+    },
+    getReviewDet : (change_id) => {
+       dispatch(getReviewerDetails(change_id));
     }
 })
 

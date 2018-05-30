@@ -1,7 +1,10 @@
 
 export default function Activity(state={
     contentMode: "ActivityStream",
-    comments : []
+    comments : [],
+    changeDetails : {},
+    changeComments : [],
+    changeHistory : [],
 },action){
 
     switch(action.type){
@@ -16,6 +19,15 @@ export default function Activity(state={
         }
         case 'LOAD_COMMENTS':{
             state = {...state,comments:action.payload};
+            break;
+        }   
+        case 'GET_CHANGE_PROPERTY':{
+            state = {
+                ...state,
+                changeDetails:action.payload.fileInfo,
+                changeComments: action.payload.comments,
+                changeHistory : action.payload.reviewHistory
+            };
             break;
         }
     }

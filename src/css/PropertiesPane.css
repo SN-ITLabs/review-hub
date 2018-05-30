@@ -34,3 +34,17 @@
 .activeTab {
     background-color: #d5efcb;
 }
+
+.table-detail,.table-comments{
+    width: 100%;
+    margin: 13px;
+}
+
+.table-head{
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.table-detail td{
+    padding-bottom: 10px;
+}

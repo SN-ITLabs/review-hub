@@ -68,19 +68,20 @@ class App extends React.Component {
         this.props.setContentMode("Differ");
         if(commentObj.changeId) {
             this.props.toggleDifferComp(commentObj.changeId, commentObj.fileId);  
-            var reviewer = this.generateFileReviewer(commentObj);
-            this.props.fileReviewers(reviewer);   
+            // var reviewer = this.generateFileReviewer(commentObj);
+            //this.props.fileReviewers(reviewer);
+            this.props.getReviewDet(commentObj.changeId);
             this.props.switchPersona('Reviewer');
             this.props.setCommentRead(commentObj.commentId);
         }
     }
 
-    generateFileReviewer(node){
-        var fileReviewer = {};
-        fileReviewer.changed_by = node.developer;
-        fileReviewer.reviewer = node.reviewer;
-        return fileReviewer;
-    }
+    // generateFileReviewer(node){
+    //     var fileReviewer = {};
+    //     fileReviewer.changed_by = node.developer;
+    //     fileReviewer.reviewer = node.reviewer;
+    //     return fileReviewer;
+    // }
 
     render() {        
         var self = this;
