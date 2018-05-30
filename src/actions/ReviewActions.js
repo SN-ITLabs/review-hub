@@ -128,7 +128,8 @@ function handleToogleDiffSuccess(data,change,file){
     }
 }
 
-export function toggleDifferComp(change_id,fileId){
+export function toggleDifferComp(change_id,fileId,fieldName){
+    var fieldName = (!fieldName)?'configuration':fieldName;
     return dispatch => {
         dispatch(setLoadingIcon(true))
         return SNAjax({
@@ -136,7 +137,8 @@ export function toggleDifferComp(change_id,fileId){
             action: "getDifferCode",
             scope: "x_snc_review_hub",
             params: {
-                sysparam_changeid: change_id
+                sysparam_changeid: change_id,
+                sysparm_fieldName: fieldName
             }
         })
             .getJSON()

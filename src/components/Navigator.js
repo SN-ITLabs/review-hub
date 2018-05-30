@@ -28,22 +28,15 @@ export default class extends React.Component{
         if(node.children){ node.toggled = toggled; }
         this.setState({ cursor: node });
 
-        if("Activity Stream" == node.id) {
-            console.log('Clicked Activity Stream!');
-            this.props.setContentMode("ActivityStream");
-            this.props.refreshActivityStream('currentUser');
-        }else if('review_completed' == node.status){
+        if('review_completed' == node.status){
           return;
-        } else {
-            this.props.setContentMode("Differ");
-            if(node.change_id) {
-                this.props.toggleDifferComp(node.change_id, node.file_id);  
+        } else {            
+            if(node.actionable && node.change_id) {
+                this.props.setContentMode("Differ");
+                this.props.toggleDifferComp(node.change_id, node.file_id, node.name);  
                 var reviewer = this.generateFileReviewer(node);
                 this.props.fileReviewers(reviewer);    
-            }/*else {
-                this.props.toggleDifferComp('','');           
-                this.props.fileReviewers('');    
-            } */
+            }
         }   
     }
 
@@ -88,12 +81,35 @@ export default class extends React.Component{
                             instancesByType['status'] = status;
                             instancesByType['children'] = [];
                         }
-                        instancesByType['children'].push({'name': fileName, 'id': fileName, 'change_id': file.change_id, 'file_id': file.file_id, 'reviewer': file.reviewer,'status':status});
+                        var fileObj = {};
+                        
+                        fileObj['name'] = fileName;
+                        fileObj['id'] = fileName;
+                        fileObj['change_id'] = file.change_id;
+                        fileObj['file_id'] = file.file_id;
+                        fileObj['reviewer'] = file.reviewer;
+                        fileObj['status'] = status;                        
+                        var fieldsForFile = [];
+                        file.fields.forEach(function(field) {
+                            var fieldObj = {};
+                            if(field.field_name) {
+                                fieldObj['name'] = field.field_name;
+                                fieldObj['id'] = field.field_name;
+                                fieldObj['change_id'] = file.change_id;
+                                fieldObj['file_id'] = file.file_id;
+                                fieldObj['reviewer'] = file.reviewer;
+                                fieldObj['status'] = status;
+                                fieldObj['actionable'] = true;
+                                fieldsForFile.push(fieldObj);
+                            }                            
+                        });
+                        if(fieldsForFile && fieldsForFile.length > 0) {
+                            fileObj['children'] = fieldsForFile;
+                            instancesByType['children'].push(fileObj);
+                        }
+                        
                         if(isNew) {
-                            console.log('in loop - instancesByType = ' );
-                            console.log(instancesByType);
-                            filesByType.push(instancesByType);    
-                            console.log(filesByType);
+                            filesByType.push(instancesByType);                            
                         }                        
                     });
 

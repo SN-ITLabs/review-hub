@@ -1,0 +1,1342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unload unload_date="2018-05-29 09:48:55">
+<sys_remote_update_set action="INSERT_OR_UPDATE">
+<application display_value="Global">global</application>
+<application_name>Global</application_name>
+<application_scope>global</application_scope>
+<application_version/>
+<collisions/>
+<commit_date/>
+<deleted/>
+<description/>
+<inserted/>
+<name>Reviewhub-haribabu-phase1</name>
+<origin_sys_id/>
+<release_date/>
+<remote_sys_id>476549844f465780afef74828110c71f</remote_sys_id>
+<state>loaded</state>
+<summary/>
+<sys_class_name>sys_remote_update_set</sys_class_name>
+<sys_created_by>review.hub</sys_created_by>
+<sys_created_on>2018-05-29 09:48:54</sys_created_on>
+<sys_id>485b58b66f169700f928c8c17c3ee4fb</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>review.hub</sys_updated_by>
+<sys_updated_on>2018-05-29 09:48:54</sys_updated_on>
+<update_set display_value=""/>
+<update_source display_value=""/>
+<updated/>
+</sys_remote_update_set>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_script_include_b07be5d24f405300afef74828110c7f8</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_script_include"&gt;&lt;sys_script_include action="INSERT_OR_UPDATE"&gt;&lt;access&gt;package_private&lt;/access&gt;&lt;active&gt;true&lt;/active&gt;&lt;api_name&gt;global.ReviewHubChangePush&lt;/api_name&gt;&lt;client_callable&gt;true&lt;/client_callable&gt;&lt;description&gt;Provides utility methods for review hub tasks&lt;/description&gt;&lt;name&gt;ReviewHubChangePush&lt;/name&gt;&lt;script&gt;&lt;![CDATA[var ReviewHubChangePush = Class.create();
+ReviewHubChangePush.prototype = Object.extendsObject(AbstractAjaxProcessor, {
+	
+	updateStateToReview : function(){
+		var result = true;
+		try{
+			var changeSetName = this.getParameter('sysparm_changeset') || 'Default';
+			var recordstoUpdate = this.getParameter('sysparm_records');
+			var changeSetCount = this.checkChangeSetNameExists(changeSetName);
+			
+			var reviewer = this.getParameter('sysparm_user');
+			var isPartialSet = this.getParameter('sysparm_partialset');
+			
+			if( changeSetCount &gt; 0){
+				changeSetCount++;
+				changeSetName = changeSetName +' - '+changeSetCount;
+			}
+			
+			var records = recordstoUpdate.split(',');
+			var recordsLength = records.length;
+			
+			for(var index=0;index&lt;recordsLength;index++){
+				
+				var record_id = records[index];
+				var sysSyncRecord = new GlideRecord('sys_sync_change');
+				
+				if(sysSyncRecord.get(record_id.toString())){
+					sysSyncRecord.state = 'review_in_progress';
+					sysSyncRecord.u_changeset_name = changeSetName;
+					sysSyncRecord.update();
+				}
+			}
+			this.syncChangeSetToToolsIt(changeSetName,reviewer,isPartialSet);
+		}catch(e){
+			result = false;
+		}
+		return result;
+	},
+	
+	checkChangeSetNameExists : function(changeSetName){
+		var count = 0;
+		var sysSyncRecord = new GlideAggregate('sys_sync_change');
+		sysSyncRecord.addAggregate('COUNT');
+		sysSyncRecord.groupBy('u_changeset_name');
+		sysSyncRecord.addQuery('u_changeset_name',changeSetName);
+		sysSyncRecord.query();
+		
+		if(sysSyncRecord.next()){
+			count = sysSyncRecord.getAggregate('COUNT');
+		}
+		return count;
+	},
+	
+	syncChangeSetToToolsIt : function(changeSetName,reviewer,isPartialSet){
+		var result ='';
+		var requestParam = {};
+		requestParam.url = ReviewHubConstants.CHANGE_SET_URL;
+		requestParam.instance = ReviewHubConstants.INSTANCE;
+		requestParam.content_type ="application/json";
+		
+		var requestParam1 = {};
+		requestParam1.url =ReviewHubConstants.CHANGE_URL;
+		requestParam1.instance = ReviewHubConstants.INSTANCE;
+		requestParam1.content_type ="application/json";
+
+		var reqObj = this.getChangeSetsInReview(changeSetName);
+		var keys = Object.keys(reqObj);
+		for(var key in keys){
+			var changeName = keys[key];
+			var changedeveloper = reqObj[changeName].sys_updated_by;
+			var instance = reqObj[changeName].instance;
+			var reqBody = {};
+			reqBody.changeset_name = changeName;
+			reqBody.created_developer = changedeveloper;
+			reqBody.target_instance = instance;
+			reqBody.dev_instance = gs.getProperty("instance_name");
+			reqBody.reviewer = reviewer;
+			reqBody.parent_changeset = isPartialSet;
+			requestParam.requestBody = JSON.stringify(reqBody);
+			var body = new RestAPI("POST",requestParam);
+			result = JSON.stringify(body);
+			var changeId = (JSON.parse(body.response.response)).result.sys_id;
+			gs.info('ChangeSets:: '+result);
+			
+			var file = reqObj[changeName].files;
+			for(var data in file){
+				var set = file[data].update_set;
+				var type = file[data].type;
+				var payload = file[data].paload;
+				var filename = file[data].record_name;
+				var developer = file[data].sys_updated_by;
+				var devchangeSysId = file[data].changeId;
+				var fileId = file[data].fileid;
+				reqBody = {};
+				reqBody.change_set = changeId;
+				reqBody.file_name = filename;
+				reqBody.payload = payload;
+				reqBody.type = type;
+				reqBody.developer = developer;
+				reqBody.status = "review_in_progress";
+				reqBody.dev_change_sysid = devchangeSysId;
+				reqBody.reviewer = reviewer;
+				reqBody.fileid = fileId;
+				requestParam1.requestBody = JSON.stringify(reqBody);
+				body = new RestAPI("POST",requestParam1);
+				result = JSON.stringify(body);
+				gs.info('Changes:: ' +result);
+			}
+		}
+		return result;
+	},
+	
+	_getFileSysId : function(name){
+		var file = new GlideRecord("sys_metadata");
+		file.addQuery("sys_update_name", name.toString());
+		file.query();
+		file.next();
+		
+		return file.sys_id;
+	},
+	
+	getChangeSetsInReview : function(changeSetName){
+		
+		try{
+			var changeSetsMap = {};
+			var changeRecs = new GlideRecord('sys_sync_change');
+			changeRecs.addQuery('u_changeset_name',changeSetName);
+			changeRecs.addQuery('state','review_in_progress');
+			changeRecs.orderBy('u_changeset_name');
+			changeRecs.query();
+				
+			while(changeRecs.next()){
+				var _chSetname = changeRecs.getValue('u_changeset_name') || 'Default';
+				var _thisChangeSet = {};
+				if(!changeSetsMap[_chSetname]){
+					_thisChangeSet.changed_by = changeRecs.getDisplayValue('changed_by');
+					_thisChangeSet.sys_updated_by = changeRecs.getDisplayValue('sys_updated_by');
+					_thisChangeSet.instance = changeRecs.getDisplayValue('instance');
+					_thisChangeSet.update_set = changeRecs.getDisplayValue('update_set');
+					_thisChangeSet.files = [];
+					changeSetsMap[_chSetname] = _thisChangeSet;
+				} else {
+					_thisChangeSet = changeSetsMap[_chSetname];
+				}
+				var version = new GlideRecord("sys_update_version");
+				version.addQuery("sys_id", changeRecs.getValue('version'));
+				version.query();
+
+				if(version.next()){
+					var _thisFileMeta = {};
+					_thisFileMeta.update_set = changeRecs.getValue('update_set');
+					_thisFileMeta.record_name = version.getValue('record_name');
+					_thisFileMeta.name = version.getValue('name');
+					_thisFileMeta.fileid = this._getFileSysId(version.getValue('name'));
+					_thisFileMeta.type = version.getValue('type');
+					_thisFileMeta.paload = version.getValue('payload');
+					_thisFileMeta.version_id = version.getValue('sys_id');
+					_thisFileMeta.changed_by = changeRecs.getDisplayValue('changed_by');
+					_thisFileMeta.sys_updated_by = changeRecs.getDisplayValue('sys_updated_by');
+					_thisFileMeta.changeId = changeRecs.getValue('sys_id');
+					_thisChangeSet.files.push(_thisFileMeta);
+				}
+			}
+			return changeSetsMap;
+						
+		}catch(e){
+			gs.log("Exception in getting changesets in review "+e);
+		}
+	},
+	type: 'ReviewHubAjax'
+});]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_include&lt;/sys_class_name&gt;&lt;sys_created_by&gt;review.hub&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-02-05 06:00:47&lt;/sys_created_on&gt;&lt;sys_customer_update&gt;true&lt;/sys_customer_update&gt;&lt;sys_id&gt;b07be5d24f405300afef74828110c7f8&lt;/sys_id&gt;&lt;sys_mod_count&gt;11&lt;/sys_mod_count&gt;&lt;sys_name&gt;ReviewHubChangePush&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_replace_on_upgrade&gt;false&lt;/sys_replace_on_upgrade&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_include_b07be5d24f405300afef74828110c7f8&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;haribabu.garbhana&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-05-18 07:25:30&lt;/sys_updated_on&gt;&lt;/sys_script_include&gt;&lt;/record_update&gt;</payload>
+<remote_update_set display_value="Reviewhub-haribabu-phase1">485b58b66f169700f928c8c17c3ee4fb</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>review.hub</sys_created_by>
+<sys_created_on>2018-05-29 09:48:54</sys_created_on>
+<sys_id>005b58b66f169700f928c8c17c3ee4fc</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>review.hub</sys_updated_by>
+<sys_updated_on>2018-05-29 09:48:54</sys_updated_on>
+<table/>
+<target_name>ReviewHubChangePush</target_name>
+<type>Script Include</type>
+<update_domain>global</update_domain>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ws_operation_953fbd9e4f405300afef74828110c717</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ws_operation"&gt;&lt;sys_ws_operation action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;consumes&gt;application/json,application/xml,text/xml&lt;/consumes&gt;&lt;consumes_customized&gt;false&lt;/consumes_customized&gt;&lt;default_operation_uri/&gt;&lt;enforce_acl/&gt;&lt;http_method&gt;POST&lt;/http_method&gt;&lt;name&gt;updatechangeset&lt;/name&gt;&lt;operation_script&gt;&lt;![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+	
+	var _data = request.body.data;
+	var resObj = {};
+	var result =[];
+		try {
+			var _name = _data.name;
+			var _state = _data.state;
+			var gr = new GlideRecord("sys_sync_change");
+			gr.addQuery('u_changeset_name',_name);
+			gr.query();
+			while (gr.next()) {
+				gr.state = _state;
+				var op = gr.update();
+				if(op) {
+					resObj = {
+						"sys_id": op
+					};
+					result.push(resObj);
+				}
+			}
+		} catch (e) {
+			gs.info("Review Hub, parsing error " + e);
+		}
+		
+		response.setStatus(200);
+		response.setContentType("application/json");
+		response.setBody(result);
+	})(request, response);]]&gt;&lt;/operation_script&gt;&lt;operation_uri&gt;/api/snc/review_hub/updatechangeset&lt;/operation_uri&gt;&lt;produces&gt;application/json,application/xml,text/xml&lt;/produces&gt;&lt;produces_customized&gt;false&lt;/produces_customized&gt;&lt;relative_path&gt;/updatechangeset&lt;/relative_path&gt;&lt;request_example/&gt;&lt;requires_acl_authorization&gt;false&lt;/requires_acl_authorization&gt;&lt;requires_authentication&gt;true&lt;/requires_authentication&gt;&lt;short_description/&gt;&lt;sys_class_name&gt;sys_ws_operation&lt;/sys_class_name&gt;&lt;sys_created_by&gt;review.hub&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-02-05 07:32:37&lt;/sys_created_on&gt;&lt;sys_customer_update&gt;true&lt;/sys_customer_update&gt;&lt;sys_id&gt;953fbd9e4f405300afef74828110c717&lt;/sys_id&gt;&lt;sys_mod_count&gt;7&lt;/sys_mod_count&gt;&lt;sys_name&gt;updatechangeset&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_replace_on_upgrade&gt;false&lt;/sys_replace_on_upgrade&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ws_operation_953fbd9e4f405300afef74828110c717&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;haribabu.garbhana&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-05-18 10:22:28&lt;/sys_updated_on&gt;&lt;web_service_definition display_value="Review Hub"&gt;fd49d0e94f48db00afef74828110c711&lt;/web_service_definition&gt;&lt;web_service_version/&gt;&lt;/sys_ws_operation&gt;&lt;/record_update&gt;</payload>
+<remote_update_set display_value="Reviewhub-haribabu-phase1">485b58b66f169700f928c8c17c3ee4fb</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>review.hub</sys_created_by>
+<sys_created_on>2018-05-29 09:48:55</sys_created_on>
+<sys_id>085b58b66f169700f928c8c17c3ee4fd</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>review.hub</sys_updated_by>
+<sys_updated_on>2018-05-29 09:48:55</sys_updated_on>
+<table/>
+<target_name>updatechangeset</target_name>
+<type>Scripted REST Resource</type>
+<update_domain>global</update_domain>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_cca32ef94ff34700afef74828110c7f9</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_action"&gt;&lt;sys_ui_action action="INSERT_OR_UPDATE"&gt;&lt;action_name&gt;review_in_action_state&lt;/action_name&gt;&lt;active&gt;true&lt;/active&gt;&lt;client&gt;true&lt;/client&gt;&lt;comments/&gt;&lt;condition&gt;current.state != 'pending_push' &amp;amp;&amp;amp; current.state != 'review_in_progress'&lt;/condition&gt;&lt;form_action&gt;true&lt;/form_action&gt;&lt;form_button&gt;false&lt;/form_button&gt;&lt;form_context_menu&gt;false&lt;/form_context_menu&gt;&lt;form_link&gt;true&lt;/form_link&gt;&lt;hint/&gt;&lt;list_action&gt;true&lt;/list_action&gt;&lt;list_banner_button&gt;false&lt;/list_banner_button&gt;&lt;list_button&gt;false&lt;/list_button&gt;&lt;list_choice&gt;true&lt;/list_choice&gt;&lt;list_context_menu&gt;false&lt;/list_context_menu&gt;&lt;list_link&gt;false&lt;/list_link&gt;&lt;list_save_with_form_button&gt;false&lt;/list_save_with_form_button&gt;&lt;name&gt;Send for Review&lt;/name&gt;&lt;onclick&gt;handleOnClick()&lt;/onclick&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[function handleOnClick(){
+
+	var dialog = new GlideDialogWindow('add_reviewer');
+        dialog.setTitle('Add Reviewer');
+        dialog.setSize(600,300);
+// 		dialog.setPreference('onPromptCancel', function() {
+// 			return false;
+// 		});
+// 		dialog.setPreference('onPromptComplete', function() {
+			
+// 		});
+	
+	    dialog.render();
+	/*var changeSetName = prompt('Enter this change name');
+	
+	var gl = new GlideList2('sys_sync_change');
+    var checkedItems = gl.getChecked();
+	
+	var ga = new GlideAjax('ReviewHubChangePush');
+	ga.addParam('sysparm_name', 'updateStateToReview');
+	ga.addParam('sysparm_changeset', changeSetName);
+	ga.addParam('sysparm_records', checkedItems);
+	ga.getXML(ReviewParse);
+
+	function ReviewParse(response) {
+	  var answer = response.responseXML.documentElement.getAttribute("answer");
+		if(answer){
+		   window.location.reload();
+	    }
+	}*/
+}
+
+
+/*
+//Code that runs without 'onclick'
+//Ensure call to server-side function with no browser errors
+if(typeof window == 'undefined')
+   changeState();
+
+//Server-side function
+function changeState(){
+ 
+	//change the state to pending_push for the current.  If others business rule will clean.
+	current.state = 'review_in_progress';
+	current.update();
+	
+   //action.setRedirectURL(current);
+}
+
+*/
+
+
+]]&gt;&lt;/script&gt;&lt;show_insert&gt;false&lt;/show_insert&gt;&lt;show_multiple_update&gt;false&lt;/show_multiple_update&gt;&lt;show_query&gt;false&lt;/show_query&gt;&lt;show_update&gt;true&lt;/show_update&gt;&lt;sys_class_name&gt;sys_ui_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;review.hub&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-01-22 10:33:33&lt;/sys_created_on&gt;&lt;sys_customer_update&gt;true&lt;/sys_customer_update&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;cca32ef94ff34700afef74828110c7f9&lt;/sys_id&gt;&lt;sys_mod_count&gt;51&lt;/sys_mod_count&gt;&lt;sys_name&gt;Send for Review&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_replace_on_upgrade&gt;false&lt;/sys_replace_on_upgrade&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_action_cca32ef94ff34700afef74828110c7f9&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;haribabu.garbhana&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-05-15 06:39:16&lt;/sys_updated_on&gt;&lt;table&gt;sys_sync_change&lt;/table&gt;&lt;ui11_compatible&gt;true&lt;/ui11_compatible&gt;&lt;ui16_compatible&gt;false&lt;/ui16_compatible&gt;&lt;/sys_ui_action&gt;&lt;/record_update&gt;</payload>
+<remote_update_set display_value="Reviewhub-haribabu-phase1">485b58b66f169700f928c8c17c3ee4fb</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>review.hub</sys_created_by>
+<sys_created_on>2018-05-29 09:48:55</sys_created_on>
+<sys_id>0c5b58b66f169700f928c8c17c3ee4fc</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>review.hub</sys_updated_by>
+<sys_updated_on>2018-05-29 09:48:55</sys_updated_on>
+<table>sys_sync_change</table>
+<target_name>Send for Review</target_name>
+<type>UI Action</type>
+<update_domain>global</update_domain>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_page_d0dc861d6f9ad300f928c8c17c3ee417</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ui_page"&gt;&lt;sys_ui_page action="INSERT_OR_UPDATE"&gt;&lt;category&gt;general&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function invokePromptCallBack(type) {
+   var gdw = GlideDialogWindow.get();
+    if (type == 'ok'){
+		gdw.destroy();
+		
+		var gl = new GlideList2('sys_sync_change');
+		var checkedItems = gl.getChecked();
+		
+ 		var changesetName = gel('hub_review_changename').value;
+		if(!changesetName){
+			alert('Enter changeset name');
+			return;
+		}
+		
+		var user = gel('hub_review_user').value;
+		if(!user){
+			alert('Enter user');
+			return;
+		}
+		
+		var partial = gel('hub_review_partial').checked;
+
+		var ga = new GlideAjax('ReviewHubChangePush');
+		ga.addParam('sysparm_name', 'updateStateToReview');
+		ga.addParam('sysparm_changeset', changesetName);
+		ga.addParam('sysparm_records', checkedItems);
+		ga.addParam('sysparm_user',user);
+		ga.addParam('sysparm_partialset',partial);
+		
+		ga.getXML(ReviewParse);
+
+		function ReviewParse(response) {
+		  var answer = response.responseXML.documentElement.getAttribute("answer");
+			if(answer){
+			   window.location.reload();
+			}
+		}
+	}
+    else{
+		gdw.destroy();
+	}
+}
+
+var gdw = GlideDialogWindow.get();
+var focusButton = gdw.getPreference('defaultButton');
+if (focusButton == null)
+	focusButton = 'cancel_button';
+
+gel(focusButton).focus();]]&gt;&lt;/client_script&gt;&lt;description&gt;displays a add reviewer dialog &lt;/description&gt;&lt;direct&gt;false&lt;/direct&gt;&lt;endpoint/&gt;&lt;html&gt;&lt;![CDATA[&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null"&gt;       
+ &lt;g:ui_form&gt;
+&lt;div align="center"&gt;
+	&lt;table width="100%" border="0"&gt;		
+	&lt;tr&gt;
+	   &lt;td nowrap="true"&gt; ChangeName : &lt;/td&gt;
+	   &lt;td&gt;
+		  &lt;input name="hub_review_changename" id="hub_review_changename" value=""/&gt;
+	   &lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+	   &lt;td nowrap="true"&gt; Reviewer : &lt;/td&gt;
+	   &lt;td&gt;
+		  &lt;g:ui_reference name="hub_review_user" id="hub_review_user" table="sys_user" value=""/&gt;
+	   &lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+	   &lt;td nowrap="true"&gt; Partial Changeset : &lt;/td&gt;
+	   &lt;td&gt;
+		  &lt;input type="checkbox" name="hub_review_partial" id="hub_review_partial"/&gt;
+	   &lt;/td&gt;
+	&lt;/tr&gt;
+		&lt;tr id="dialog_buttons"&gt;
+        &lt;td colspan="2"&gt;
+          &lt;g:dialog_buttons_ok_cancel ok="invokePromptCallBack('ok');" ok_type="button" cancel="invokePromptCallBack('cancel')" cancel_type="button"/&gt;
+        &lt;/td&gt;
+     &lt;/tr&gt;
+	&lt;/table&gt;
+&lt;/div&gt;
+&lt;/g:ui_form&gt;
+&lt;/j:jelly&gt;
+	]]&gt;&lt;/html&gt;&lt;name&gt;add_reviewer_old&lt;/name&gt;&lt;processing_script/&gt;&lt;sys_class_name&gt;sys_ui_page&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-05-25 02:13:55&lt;/sys_created_on&gt;&lt;sys_customer_update&gt;true&lt;/sys_customer_update&gt;&lt;sys_id&gt;d0dc861d6f9ad300f928c8c17c3ee417&lt;/sys_id&gt;&lt;sys_mod_count&gt;2&lt;/sys_mod_count&gt;&lt;sys_name&gt;add_reviewer_old&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_replace_on_upgrade&gt;false&lt;/sys_replace_on_upgrade&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_page_d0dc861d6f9ad300f928c8c17c3ee417&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-05-25 03:27:54&lt;/sys_updated_on&gt;&lt;/sys_ui_page&gt;&lt;/record_update&gt;</payload>
+<remote_update_set display_value="Reviewhub-haribabu-phase1">485b58b66f169700f928c8c17c3ee4fb</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>review.hub</sys_created_by>
+<sys_created_on>2018-05-29 09:48:55</sys_created_on>
+<sys_id>445b58b66f169700f928c8c17c3ee4fd</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>review.hub</sys_updated_by>
+<sys_updated_on>2018-05-29 09:48:55</sys_updated_on>
+<table/>
+<target_name>add_reviewer_old</target_name>
+<type>UI Page</type>
+<update_domain>global</update_domain>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_cca32ef94ff34700afef74828110c7f9</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_action"&gt;&lt;sys_ui_action action="INSERT_OR_UPDATE"&gt;&lt;action_name&gt;review_in_action_state&lt;/action_name&gt;&lt;active&gt;true&lt;/active&gt;&lt;client&gt;true&lt;/client&gt;&lt;comments/&gt;&lt;condition&gt;current.state != 'pending_push' &amp;amp;&amp;amp; current.state != 'review_in_progress'&lt;/condition&gt;&lt;form_action&gt;true&lt;/form_action&gt;&lt;form_button&gt;false&lt;/form_button&gt;&lt;form_context_menu&gt;false&lt;/form_context_menu&gt;&lt;form_link&gt;true&lt;/form_link&gt;&lt;hint/&gt;&lt;list_action&gt;true&lt;/list_action&gt;&lt;list_banner_button&gt;false&lt;/list_banner_button&gt;&lt;list_button&gt;false&lt;/list_button&gt;&lt;list_choice&gt;true&lt;/list_choice&gt;&lt;list_context_menu&gt;false&lt;/list_context_menu&gt;&lt;list_link&gt;false&lt;/list_link&gt;&lt;list_save_with_form_button&gt;false&lt;/list_save_with_form_button&gt;&lt;name&gt;Send for Review&lt;/name&gt;&lt;onclick&gt;handleOnClick()&lt;/onclick&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[function handleOnClick(){
+
+	var dialog = new GlideDialogWindow('add_reviewer');
+        dialog.setTitle('Send For Review');
+        dialog.setSize(600,300);
+// 		dialog.setPreference('onPromptCancel', function() {
+// 			return false;
+// 		});
+// 		dialog.setPreference('onPromptComplete', function() {
+			
+// 		});
+	
+	    dialog.render();
+	/*var changeSetName = prompt('Enter this change name');
+	
+	var gl = new GlideList2('sys_sync_change');
+    var checkedItems = gl.getChecked();
+	
+	var ga = new GlideAjax('ReviewHubChangePush');
+	ga.addParam('sysparm_name', 'updateStateToReview');
+	ga.addParam('sysparm_changeset', changeSetName);
+	ga.addParam('sysparm_records', checkedItems);
+	ga.getXML(ReviewParse);
+
+	function ReviewParse(response) {
+	  var answer = response.responseXML.documentElement.getAttribute("answer");
+		if(answer){
+		   window.location.reload();
+	    }
+	}*/
+}
+
+
+/*
+//Code that runs without 'onclick'
+//Ensure call to server-side function with no browser errors
+if(typeof window == 'undefined')
+   changeState();
+
+//Server-side function
+function changeState(){
+ 
+	//change the state to pending_push for the current.  If others business rule will clean.
+	current.state = 'review_in_progress';
+	current.update();
+	
+   //action.setRedirectURL(current);
+}
+
+*/
+
+
+]]&gt;&lt;/script&gt;&lt;show_insert&gt;false&lt;/show_insert&gt;&lt;show_multiple_update&gt;false&lt;/show_multiple_update&gt;&lt;show_query&gt;false&lt;/show_query&gt;&lt;show_update&gt;true&lt;/show_update&gt;&lt;sys_class_name&gt;sys_ui_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;review.hub&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-01-22 10:33:33&lt;/sys_created_on&gt;&lt;sys_customer_update&gt;true&lt;/sys_customer_update&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;cca32ef94ff34700afef74828110c7f9&lt;/sys_id&gt;&lt;sys_mod_count&gt;52&lt;/sys_mod_count&gt;&lt;sys_name&gt;Send for Review&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_replace_on_upgrade&gt;false&lt;/sys_replace_on_upgrade&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_action_cca32ef94ff34700afef74828110c7f9&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-05-25 03:32:55&lt;/sys_updated_on&gt;&lt;table&gt;sys_sync_change&lt;/table&gt;&lt;ui11_compatible&gt;true&lt;/ui11_compatible&gt;&lt;ui16_compatible&gt;false&lt;/ui16_compatible&gt;&lt;/sys_ui_action&gt;&lt;/record_update&gt;</payload>
+<remote_update_set display_value="Reviewhub-haribabu-phase1">485b58b66f169700f928c8c17c3ee4fb</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>review.hub</sys_created_by>
+<sys_created_on>2018-05-29 09:48:54</sys_created_on>
+<sys_id>485b58b66f169700f928c8c17c3ee4fc</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>review.hub</sys_updated_by>
+<sys_updated_on>2018-05-29 09:48:54</sys_updated_on>
+<table>sys_sync_change</table>
+<target_name>Send for Review</target_name>
+<type>UI Action</type>
+<update_domain>global</update_domain>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_script_include_b07be5d24f405300afef74828110c7f8</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_script_include"&gt;&lt;sys_script_include action="INSERT_OR_UPDATE"&gt;&lt;access&gt;package_private&lt;/access&gt;&lt;active&gt;true&lt;/active&gt;&lt;api_name&gt;global.ReviewHubChangePush&lt;/api_name&gt;&lt;client_callable&gt;true&lt;/client_callable&gt;&lt;description&gt;Provides utility methods for review hub tasks&lt;/description&gt;&lt;name&gt;ReviewHubChangePush&lt;/name&gt;&lt;script&gt;&lt;![CDATA[var ReviewHubChangePush = Class.create();
+ReviewHubChangePush.prototype = Object.extendsObject(AbstractAjaxProcessor, {
+	
+	updateStateToReview : function(){
+		try{
+			var changeSetName = this.getParameter('sysparm_changeset') || 'Default';
+			var recordstoUpdate = this.getParameter('sysparm_records');
+			var existingchangeset = this.getParameter('sysparm_existingchangeset');
+			var reviewer = this.getParameter('sysparm_user');
+			var isPartialSet = this.getParameter('sysparm_partialset');
+			return this._updateStateToReview(changeSetName, recordstoUpdate, isPartialSet, existingchangeset, reviewer);
+		}catch(ex) {
+			gs.error(ex);
+		}
+	},
+	
+	_updateStateToReview: function(changeSetName, recordstoUpdate, isPartialSet, existingchangeset, reviewer) {
+		var result = true;
+		try {
+			var changeSetCount = this.checkChangeSetNameExists(changeSetName);
+			var primaryDeveloper;
+			if(isPartialSet) {
+				var changesetRecord = new GlideRecord('x_snc_review_hub_change_set');
+				changesetRecord.get(existingchangeset);
+				primaryDeveloper = changesetRecord.getValue('sys_updated_by');
+				changeSetName = changesetRecord.getValue('changeset_name');
+			}else {
+				if( changeSetCount &gt; 0){
+					changeSetCount++;
+					changeSetName = changeSetName +' - '+changeSetCount;
+				}
+				primaryDeveloper = gs.getUserDisplayName();
+			}
+			
+			var records = recordstoUpdate.split(',');
+			var recordsLength = records.length;
+			
+			for(var index=0;index&lt;recordsLength;index++){
+				
+				var record_id = records[index];
+				var sysSyncRecord = new GlideRecord('sys_sync_change');
+				
+				if(sysSyncRecord.get(record_id.toString())){
+					if('review_in_progress' != sysSyncRecord.getValue('state') &amp;&amp; sysSyncRecord.getValue('u_changeset_name') != changeSetName) {
+						sysSyncRecord.state = 'review_in_progress';
+						sysSyncRecord.u_changeset_name = changeSetName;
+						sysSyncRecord.update();
+					}
+				}
+			}
+			this.syncChangeSet2Local(changeSetName,reviewer,existingchangeset, records, primaryDeveloper);
+			
+		}catch(e){
+			gs.error(e);
+			result = false;
+		}
+		return result;
+	},
+	
+	/* TODO - Fix the method to return the distinct changesets starting with the given name */
+	
+	checkChangeSetNameExists : function(changeSetName){
+		var count = 0;
+		var sysSyncRecord = new GlideAggregate('sys_sync_change');
+		sysSyncRecord.addAggregate('COUNT');
+		sysSyncRecord.groupBy('u_changeset_name');
+		sysSyncRecord.addQuery('u_changeset_name',changeSetName);
+		sysSyncRecord.query();
+		
+		if(sysSyncRecord.next()){
+			count = sysSyncRecord.getAggregate('COUNT');
+		}
+		return count;
+	},
+	
+	syncChangeSet2Local : function(changeSetName,reviewer,existingChangeSetID, sysSyncfileIds, primaryDeveloper){
+		var changesetRecord;
+		var changesetId;
+		if(existingChangeSetID) {
+			changesetRecord = new GlideRecord('x_snc_review_hub_change_set');
+			changesetRecord.get(existingChangeSetID);
+			changesetId = existingChangeSetID;
+		}else {
+			//Create new Changeser record.
+			var firstChange = new GlideRecord('sys_sync_change');
+			firstChange.get(sysSyncfileIds[0].toString());
+			
+			changesetRecord = new GlideRecord('x_snc_review_hub_change_set');
+			changesetRecord.initialize();
+			changesetRecord.changeset_name = changeSetName;
+			changesetRecord.created_developer = primaryDeveloper;
+			changesetRecord.dev_instance = gs.getProperty("instance_name");
+			changesetRecord.reviewer = reviewer;
+			changesetRecord.target_instance = firstChange.getValue('instance');
+			changesetId = changesetRecord.insert();
+		}
+		
+		for(var fileRecIndx in sysSyncfileIds){
+			var fileRecId = sysSyncfileIds[fileRecIndx];
+			var sysSyncRecord = new GlideRecord('sys_sync_change');
+			sysSyncRecord.get(fileRecId);
+			if(sysSyncRecord.isValidRecord()){
+				var fullFileName = sysSyncRecord.getValue('version');
+				var fileId = fullFileName.split('_');
+				fileId = fileId[fileId.length - 1];
+				var version = new GlideRecord("sys_update_version");
+				version.addQuery("sys_id", sysSyncRecord.getValue('version'));
+				version.query();
+				
+				if(version.next()){
+					try {
+						//push the files to be reviewed to Changeset table
+						var changeRecord = new GlideRecord('x_snc_review_hub_changes');
+						changeRecord.initialize();
+						changeRecord.change_set = changesetId + '';
+						gs.log('changesetId = ' + changesetId);
+						changeRecord.file_name = version.getValue('record_name');
+						//changeRecord.payload = version.getValue('payload');
+						
+						var versionName=version.getValue('name');
+						tableName=versionName.slice(0,-33);
+						var recordId=versionName.slice(-32);
+						changeRecord.type = version.getValue('type');
+						changeRecord.developer = version.getValue('sys_updated_by');
+						changeRecord.status = "review_in_progress";
+						changeRecord.dev_change_sysid = sysSyncRecord.getValue('sys_id');
+						changeRecord.reviewer = reviewer;
+						changeRecord.fileid = fileId;
+						var sPayload=this.getPayload(changesetRecord.dev_instance,tableName,recordId);
+						changeRecord.u_fields_review_status=JSON.stringify(fieldsReviewStatus);
+						var modifiedSourcePayload=this.modifyPayload(sPayload,tableName);
+						changeRecord.payload=JSON.stringify(modifiedSourcePayload).replace(/{/g,"{\n").replace(/}/g,"\n}").replace(/,/g,",\n");
+						var fieldsReviewStatus={};
+						for(var key in modifiedSourcePayload){
+						   fieldsReviewStatus[key]="Pending";
+						}
+						changeRecord.u_fields_review_status=JSON.stringify(fieldsReviewStatus);
+						var tPayload=this.getPayload(changesetRecord.target_instance,tableName,recordId);	   
+						changeRecord.remote_payload=JSON.stringify(this.modifyPayload(tPayload,tableName)).replace(/{/g,"{\n").replace(/}/g,"\n}").replace(/,/g,",\n");
+						
+						var newChangeId = changeRecord.insert();
+						gs.log('newChangeId = ' + newChangeId);
+					}catch(ex) {
+						gs.error(ex);
+					}
+				}
+			}
+		}
+	},
+	
+	getPayload : function(instance,tableName,recordId){
+		gs.info("Inside Get Target Record");
+		try {
+			var username = gs.getProperty('x_snc_review_hub.username');
+			var password = gs.getProperty('x_snc_review_hub.password');
+			
+			var request = new sn_ws.RESTMessageV2();
+			var endPoint = "https://" + instance + ".service-now.com/api/now/table/"+tableName;
+			gs.info("endPoint "+endPoint);
+			request.setEndpoint(endPoint);
+			var query = "sys_id="+recordId;
+			gs.info("query "+query);
+			request.setQueryParameter("sysparm_query",query);
+			
+			request.setHttpMethod('GET');
+			
+			request.setBasicAuth(username,password);
+			gs.info("username: "+username+ "- Pass: "+password);
+			request.setRequestHeader("Accept","application/json");
+			
+			var response = request.execute();
+			var responseBody = response.getBody();
+			gs.info("ResponseBody: "+responseBody);
+			var httpStatus = response.getStatusCode();
+			gs.info("Status: "+httpStatus);
+			if(httpStatus == 200){
+				return JSON.parse(responseBody);
+			}
+		}
+		catch(ex) {
+			gs.info(ex);
+		}
+	},
+	modifyPayload: function(payload,tableName){
+		if(payload){
+		payload=payload.result[0];
+		var query='name='+tableName+'^internal_type=script^ORinternal_type=script_plain^ORinternal_type=script_server';
+		var gr = new GlideRecord('sys_dictionary');
+		gr.addEncodedQuery(query);
+		gr.query();
+		var finalPayload={};
+			while(gr.next()){
+				finalPayload[gr.element+'']=payload[gr.element+''];
+				delete payload[gr.element+''];
+			}
+			finalPayload.configuration=payload;
+			return finalPayload;
+		}
+		},
+		
+		syncChangeSet : function(changeSetName,reviewer,existingChangeSetID){
+			var result ='';
+			var requestParam = {};
+				requestParam.url = ReviewHubConstants.CHANGE_SET_URL;
+				requestParam.instance = ReviewHubConstants.INSTANCE;
+				requestParam.content_type ="application/json";
+				
+				var requestParam1 = {};
+					requestParam1.url =ReviewHubConstants.CHANGE_URL;
+					requestParam1.instance = ReviewHubConstants.INSTANCE;
+					requestParam1.content_type ="application/json";
+					
+					var reqObj = this.getChangeSetsInReview(changeSetName);
+					var keys = Object.keys(reqObj);
+					for(var key in keys){
+						var changeName = keys[key];
+						var changedeveloper = reqObj[changeName].sys_updated_by;
+						var instance = reqObj[changeName].instance;
+						var reqBody = {};
+							reqBody.changeset_name = changeName;
+							reqBody.created_developer = changedeveloper;
+							reqBody.target_instance = instance;
+							reqBody.dev_instance = gs.getProperty("instance_name");
+							reqBody.reviewer = reviewer;
+							reqBody.parent_changeset = (!(!existingChangeSetID));
+							requestParam.requestBody = JSON.stringify(reqBody);
+							var body = new RestAPI("POST",requestParam);
+							result = JSON.stringify(body);
+							var changeId = (JSON.parse(body.response.response)).result.sys_id;
+							gs.info('ChangeSets:: '+result);
+							
+							var file = reqObj[changeName].files;
+							for(var data in file){
+								var set = file[data].update_set;
+								var type = file[data].type;
+								var payload = file[data].paload;
+								var filename = file[data].record_name;
+								var developer = file[data].sys_updated_by;
+								var devchangeSysId = file[data].changeId;
+								var fileId = file[data].fileid+'';
+								reqBody = {};
+									reqBody.change_set = changeId;
+									reqBody.file_name = filename;
+									reqBody.payload = payload;
+									reqBody.type = type;
+									reqBody.developer = developer;
+									reqBody.status = "review_in_progress";
+									reqBody.dev_change_sysid = devchangeSysId;
+									reqBody.reviewer = reviewer;
+									reqBody.fileid = fileId;
+									requestParam1.requestBody = JSON.stringify(reqBody);
+									body = new RestAPI("POST",requestParam1);
+									result = JSON.stringify(body);
+									gs.info('Changes:: ' +result);
+								}
+							}
+							return result;
+						},
+						
+						_getFileSysId : function(name){
+							var file = new GlideRecord("sys_metadata");
+							file.addQuery("sys_update_name", name.toString());
+							file.query();
+							file.next();
+							
+							return file.sys_id;
+						},
+						
+						getChangeSetsInReview : function(changeSetName){
+							
+							try{
+								var changeSetsMap = {};
+									var changeRecs = new GlideRecord('sys_sync_change');
+									changeRecs.addQuery('u_changeset_name',changeSetName);
+									changeRecs.addQuery('state','review_in_progress');
+									changeRecs.orderBy('u_changeset_name');
+									changeRecs.query();
+									
+									while(changeRecs.next()){
+										var _chSetname = changeRecs.getValue('u_changeset_name') || 'Default';
+										var _thisChangeSet = {};
+											if(!changeSetsMap[_chSetname]){
+												_thisChangeSet.changed_by = changeRecs.getDisplayValue('changed_by');
+												_thisChangeSet.sys_updated_by = changeRecs.getDisplayValue('sys_updated_by');
+												_thisChangeSet.instance = changeRecs.getDisplayValue('instance');
+												_thisChangeSet.update_set = changeRecs.getDisplayValue('update_set');
+												_thisChangeSet.files = [];
+												changeSetsMap[_chSetname] = _thisChangeSet;
+											} else {
+												_thisChangeSet = changeSetsMap[_chSetname];
+											}
+											var version = new GlideRecord("sys_update_version");
+											version.addQuery("sys_id", changeRecs.getValue('version'));
+											version.query();
+											
+											if(version.next()){
+												var _thisFileMeta = {};
+													_thisFileMeta.update_set = changeRecs.getValue('update_set');
+													_thisFileMeta.record_name = version.getValue('record_name');
+													_thisFileMeta.name = version.getValue('name');
+													_thisFileMeta.fileid = this._getFileSysId(version.getValue('name'));
+													_thisFileMeta.type = version.getValue('type');
+													_thisFileMeta.paload = version.getValue('payload');
+													_thisFileMeta.version_id = version.getValue('sys_id');
+													_thisFileMeta.changed_by = changeRecs.getDisplayValue('changed_by');
+													_thisFileMeta.sys_updated_by = changeRecs.getDisplayValue('sys_updated_by');
+													_thisFileMeta.changeId = changeRecs.getValue('sys_id');
+													_thisChangeSet.files.push(_thisFileMeta);
+												}
+											}
+											return changeSetsMap;
+											
+										}catch(e){
+											gs.log("Exception in getting changesets in review "+e);
+										}
+									},
+									type: 'ReviewHubAjax'
+								});]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_include&lt;/sys_class_name&gt;&lt;sys_created_by&gt;review.hub&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-02-05 06:00:47&lt;/sys_created_on&gt;&lt;sys_customer_update&gt;true&lt;/sys_customer_update&gt;&lt;sys_id&gt;b07be5d24f405300afef74828110c7f8&lt;/sys_id&gt;&lt;sys_mod_count&gt;46&lt;/sys_mod_count&gt;&lt;sys_name&gt;ReviewHubChangePush&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_replace_on_upgrade&gt;false&lt;/sys_replace_on_upgrade&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_include_b07be5d24f405300afef74828110c7f8&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;review.hub&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-05-29 09:27:59&lt;/sys_updated_on&gt;&lt;/sys_script_include&gt;&lt;/record_update&gt;</payload>
+<remote_update_set display_value="Reviewhub-haribabu-phase1">485b58b66f169700f928c8c17c3ee4fb</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>review.hub</sys_created_by>
+<sys_created_on>2018-05-29 09:48:54</sys_created_on>
+<sys_id>4c5b58b66f169700f928c8c17c3ee4fb</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>review.hub</sys_updated_by>
+<sys_updated_on>2018-05-29 09:48:54</sys_updated_on>
+<table/>
+<target_name>ReviewHubChangePush</target_name>
+<type>Script Include</type>
+<update_domain>global</update_domain>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_page_667d9ef16fc21b80f928c8c17c3ee4fb</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ui_page"&gt;&lt;sys_ui_page action="INSERT_OR_UPDATE"&gt;&lt;category&gt;general&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[gel('hub_review_partial').on('change', function(e) { 
+	var isPartial = $j(this).is(':checked');
+	if(isPartial) {
+		$j('.r2Value, .r2Label').hide();
+		$j('.r3Value, .r3Label').show();		
+	}else{
+		$j('.r2Value, .r2Label').show();
+		$j('.r3Value, .r3Label').hide();		
+	}
+});
+
+$j('.r2Value, .r2Label').show();
+$j('.r3Value, .r3Label').hide();
+
+
+function invokePromptCallBack(type) {
+   var gdw = GlideDialogWindow.get();
+    if (type == 'ok'){
+		gdw.destroy();
+		
+		var gl = new GlideList2('sys_sync_change');
+		var checkedItems = gl.getChecked();
+		var existingChangeSet, changesetName;
+		
+		var partial = gel('hub_review_partial').checked;
+		if(partial) {
+			existingChangeSet = gel('hub_review_set').value;
+			if(!existingChangeSet){
+				alert('Choose the appropriate Change Set');
+				return;
+			}			
+		} else{
+			changesetName = gel('hub_review_changename').value;
+			if(!changesetName){
+				alert('Enter changeset name');
+				return;
+			}
+		}
+		
+		var user = gel('hub_review_user').value;
+		if(!user){
+			alert('Enter user');
+			return;
+		}		
+
+		var ga = new GlideAjax('ReviewHubChangePush');
+		ga.addParam('sysparm_name', 'updateStateToReview');
+		ga.addParam('sysparm_changeset', changesetName);
+		ga.addParam('sysparm_existingchangeset', existingChangeSet );		
+		ga.addParam('sysparm_records', checkedItems);
+		ga.addParam('sysparm_user',user);
+		ga.addParam('sysparm_partialset',partial);
+		
+		ga.getXML(ReviewParse);
+
+		function ReviewParse(response) {
+		  var answer = response.responseXML.documentElement.getAttribute("answer");
+			if(answer){
+			   window.location.reload();
+			}
+		}
+	}
+    else{
+		gdw.destroy();
+	}
+}
+
+var gdw = GlideDialogWindow.get();
+var focusButton = gdw.getPreference('defaultButton');
+if (focusButton == null)
+	focusButton = 'cancel_button';
+
+gel(focusButton).focus();]]&gt;&lt;/client_script&gt;&lt;description&gt;displays a add reviewer dialog &lt;/description&gt;&lt;direct&gt;false&lt;/direct&gt;&lt;endpoint/&gt;&lt;html&gt;&lt;![CDATA[&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null"&gt;       
+ &lt;g:ui_form&gt;
+	 
+&lt;style&gt;
+	
+.timingDiv {
+    display: none;
+}
+	
+.wrapper {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 200px 200px;
+    background-color: #fff;
+    color: #444;
+	align: center;
+}
+.box {
+	background-color: white;
+	color: black;
+	border-radius: 5px;
+	padding: 3px;
+	font-size: 100%;
+
+}
+
+.r1Label {
+	grid-column: 1
+	grid-row: 1;
+}
+.r1Value {
+	grid-column: 2 ;
+	grid-row: 1
+}
+.r2Label {
+	grid-column: 1;
+	grid-row: 2 ;
+}
+.r2Value {
+	grid-column: 2;
+	grid-row: 2;
+}
+.r3Label {
+	grid-column: 1;
+	grid-row: 3 ;
+}
+.r3Value {
+	grid-column: 2;
+	grid-row: 3;
+}
+	
+.r4Label {
+	grid-column: 1;
+	grid-row: 4 ;
+}
+.r4Value {
+	grid-column: 2;
+	grid-row: 4;
+}
+	
+.r5Label {
+	grid-column: 1;
+	grid-row: 5 ;
+}
+	
+.r5Button {
+	grid-column:1/2;
+	grid-row:6;
+}
+
+.hide {
+	display:none;
+}
+	
+	
+&lt;/style&gt;
+
+	 &lt;div class="wrapper"&gt;
+	  &lt;div class="box r1Label"&gt;Move to existing review?&lt;/div&gt;
+	  &lt;div class="box r1Value"&gt;&lt;input type="checkbox" name="hub_review_partial" id="hub_review_partial"/&gt;&lt;/div&gt;	
+
+	  &lt;div class="box r2Label"&gt;Name&lt;/div&gt;
+	  &lt;div class="box r2Value"&gt;&lt;input name="hub_review_changename" id="hub_review_changename" value=""/&gt;&lt;/div&gt;	
+		 
+	  &lt;div class="box r3Label"&gt;Review Set&lt;/div&gt;
+	  &lt;div class="box r3Value"&gt; &lt;g:ui_reference name="hub_review_set" id="hub_review_set" table="x_snc_review_hub_change_set" value=""/&gt;&lt;/div&gt;		 
+	  &lt;div class="box r4Label"&gt;Reviewer&lt;/div&gt;
+	  &lt;div class="box r4Value"&gt; &lt;g:ui_reference name="hub_review_user" id="hub_review_user" table="sys_user" value=""/&gt;&lt;/div&gt;	   &lt;div class="box r5Button"&gt;&lt;g:dialog_buttons_ok_cancel ok="invokePromptCallBack('ok');" ok_type="button" cancel="invokePromptCallBack('cancel')" cancel_type="button"/&gt;&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/g:ui_form&gt;
+&lt;/j:jelly&gt;
+	]]&gt;&lt;/html&gt;&lt;name&gt;add_reviewer&lt;/name&gt;&lt;processing_script/&gt;&lt;sys_class_name&gt;sys_ui_page&lt;/sys_class_name&gt;&lt;sys_created_by&gt;haribabu.garbhana&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-05-14 06:28:34&lt;/sys_created_on&gt;&lt;sys_customer_update&gt;true&lt;/sys_customer_update&gt;&lt;sys_id&gt;667d9ef16fc21b80f928c8c17c3ee4fb&lt;/sys_id&gt;&lt;sys_mod_count&gt;46&lt;/sys_mod_count&gt;&lt;sys_name&gt;add_reviewer&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_replace_on_upgrade&gt;false&lt;/sys_replace_on_upgrade&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_page_667d9ef16fc21b80f928c8c17c3ee4fb&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-05-25 07:23:05&lt;/sys_updated_on&gt;&lt;/sys_ui_page&gt;&lt;/record_update&gt;</payload>
+<remote_update_set display_value="Reviewhub-haribabu-phase1">485b58b66f169700f928c8c17c3ee4fb</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>review.hub</sys_created_by>
+<sys_created_on>2018-05-29 09:48:55</sys_created_on>
+<sys_id>805b58b66f169700f928c8c17c3ee4fd</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>review.hub</sys_updated_by>
+<sys_updated_on>2018-05-29 09:48:55</sys_updated_on>
+<table/>
+<target_name>add_reviewer</target_name>
+<type>UI Page</type>
+<update_domain>global</update_domain>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_script_include_d65f78c40a0a0b6900196656f35913d3</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_script_include"&gt;&lt;sys_script_include action="INSERT_OR_UPDATE"&gt;&lt;access&gt;public&lt;/access&gt;&lt;active&gt;true&lt;/active&gt;&lt;api_name&gt;global.AbstractAjaxProcessor&lt;/api_name&gt;&lt;client_callable&gt;true&lt;/client_callable&gt;&lt;description&gt;Base ajax processor class that other ajax processors extend&lt;/description&gt;&lt;name&gt;AbstractAjaxProcessor&lt;/name&gt;&lt;script&gt;&lt;![CDATA[// Base ajax processor class that other ajax processors extend
+// 
+// note that some methods return Java values, not JavaScript values
+// added commments to verify the file diff
+// another comment
+var AbstractAjaxProcessor = Class.create();
+
+AbstractAjaxProcessor.prototype = {
+    CALLABLE_PREFIX : 'ajaxFunction_',
+
+    initialize : function(request, responseXML, gc) {
+        this.request = request;
+        this.responseXML = responseXML;
+        this.gc = gc;
+    },
+
+    process : function() {
+        var functionName = this.getName();
+        if (!functionName)
+            return;
+
+        if (functionName.indexOf('_') == 0)
+            return;
+        
+        var f = this[functionName];
+        if (!f) {         
+            functionName = this.CALLABLE_PREFIX + functionName;
+            var f = this[functionName];
+            if (!f)
+                return;
+        }
+        if (typeof f != 'function')
+            return;
+
+        return f.call(this);
+    },
+
+    newItem: function(name) {
+        if (!name)
+            name = "item";
+
+        var item = this.getDocument().createElement(name);
+        this.getRootElement().appendChild(item);
+        return item;
+    },
+
+    // returns value of parameter as a Java String instance
+    getParameter: function(name) {
+        return this.request.getParameter(name)
+    },
+
+    getDocument: function() {
+        return this.responseXML;
+    },
+
+    getRootElement: function() {
+        return this.responseXML.getDocumentElement();
+    },
+
+    // returns value of "sysparm_name" as a Java String instance
+    getName: function() {
+        return this.getParameter("sysparm_name");
+    },
+
+    // returns value of "sysparm_value" as a Java String instance
+    getValue: function() {
+        return this.getParameter("sysparm_value");
+    },
+
+    // returns value of "sysparm_type" as a Java String instance
+    getType: function() {
+        return this.getParameter("sysparm_type");
+    },
+
+    getChars: function() {
+        return this.getParameter("sysparm_chars");
+    },
+
+    setAnswer: function(value) {
+        this.getRootElement().setAttribute("answer", value);
+    },
+
+    setError: function(error) {
+        this.getRootElement().setAttribute("error", error);
+    },
+
+    type: "AbstractAjaxProcessor"
+}]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_include&lt;/sys_class_name&gt;&lt;sys_created_by&gt;glide.maint&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2009-06-12 21:28:49&lt;/sys_created_on&gt;&lt;sys_customer_update&gt;true&lt;/sys_customer_update&gt;&lt;sys_id&gt;d65f78c40a0a0b6900196656f35913d3&lt;/sys_id&gt;&lt;sys_mod_count&gt;33&lt;/sys_mod_count&gt;&lt;sys_name&gt;AbstractAjaxProcessor&lt;/sys_name&gt;&lt;sys_package display_value="System (glidesoft)" source="glidesoft"&gt;7295ac224f123200afef74828110c7e7&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_replace_on_upgrade&gt;false&lt;/sys_replace_on_upgrade&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_include_d65f78c40a0a0b6900196656f35913d3&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;haribabu.garbhana&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-05-15 06:24:52&lt;/sys_updated_on&gt;&lt;/sys_script_include&gt;&lt;/record_update&gt;</payload>
+<remote_update_set display_value="Reviewhub-haribabu-phase1">485b58b66f169700f928c8c17c3ee4fb</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>review.hub</sys_created_by>
+<sys_created_on>2018-05-29 09:48:54</sys_created_on>
+<sys_id>845b58b66f169700f928c8c17c3ee4fc</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>review.hub</sys_updated_by>
+<sys_updated_on>2018-05-29 09:48:54</sys_updated_on>
+<table/>
+<target_name>AbstractAjaxProcessor</target_name>
+<type>Script Include</type>
+<update_domain>global</update_domain>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_script_include_d28147a24fc85300afef74828110c781</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_script_include"&gt;&lt;sys_script_include action="INSERT_OR_UPDATE"&gt;&lt;access&gt;public&lt;/access&gt;&lt;active&gt;true&lt;/active&gt;&lt;api_name&gt;global.ReviewHubConstants&lt;/api_name&gt;&lt;client_callable&gt;false&lt;/client_callable&gt;&lt;description/&gt;&lt;name&gt;ReviewHubConstants&lt;/name&gt;&lt;script&gt;&lt;![CDATA[var ReviewHubConstants = {};
+var baseURL = "/";
+var instanceName = gs.getProperty('instance_name');
+var reviewMode = gs.getProperty('x_snc_review_hub.review.mode');
+if(reviewMode &amp;&amp; 'INTERNAL' == reviewMode) {
+	baseURL = gs.getProperty('glide.servlet.uri');
+}else {
+	instanceName = gs.getProperty('x_snc_review_hub.review.central');
+	baseURL = "https://" + instanceName + ".service-now.com/";
+}
+
+ReviewHubConstants.CHANGE_SET_URL = baseURL + "api/now/table/x_snc_review_hub_change_set";
+ReviewHubConstants.CHANGE_URL = baseURL + "api/now/table/x_snc_review_hub_changes";
+ReviewHubConstants.INSTANCE = instanceName;
+ReviewHubConstants.REST_API = "/api/snc/review_hub/updatechangeset";
+ReviewHubConstants.REST_API_CHANGE = "/api/snc/review_hub/updatechange";]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_include&lt;/sys_class_name&gt;&lt;sys_created_by&gt;review.hub&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-02-06 06:57:10&lt;/sys_created_on&gt;&lt;sys_customer_update&gt;true&lt;/sys_customer_update&gt;&lt;sys_id&gt;d28147a24fc85300afef74828110c781&lt;/sys_id&gt;&lt;sys_mod_count&gt;4&lt;/sys_mod_count&gt;&lt;sys_name&gt;ReviewHubConstants&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_replace_on_upgrade&gt;false&lt;/sys_replace_on_upgrade&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_include_d28147a24fc85300afef74828110c781&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;haribabu.garbhana&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-05-18 06:12:24&lt;/sys_updated_on&gt;&lt;/sys_script_include&gt;&lt;/record_update&gt;</payload>
+<remote_update_set display_value="Reviewhub-haribabu-phase1">485b58b66f169700f928c8c17c3ee4fb</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>review.hub</sys_created_by>
+<sys_created_on>2018-05-29 09:48:54</sys_created_on>
+<sys_id>c05b58b66f169700f928c8c17c3ee4fc</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>review.hub</sys_updated_by>
+<sys_updated_on>2018-05-29 09:48:54</sys_updated_on>
+<table/>
+<target_name>ReviewHubConstants</target_name>
+<type>Script Include</type>
+<update_domain>global</update_domain>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ws_operation_e39994e94f48db00afef74828110c742</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ws_operation"&gt;&lt;sys_ws_operation action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;consumes&gt;application/json,application/xml,text/xml&lt;/consumes&gt;&lt;consumes_customized&gt;false&lt;/consumes_customized&gt;&lt;default_operation_uri/&gt;&lt;enforce_acl/&gt;&lt;http_method&gt;POST&lt;/http_method&gt;&lt;name&gt;updatechange&lt;/name&gt;&lt;operation_script&gt;&lt;![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+	// implement resource here
+	var _data = request.body.data;
+	var resObj = {};
+		try {
+			var _sysId = _data.sys_id;
+			var _state = _data.state;
+			var gr = new GlideRecord("sys_sync_change");
+			if (gr.get(_sysId)) {
+				gr.state = _state;
+				var op = gr.update();
+				if (op) {
+					resObj = {
+						"sys_id": op
+					};
+				}
+			}
+		} catch (e) {
+			gs.info("Review Hub, parsing error " + e);
+		}
+		
+		response.setStatus(200);
+		response.setContentType("application/json");
+		response.setBody(resObj);
+	})(request, response);
+	]]&gt;&lt;/operation_script&gt;&lt;operation_uri&gt;/api/snc/review_hub/updatechange&lt;/operation_uri&gt;&lt;produces&gt;application/json,application/xml,text/xml&lt;/produces&gt;&lt;produces_customized&gt;false&lt;/produces_customized&gt;&lt;relative_path&gt;/updatechange&lt;/relative_path&gt;&lt;request_example/&gt;&lt;requires_acl_authorization&gt;false&lt;/requires_acl_authorization&gt;&lt;requires_authentication&gt;true&lt;/requires_authentication&gt;&lt;short_description/&gt;&lt;sys_class_name&gt;sys_ws_operation&lt;/sys_class_name&gt;&lt;sys_created_by&gt;review.hub&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-02-02 16:16:35&lt;/sys_created_on&gt;&lt;sys_customer_update&gt;true&lt;/sys_customer_update&gt;&lt;sys_id&gt;e39994e94f48db00afef74828110c742&lt;/sys_id&gt;&lt;sys_mod_count&gt;14&lt;/sys_mod_count&gt;&lt;sys_name&gt;updatechange&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_replace_on_upgrade&gt;false&lt;/sys_replace_on_upgrade&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ws_operation_e39994e94f48db00afef74828110c742&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;haribabu.garbhana&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-05-18 10:22:20&lt;/sys_updated_on&gt;&lt;web_service_definition display_value="Review Hub"&gt;fd49d0e94f48db00afef74828110c711&lt;/web_service_definition&gt;&lt;web_service_version/&gt;&lt;/sys_ws_operation&gt;&lt;/record_update&gt;</payload>
+<remote_update_set display_value="Reviewhub-haribabu-phase1">485b58b66f169700f928c8c17c3ee4fb</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>review.hub</sys_created_by>
+<sys_created_on>2018-05-29 09:48:55</sys_created_on>
+<sys_id>c85b58b66f169700f928c8c17c3ee4fd</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>review.hub</sys_updated_by>
+<sys_updated_on>2018-05-29 09:48:55</sys_updated_on>
+<table/>
+<target_name>updatechange</target_name>
+<type>Scripted REST Resource</type>
+<update_domain>global</update_domain>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_page_667d9ef16fc21b80f928c8c17c3ee4fb</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ui_page"&gt;&lt;sys_ui_page action="INSERT_OR_UPDATE"&gt;&lt;category&gt;general&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function invokePromptCallBack(type) {
+   var gdw = GlideDialogWindow.get();
+    if (type == 'ok'){
+		gdw.destroy();
+		
+		var gl = new GlideList2('sys_sync_change');
+		var checkedItems = gl.getChecked();
+		
+ 		var changesetName = gel('hub_review_changename').value;
+		if(!changesetName){
+			alert('Enter changeset name');
+			return;
+		}
+		
+		var user = gel('hub_review_user').value;
+		if(!user){
+			alert('Enter user');
+			return;
+		}
+		
+		var partial = gel('hub_review_partial').checked;
+
+		var ga = new GlideAjax('ReviewHubChangePush');
+		ga.addParam('sysparm_name', 'updateStateToReview');
+		ga.addParam('sysparm_changeset', changesetName);
+		ga.addParam('sysparm_records', checkedItems);
+		ga.addParam('sysparm_user',user);
+		ga.addParam('sysparm_partialset',partial);
+		
+		ga.getXML(ReviewParse);
+
+		function ReviewParse(response) {
+		  var answer = response.responseXML.documentElement.getAttribute("answer");
+			if(answer){
+			   window.location.reload();
+			}
+		}
+	}
+    else{
+		gdw.destroy();
+	}
+}
+
+var gdw = GlideDialogWindow.get();
+var focusButton = gdw.getPreference('defaultButton');
+if (focusButton == null)
+	focusButton = 'cancel_button';
+
+gel(focusButton).focus();]]&gt;&lt;/client_script&gt;&lt;description&gt;displays a add reviewer dialog &lt;/description&gt;&lt;direct&gt;false&lt;/direct&gt;&lt;endpoint/&gt;&lt;html&gt;&lt;![CDATA[&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null"&gt;
+&lt;g:ui_form&gt;
+&lt;div align="center"&gt;
+	&lt;table width="100%" border="0"&gt;
+	&lt;tr&gt;
+	   &lt;td nowrap="true"&gt; ChangeName : &lt;/td&gt;
+	   &lt;td&gt;
+		  &lt;input name="hub_review_changename" id="hub_review_changename" value=""/&gt;
+	   &lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+	   &lt;td nowrap="true"&gt; Reviewer : &lt;/td&gt;
+	   &lt;td&gt;
+		  &lt;g:ui_reference name="hub_review_user" id="hub_review_user" table="sys_user" value=""/&gt;
+	   &lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+	   &lt;td nowrap="true"&gt; Partial Changeset : &lt;/td&gt;
+	   &lt;td&gt;
+		  &lt;input type="checkbox" name="hub_review_partial" id="hub_review_partial"/&gt;
+	   &lt;/td&gt;
+	&lt;/tr&gt;
+		&lt;tr id="dialog_buttons"&gt;
+        &lt;td colspan="2"&gt;
+          &lt;g:dialog_buttons_ok_cancel ok="invokePromptCallBack('ok');" ok_type="button" cancel="invokePromptCallBack('cancel')" cancel_type="button"/&gt;
+        &lt;/td&gt;
+     &lt;/tr&gt;
+	&lt;/table&gt;
+&lt;/div&gt;
+&lt;/g:ui_form&gt;
+&lt;/j:jelly&gt;
+	]]&gt;&lt;/html&gt;&lt;name&gt;add_reviewer&lt;/name&gt;&lt;processing_script/&gt;&lt;sys_class_name&gt;sys_ui_page&lt;/sys_class_name&gt;&lt;sys_created_by&gt;haribabu.garbhana&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-05-14 06:28:34&lt;/sys_created_on&gt;&lt;sys_customer_update&gt;true&lt;/sys_customer_update&gt;&lt;sys_id&gt;667d9ef16fc21b80f928c8c17c3ee4fb&lt;/sys_id&gt;&lt;sys_mod_count&gt;15&lt;/sys_mod_count&gt;&lt;sys_name&gt;add_reviewer&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_replace_on_upgrade&gt;false&lt;/sys_replace_on_upgrade&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_page_667d9ef16fc21b80f928c8c17c3ee4fb&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;haribabu.garbhana&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-05-15 07:15:47&lt;/sys_updated_on&gt;&lt;/sys_ui_page&gt;&lt;/record_update&gt;</payload>
+<remote_update_set display_value="Reviewhub-haribabu-phase1">485b58b66f169700f928c8c17c3ee4fb</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>review.hub</sys_created_by>
+<sys_created_on>2018-05-29 09:48:55</sys_created_on>
+<sys_id>cc5b58b66f169700f928c8c17c3ee4fc</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>review.hub</sys_updated_by>
+<sys_updated_on>2018-05-29 09:48:55</sys_updated_on>
+<table/>
+<target_name>add_reviewer</target_name>
+<type>UI Page</type>
+<update_domain>global</update_domain>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+</unload>

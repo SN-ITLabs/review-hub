@@ -1,12 +1,13 @@
 var axios = require("axios");
 var fs = require("fs");
 
-//const _httpReq = axios.create({ baseURL: "https://itappsrcr.service-now.com" });
-const _httpReq = axios.create({ baseURL: "https://demoplace.service-now.com" });
+const _httpReq = axios.create({ baseURL: "https://itappsrcr.service-now.com" });
+//const _httpReq = axios.create({ baseURL: "https://demoplace.service-now.com" });
 
 //_httpReq.defaults.headers.post["Content-Type"] = "application/json";
 _httpReq.defaults.headers.put["Content-Type"] = "application/json";
 _httpReq.defaults.headers.common["Authorization"] = "Basic cmV2aWV3Lmh1Yjp0ZXN0MTIz";
+//_httpReq.defaults.headers.common["Authorization"] = "Basic cmV2aWV3Lmh1Yjp0ZXN0MTIz";
 
 function pushJS(jsName) {
     var data = fs.readFileSync("./build/static/js/" + jsName, "utf-8");
@@ -19,8 +20,8 @@ function pushJS(jsName) {
 
     const res = _httpReq
         .request({
-            method: "PUT",
-            url: "/api/now/table/sys_ui_script/7510ba2edbc49f00a86a5404ce9619ae",
+            method: "POST",
+            url: "/api/now/table/sys_ui_script",
             data: JSON.stringify(_body)
         })
         .then(function(res) {
@@ -57,5 +58,5 @@ function pushCSS(cssName) {
         });
 }
 
-pushJS("main.30ed7023.js");
-pushCSS("main.82ad9500.css");
+pushJS("main.6ebd2f81.js");
+pushCSS("main.f4bdff06.css");
