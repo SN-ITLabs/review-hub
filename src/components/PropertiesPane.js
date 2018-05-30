@@ -32,7 +32,7 @@ class PropertiesPane extends React.Component{
         var content;
         switch(this.state.activeTab) {
             case 'Details': 
-                content = (<DetailPane/>);
+                content = (<DetailPane details={this.props.changeDetails}/>);
                 break;
             case 'Recommendations':
                 content = (<div> In Recommendations </div>);
@@ -41,7 +41,7 @@ class PropertiesPane extends React.Component{
                 content = (<ReviewHistory/>);
                 break;
             case 'Comments': 
-                content = (<CommentsPane/>);
+                content = (<CommentsPane comments={this.props.changeComments}/>);
                 break;
                 
         }

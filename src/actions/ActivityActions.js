@@ -54,7 +54,7 @@ export function setCommentAsRead(commentId){
 function handlePropertyDetails(res){
     return{
         type : 'GET_CHANGE_PROPERTY',
-        payload: res.property
+        payload: res
     }
 }
 

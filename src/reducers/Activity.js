@@ -24,9 +24,9 @@ export default function Activity(state={
         case 'GET_CHANGE_PROPERTY':{
             state = {
                 ...state,
-                changeDetails:action.payload.change,
+                changeDetails:action.payload.fileInfo,
                 changeComments: action.payload.comments,
-                changeHistory : action.payload.history
+                changeHistory : action.payload.reviewHistory
             };
             break;
         }
