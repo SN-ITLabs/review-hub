@@ -117,13 +117,14 @@ export function getLoginUser(){
     }
 }
 
-function handleToogleDiffSuccess(data,change,file){
+function handleToogleDiffSuccess(data,change,file,fieldName){
     return {
         type : 'TOGGLE_DIFF',
         payload:{
             differData : data.compare,
             change_id : change,
-            file_id : file
+            file_id : file,
+            field_name: fieldName
         }
     }
 }
@@ -143,7 +144,7 @@ export function toggleDifferComp(change_id,fileId,fieldName){
         })
             .getJSON()
             .then(function(response) {
-                dispatch(handleToogleDiffSuccess(response,change_id,fileId));
+                dispatch(handleToogleDiffSuccess(response,change_id,fileId,fieldName));
                 console.log("In Success for getdiff");
                 dispatch(setLoadingIcon(false));
                 //console.log(JSON.stringify(response.data));
@@ -192,7 +193,7 @@ export function handlechangesetReviewSuccess() {
 }
 
 
-export function changesetReviewSuccess(changeset,change) {
+export function changesetReviewSuccess(changeset,change,fieldName) {
     return dispatch => {
         dispatch(setLoadingIcon(true))
         return SNAjax({
@@ -203,6 +204,7 @@ export function changesetReviewSuccess(changeset,change) {
                 sysparam_changeset: changeset,
                 sysparam_state: "surf_codereviewd",
                 sysparam_change:change,
+                sysparam_fieldName: fieldName
             }
         })
             .getJSON()
@@ -219,7 +221,7 @@ export function changesetReviewSuccess(changeset,change) {
     };
 }
 
-export function changesetReviewReject(changeset,change) {
+export function changesetReviewReject(changeset,change,fieldName) {
     return dispatch => {
         dispatch(setLoadingIcon(true))
         return SNAjax({
@@ -229,7 +231,8 @@ export function changesetReviewReject(changeset,change) {
             params: {
                 sysparam_changeset: changeset,
                 sysparam_state: "review_failed",
-                sysparam_change : change
+                sysparam_change : change,
+                sysparam_fieldName: fieldName
             }
         })
             .getJSON()

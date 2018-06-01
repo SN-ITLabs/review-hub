@@ -221,3 +221,7 @@ ul {
 ::-webkit-scrollbar-thumb:hover {
     background: darkgreen; 
 }
+
+.timingDiv {
+    display: none;
+}

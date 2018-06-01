@@ -20,11 +20,11 @@ class MainDiff extends React.Component{
     }
 
     handleReviewSuccess(){
-        this.props.changeSetSuccess('',this.props.change);
+        this.props.changeSetSuccess('',this.props.change, this.props.fieldName);
     }
 
     handleReject(){
-        this.props.changeSetReject('',this.props.change);
+        this.props.changeSetReject('',this.props.change, this.props.fieldName);
     }
     
     showConfigurationDiff() {

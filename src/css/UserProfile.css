@@ -1,0 +1,47 @@
+.delegationPopup {
+    position: fixed;
+    top: 0vh;
+    left: 0vw;
+    height: 100vh;
+    width: 100vw;
+    background-color: #2a3e40;
+    opacity: 0.94;
+}
+
+.closeDelegation {
+    bottom: 12px;
+    left: 40%;
+    font-weight: 900;
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: small;
+    padding-bottom: 2px;
+    padding-top: 5px;
+    background-color: green;
+    position: absolute;
+}
+
+.delegationLabel:before {
+    content: "Delegate Review";
+    position: absolute;
+    font-size: large;
+    top: 10px;
+    left: 10px;
+    color: #138616;
+}
+
+.closeDelegation:hover {
+    cursor: pointer;
+}
+
+.mainSelect {
+    position: relative;
+    top: 30vh;
+    box-shadow: 5px 5px #bbb9bb;
+    left: 40vw;
+    padding: 80px;
+    background-color: white;
+    height: 200px;
+    width: 400px;
+}

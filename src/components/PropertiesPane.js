@@ -1,10 +1,12 @@
 import React from 'react';
+import ReactDOM from 'react-dom'
 
 import '../css/PropertiesPane.css'
 
 import DetailPane from './DetailPane'
 import CommentsPane from './CommentsPane'
 import ReviewHistory from './ReviewHistory'
+import Draggable from 'react-draggable';
 // import Recommendations from './Recommendations'
 
 
@@ -15,7 +17,14 @@ class PropertiesPane extends React.Component{
 
         this.state = {    
             activeTab: 'Details',
-            tabs: ['Details','Recommendations', 'Review History', 'Comments']
+            tabs: ['Details','Recommendations', 'Review History', 'Comments'],
+            style:{
+                height: '100px',
+                background:'#f2f2f2',
+                minHeight:'100px',
+                marginRight: '4vh',
+                minHeight: '170px'
+            }
         }
         this.makeTabActive = this.makeTabActive.bind(this);
     }
@@ -28,6 +37,11 @@ class PropertiesPane extends React.Component{
         this.setState({activeTab: tabName});
     }
 
+    handleDrag(event,data){
+        var elem= ReactDOM.findDOMNode(data.node);
+        this.state.style.height=data.node.clientHeight-data.deltaY;
+    }
+       
     getContent() {
         var content;
         switch(this.state.activeTab) {
@@ -61,11 +75,24 @@ class PropertiesPane extends React.Component{
             }
         });
 
+        const dragHandleStyle = {
+            height: '5px',
+            cursor:'n-resize'
+        }
+        
+        const bounds={
+            bottom: 0,
+            top:-500
+        }
         return( 
-                <div class="propertiesPane">
-                        {tabsPane}
-                        {tabContent}
+                
+            <Draggable axis="y" handle=".dragHandle" onDrag={this.handleDrag.bind(this)} bounds={bounds}>
+                <div class="propertiesPane" style={this.state.style}>
+                <div className="dragHandle" style={dragHandleStyle}></div>
+                    {tabsPane}
+                    {tabContent}
                 </div> 
+            </Draggable>  
         );
     }
 }

@@ -99,7 +99,7 @@ export default class Differ extends React.Component {
         super(props);
         this.state = {
            // differData: getDifferScript()
-           commentFactoryInstance: commentsFactory(this.props.change,this.props.file),
+           commentFactoryInstance: commentsFactory(this.props.change,this.props.file,this.props.fieldName),
            expandMode: this.props.expandMode, 
            showLiveStream: this.props.showLiveStream
         };
@@ -112,7 +112,7 @@ export default class Differ extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         this.setState({
-            commentFactoryInstance: commentsFactory(nextProps.change,this.props.file),
+            commentFactoryInstance: commentsFactory(nextProps.change,nextProps.file,nextProps.fieldName),
             expandMode: nextProps.expandMode,
             showLiveStream: nextProps.showLiveStream
          });

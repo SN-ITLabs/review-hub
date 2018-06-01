@@ -6,7 +6,9 @@ import Subheader from 'material-ui/Subheader';
 import UserProfile from '../containers/UserProfileContainer';
 
 export default class RightBar extends React.Component{
+    
     render(){
+    
         return(
             <List>
             <Subheader>Reviewer Details</Subheader>

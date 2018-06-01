@@ -99,7 +99,7 @@ export default function Review(state={
             break;
         }
         case 'TOGGLE_DIFF':{
-            state = {...state,differData:action.payload.differData.result,change_id:action.payload.change_id,file_id:action.payload.file_id};
+            state = {...state,differData:action.payload.differData.result,change_id:action.payload.change_id,file_id:action.payload.file_id,field_name: action.payload.field_name};
             break;
         }
         case 'GET_FILE_REVIEWERS':{

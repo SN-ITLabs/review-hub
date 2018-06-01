@@ -1,11 +1,11 @@
 import { SNAjax } from "../util/globalhelper";
 
-export default function commentsFactory(changeKey,fileKey){
+export default function commentsFactory(changeKey,fileKey,fieldName){
     console.log(fileKey);
     var comments = {};
     var file = fileKey;
     var change = changeKey;
-
+    var fieldName = fieldName;
     var setComment = function(line, message, user,callback){
         var _line = line.toString();
         SNAjax({
@@ -17,6 +17,7 @@ export default function commentsFactory(changeKey,fileKey){
                 sysparam_changeid: change,
                 sysparam_linenum: _line,
                 sysparam_message: message,
+                sysparam_fieldName: fieldName
                // sysparam_user : user
             }
         }).getJSON()
@@ -42,7 +43,7 @@ export default function commentsFactory(changeKey,fileKey){
             scope: "x_snc_review_hub",
             params: {
                 sysparam_changeid: change,
-               // sysparam_fileid : file
+                sysparam_fieldName : fieldName
             }
         }).getJSON()
             .then(function(response) {
@@ -53,7 +54,7 @@ export default function commentsFactory(changeKey,fileKey){
                 console.log("In Success for getdiff");
                // dispatch(setLoadingIcon(false));
             })
-            .catch(function(error) {
+            .catch(function(error) {                
                 console.log("In Error");
               //  dispatch(setLoadingIcon(false));
             });
@@ -64,8 +65,9 @@ export default function commentsFactory(changeKey,fileKey){
         var _line = line.toString();
         // if(comments[file] && comments[file][_line])
         //     return comments[file][_line];
-        if(comments[change] && comments[change][_line])
-            return comments[change][_line];
+
+        if(comments[change + "_" + fieldName] && comments[change + "_" + fieldName][_line])
+            return comments[change + "_" + fieldName][_line];
         return [];
     }
 
