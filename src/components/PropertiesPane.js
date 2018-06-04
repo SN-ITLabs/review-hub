@@ -39,7 +39,7 @@ class PropertiesPane extends React.Component{
 
     handleDrag(event,data){
         var elem= ReactDOM.findDOMNode(data.node);
-        this.state.style.height=data.node.clientHeight-data.deltaY;
+        this.setState({style: {height:data.node.clientHeight-data.deltaY}});
     }
        
     getContent() {
@@ -74,25 +74,24 @@ class PropertiesPane extends React.Component{
                 tabsPane.push(<div className="Tab" key={tabObj} onClick={()=>self.makeTabActive(tabObj)}>{tabObj}</div>);
             }
         });
-
-        const dragHandleStyle = {
-            height: '5px',
-            cursor:'n-resize'
-        }
         
         const bounds={
             bottom: 0,
             top:-500
         }
-        return( 
-                
+        return(                 
             <Draggable axis="y" handle=".dragHandle" onDrag={this.handleDrag.bind(this)} bounds={bounds}>
-                <div class="propertiesPane" style={this.state.style}>
-                <div className="dragHandle" style={dragHandleStyle}></div>
-                    {tabsPane}
-                    {tabContent}
+                <div class="propertiesPane">
+                    <div className="dragHandle">
+                        {tabsPane}
+                    </div>
+                    
+                    <div className="propertiesPaneContent" style={this.state.style}>
+                        {tabContent}
+                    </div>
+                    
                 </div> 
-            </Draggable>  
+            </Draggable>              
         );
     }
 }

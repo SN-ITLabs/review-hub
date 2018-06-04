@@ -3,16 +3,24 @@ import React from 'react'
 class DetailPane extends React.Component{
     render(){
         return(
-            <table className="table-detail">
-                <tr>
-                    <td className="table-head">File Name</td><td>{this.props.details.fileName}</td>
-                    <td className="table-head">Field Name</td><td>{this.props.details.fieldName}</td>
-                </tr>
-                <tr>
-                    <td className="table-head">Reviewer</td><td>{this.props.details.reviewer}</td>
-                    <td className="table-head">Developer</td><td>{this.props.details.changed_by}</td>
-                </tr>
-            </table>
+            <div className="detailsForm">
+                <section>
+                    <label>File Name</label>
+                    <input type="text" disabled value={this.props.details.fileName}/>
+                </section>
+                <section>
+                    <label>Developer</label>
+                    <input type="text" disabled value={this.props.details.changed_by}/>
+                </section>
+                <section>
+                    <label>Reviewer</label>
+                    <input type="text" disabled value={this.props.details.reviewer} />
+                </section>
+                <section>
+                    <label>Field Name</label>
+                    <input type="text" disabled value={this.props.details.fieldName} />
+                </section>  
+            </div>          
         )
     }
 }

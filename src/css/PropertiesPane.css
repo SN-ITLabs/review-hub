@@ -16,6 +16,7 @@
 }
 
 .activeTab, .Tab {
+    display: -ms-inline-flexbox;
     display: inline-flex;
     border-left: 1px solid #6a9160;
     border-right: 1px solid #6a9160;
@@ -32,7 +33,14 @@
 }
 
 .activeTab {
-    background-color: #d5efcb;
+    background-color: #6a9160;
+    color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-left: 1px solid #d6efcb;
+    border-right: 1px solid #d6efcb;
+    border-top: 1px solid #d6efcb;
+    border-bottom: 2px solid #ca0909;
 }
 
 .table-detail,.table-comments{
@@ -47,4 +55,48 @@
 
 .table-detail td{
     padding-bottom: 10px;
+}
+
+.detailsForm section {
+    clear: both;
+}
+
+.detailsForm section>label {
+    float: left;
+    position: relative;
+    left: 15%;
+    width: 20%;
+    text-align: right;
+}
+
+.detailsForm section>input {
+    float: right;
+    position: relative;
+    right: 30%;
+    width: 20%;
+    padding-left: 5px;
+    border: 1px solid #cecdcd;
+    text-align: left;
+}
+
+.detailsForm {
+    margin-top: 1%;
+    z-index: 9999;
+}
+
+.dragHandle {
+    height: 30px;
+    background-color: #d5efcb;
+    position: relative;
+    cursor: n-resize;
+    top: 10%;
+}
+
+.propertiesPaneContent {
+    background-color: white;
+}
+
+.react-draggable.react-draggable-dragged {
+    background-color: white;
+    width: 97vw;
 }
