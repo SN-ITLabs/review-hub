@@ -3,7 +3,7 @@ import React from 'react'
 class ReviewHistory extends React.Component{
     render(){
         return(
-            <div> In Review History </div>
+            <div class="ReviewHistoryPane"> No History Found!</div>
         )
     }
 }

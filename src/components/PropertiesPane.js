@@ -7,7 +7,7 @@ import DetailPane from './DetailPane'
 import CommentsPane from './CommentsPane'
 import ReviewHistory from './ReviewHistory'
 import Draggable from 'react-draggable';
-// import Recommendations from './Recommendations'
+import RecommendationPane from './RecommendationPane'
 
 
 class PropertiesPane extends React.Component{
@@ -49,7 +49,7 @@ class PropertiesPane extends React.Component{
                 content = (<DetailPane details={this.props.changeDetails}/>);
                 break;
             case 'Recommendations':
-                content = (<div> In Recommendations </div>);
+                content = (<RecommendationPane details={this.props.changeDetails}/>);
                 break;
             case 'Review History': 
                 content = (<ReviewHistory/>);

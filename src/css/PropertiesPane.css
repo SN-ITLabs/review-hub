@@ -93,10 +93,34 @@
 }
 
 .propertiesPaneContent {
-    background-color: white;
+    background-color: white!important;
 }
 
 .react-draggable.react-draggable-dragged {
     background-color: white;
     width: 97vw;
+}
+
+.recommendationsPane {
+    overflow: auto;
+    margin-top: 1%;
+}
+
+.ReviewHistoryPane {
+    margin-top: 1%;
+    margin-left: 10%;
+}
+
+li.recommentItem {
+    font-size: x-small;
+    margin-left: 10%;
+}
+
+li.recommentItem:before {
+    content: '- ';
+}
+
+.CategoryName {
+    margin-left: 8%;
+    text-decoration:  underline;
 }
