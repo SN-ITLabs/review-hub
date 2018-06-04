@@ -124,3 +124,12 @@ li.recommentItem:before {
     margin-left: 8%;
     text-decoration:  underline;
 }
+
+.ReviewHistoryPane {
+    margin-top: 1%;
+    margin-left: 10%;
+}
+
+.react-draggable {
+    width: 97vw;
+}
