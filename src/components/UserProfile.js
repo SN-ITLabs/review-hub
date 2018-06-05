@@ -15,9 +15,7 @@ export default class UserProfile extends React.Component{
         super(props);
         // keep the initization code here
         this.state = {
-           // showDelegation: false,
-            selectedUser: []
-          //  allReviewers: []
+            selectedUser : []
         }
 
         this.onChange = this.onChange.bind(this);
@@ -54,6 +52,7 @@ export default class UserProfile extends React.Component{
     hideDelegationPopup() {
        // this.setState({showDelegation: false});
        this.props.handlePopupDelegation(false);
+       this.props.updateReviewer(this.state.selectedUser.value,this.props.change);
     }
 
     onRequestDelete = (key, name) => (event) => {
@@ -63,10 +62,8 @@ export default class UserProfile extends React.Component{
     handleAutoCompleteTyping = (searchText) => {this.getUsers(searchText)};
     
     handleSelection = (values, name) => {
-       // this.setState({ selectedUser: values }); 
+        this.setState({ selectedUser: values }); 
        // console.log('selected user = ' + values.value);
-
-       this.props.updateReviewer(values.value,this.props.change);
     }
 
     render(){
@@ -74,7 +71,7 @@ export default class UserProfile extends React.Component{
         const dataSourceNodes = [];
         if(this.props.upwardHierarchy) {
             this.props.upwardHierarchy.forEach(function(reviewer) {
-                dataSourceNodes.push(<div key={reviewer.sys_id} value={reviewer.sys_id} label={reviewer.name}>{reviewer.name}</div>);
+                dataSourceNodes.push(<div key={reviewer.user_name} value={reviewer.user_name} label={reviewer.name}>{reviewer.name}</div>);
             });
         }
         const CustomFloatingLabel = (
@@ -128,10 +125,10 @@ export default class UserProfile extends React.Component{
             <React.Fragment>{delegationPopup}
             <ListItem onClick={this.delegateReview}
             // primaryText={this.props.review['changed_by']} 
-            primaryText={this.props.reviewers ? this.props.reviewers.changed_by : null} 
+            primaryText={this.props.reviewers ? this.props.reviewers.reviewer : null} 
             leftIcon={<AccountCircle />}  
             primaryTogglesNestedList={true}
-            secondaryText={this.props.reviewers ? this.props.reviewers.reviewer : null}
+            secondaryText={this.props.reviewers ? this.props.reviewers.changed_by : null}
             />
             </React.Fragment>
         );

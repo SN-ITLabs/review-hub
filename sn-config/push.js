@@ -1,12 +1,15 @@
 var axios = require("axios");
 var fs = require("fs");
 
-const _httpReq = axios.create({ baseURL: "https://itappsrcr.service-now.com" });
+//const _httpReq = axios.create({ baseURL: "https://itappsrcr.service-now.com" });
 //const _httpReq = axios.create({ baseURL: "https://demoplace.service-now.com" });
+
+const _httpReq = axios.create({ baseURL: "https://partnerportalsedev.service-now.com" });
 
 //_httpReq.defaults.headers.post["Content-Type"] = "application/json";
 _httpReq.defaults.headers.put["Content-Type"] = "application/json";
-_httpReq.defaults.headers.common["Authorization"] = "Basic cmV2aWV3Lmh1Yjp0ZXN0MTIz";
+//_httpReq.defaults.headers.common["Authorization"] = "Basic cmV2aWV3Lmh1Yjp0ZXN0MTIz";
+_httpReq.defaults.headers.common["Authorization"] = "Basic aGFyaWJhYnUuZ2FyYmhhbmE6VkVOS0FUQWR1cmdhQDc1MQ==";
 //_httpReq.defaults.headers.common["Authorization"] = "Basic cmV2aWV3Lmh1Yjp0ZXN0MTIz";
 
 function pushJS(jsName) {
@@ -21,8 +24,8 @@ function pushJS(jsName) {
     const res = _httpReq
         .request({
             method: "PUT",
-            url: "/api/now/table/sys_ui_script/24902036dbd61700b557f9151d9619c5",
-            data: JSON.stringify(_body)
+            url: "/api/now/table/sys_ui_script/45d8fc05dbae57409d3379398c9619a3",
+            data: JSON.stringify(_body) 
         })
         .then(function(res) {
             if (res && res.status == 200) {
@@ -45,7 +48,7 @@ function pushCSS(cssName) {
     const res = _httpReq
         .request({
             method: "PUT",
-            url: "/api/now/table/content_css/881bf7d2db809f00a86a5404ce96193b",
+            url: "/api/now/table/content_css/9429b045dbae57409d3379398c961931",
             data: JSON.stringify(_body)
         })
         .then(function(res) {
@@ -58,5 +61,5 @@ function pushCSS(cssName) {
         });
 }
 
-pushJS("main.9161c870.js");
-pushCSS("main.46354dd9.css");
+pushJS("main.8b919987.js");
+pushCSS("main.b868f3f7.css");
