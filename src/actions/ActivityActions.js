@@ -78,3 +78,35 @@ export function getPropertyDetails(change_id){
             });
        };
 }
+
+function handleUpwards(res){
+    return{
+        type : 'UPWARD_HANDLERS',
+        payload: res.result
+    }
+}
+
+export function changeDelegationProp(val){
+    return {
+        type : 'HIDE_DELEGATION',
+        payload : val
+    }
+}
+
+export function getHierarchy(){
+    return dispatch => {
+        return SNAjax({
+            processor: "ChangeSetAjax",
+            action: "getUpwardManagement",
+            scope: "x_snc_review_hub"
+          })
+            .getJSON()
+            .then(function(response) {
+                dispatch(handleUpwards(response))
+                console.log("In Success for getHierarchy");
+            })
+            .catch(function(error) {
+                console.log("In Error getHierarchy");
+            });
+       };
+}

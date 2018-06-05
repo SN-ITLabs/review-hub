@@ -202,7 +202,7 @@ export function changesetReviewSuccess(changeset,change,fieldName) {
             scope: "x_snc_review_hub",
             params: {
                 sysparam_changeset: changeset,
-                sysparam_state: "surf_codereviewd",
+                sysparam_state: "review_completed",
                 sysparam_change:change,
                 sysparam_fieldName: fieldName
             }
@@ -245,6 +245,35 @@ export function changesetReviewReject(changeset,change,fieldName) {
                 console.log("In Error");
                 dispatch(setLoadingIcon(false));
                // console.dir(error.response);
+            });
+    };
+}
+
+function handleChangeReviewer(res){
+    return{
+        type : 'GET_FILE_REVIEWERS',
+        payload:res.reviewer 
+      }
+}
+
+export function updateChangeReviewer(reviewer,changeId){
+    return dispatch => {
+        return SNAjax({
+            processor: "ChangeSetAjax",
+            action: "updateReviewer",
+            scope: "x_snc_review_hub",
+            params: {
+                sysparam_rev: reviewer,
+                sysparam_change : changeId
+            }
+        })
+            .getJSON()
+            .then(function(response) {
+                dispatch(handleChangeReviewer(response));
+                console.log("In updateChangeReviewer success");
+            })
+            .catch(function(error) {
+                console.log("In Error updateChangeReviewer");
             });
     };
 }

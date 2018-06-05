@@ -15,9 +15,9 @@ export default class UserProfile extends React.Component{
         super(props);
         // keep the initization code here
         this.state = {
-            showDelegation: false,
-            selectedUser: [],
-            allReviewers: []
+           // showDelegation: false,
+            selectedUser: []
+          //  allReviewers: []
         }
 
         this.onChange = this.onChange.bind(this);
@@ -26,10 +26,11 @@ export default class UserProfile extends React.Component{
     }
 
     delegateReview() {
-        var self = this;
-        this.getAllUsers().then(function(reviewers) {
-            self.setState({'allReviewers': reviewers, showDelegation: true});
-        });        
+       this.props.getUpwardHierarchy();
+        // var self = this;
+        // this.getAllUsers().then(function(reviewers) {
+        //     self.setState({'allReviewers': reviewers, showDelegation: true});
+        // });        
     }
 
     onChange() {
@@ -47,11 +48,12 @@ export default class UserProfile extends React.Component{
             return;
 		}
 
-		this.setState({'allReviewers': [{key:0, value:'user1'}, {key:1, value:'user2'}, {key:2, value:'user3'}]});	
+	//	this.setState({'allReviewers': [{key:0, value:'user1'}, {key:1, value:'user2'}, {key:2, value:'user3'}]});	
     }
 
     hideDelegationPopup() {
-        this.setState({showDelegation: false});
+       // this.setState({showDelegation: false});
+       this.props.handlePopupDelegation(false);
     }
 
     onRequestDelete = (key, name) => (event) => {
@@ -60,14 +62,19 @@ export default class UserProfile extends React.Component{
     
     handleAutoCompleteTyping = (searchText) => {this.getUsers(searchText)};
     
-    handleSelection = (values, name) => {this.setState({ selectedUser: values }); console.log('selected user = ' + values.value)}
+    handleSelection = (values, name) => {
+       // this.setState({ selectedUser: values }); 
+       // console.log('selected user = ' + values.value);
+
+       this.props.updateReviewer(values.value,this.props.change);
+    }
 
     render(){
 
         const dataSourceNodes = [];
-        if(this.state.allReviewers) {
-            this.state.allReviewers.forEach(function(reviewer) {
-                dataSourceNodes.push(<div key={reviewer.key} value={reviewer.key} label={reviewer.value}>{reviewer.value}</div>);
+        if(this.props.upwardHierarchy) {
+            this.props.upwardHierarchy.forEach(function(reviewer) {
+                dataSourceNodes.push(<div key={reviewer.sys_id} value={reviewer.sys_id} label={reviewer.name}>{reviewer.name}</div>);
             });
         }
         const CustomFloatingLabel = (
@@ -84,7 +91,7 @@ export default class UserProfile extends React.Component{
 
         var delegationPopup;
         
-        if(this.state.showDelegation) {
+        if(this.props.showDelegation) {
             delegationPopup = (
                     <div className="delegationPopup">                           
                         <div className="mainSelect">    
@@ -98,7 +105,7 @@ export default class UserProfile extends React.Component{
                                 hintTextAutocomplete={customHintTextAutocomplete}
                                 underlineStyle={{ borderColor: teal200 }}
                                 underlineFocusStyle={{ borderColor: teal500 }}
-                                autocompleteStyle={{ color: 'red', fontSize: 25 }}
+                                autocompleteStyle={{ color: 'darkseagreen', fontSize: 18 }}
                                 autocompleteUnderlineStyle={{ borderColor: yellow200 }}
                                 autocompleteUnderlineFocusStyle={{ borderColor: yellow500 }}
                                 hintText='Review Delegator'

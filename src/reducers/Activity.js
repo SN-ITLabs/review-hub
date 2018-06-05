@@ -5,6 +5,8 @@ export default function Activity(state={
     changeDetails : {},
     changeComments : [],
     changeHistory : [],
+    upwardHierarchy : [],
+    showDelegation : false
 },action){
 
     switch(action.type){
@@ -30,6 +32,22 @@ export default function Activity(state={
             };
             break;
         }
+        case 'UPWARD_HANDLERS':{
+            state = {
+                ...state,
+                upwardHierarchy:action.payload,
+                showDelegation : true
+            };
+            break;
+        }
+        case 'HIDE_DELEGATION':{
+            state = {
+                ...state,
+                showDelegation : action.payload
+            };
+            break;
+        }
+        
     }
 
     return state;
