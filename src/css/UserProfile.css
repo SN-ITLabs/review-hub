@@ -45,3 +45,10 @@
     height: 200px;
     width: 400px;
 }
+
+.closeDel{
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+}

@@ -64,6 +64,11 @@ export default class UserProfile extends React.Component{
        this.props.updateReviewer(this.state.selectedUser.value,this.props.change);
     }
 
+    closeDelegationPopup(){
+        this.props.handlePopupDelegation(false);
+        
+    }
+
     onRequestDelete = (key, name) => (event) => {
         this.setState({ [name]: this.state[name].filter((v, i) => i !== key) });
       };
@@ -99,9 +104,10 @@ export default class UserProfile extends React.Component{
         
         if(this.props.showDelegation) {
             delegationPopup = (
-                    <div className="delegationPopup">                           
-                        <div className="mainSelect">    
-                            <div className="delegationLabel"/>                                         
+                    <div className="delegationPopup"> 
+                        <div className="mainSelect">
+                            <div className="delegationLabel"/>
+                            <div className="closeDel" onClick={this.closeDelegationPopup.bind(this)}>X</div>                                      
                             <SelectField
                                 name='delegationSelector'
                                 withResetSelectAllButtons
