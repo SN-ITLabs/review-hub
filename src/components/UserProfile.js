@@ -136,8 +136,7 @@ export default class UserProfile extends React.Component{
             // primaryText={this.props.review['changed_by']} 
             primaryText={this.props.reviewers ? this.props.reviewers.reviewer : null} 
             leftIcon={<AccountCircle />}  
-            primaryTogglesNestedList={true}
-            secondaryText={this.props.reviewers ? this.props.reviewers.changed_by : null}
+            primaryTogglesNestedList={true}            
             />
             </React.Fragment>
         );

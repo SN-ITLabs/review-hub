@@ -3,7 +3,7 @@ import Navigator from '../components/Navigator';
 // import LeftBarComp from '../components/LeftBar';
 
 import {getChangeSetsForReview } from "../actions/SearchActions";
-import {toggleDifferComp,getFileReviewers,changesetReviewSuccess,changesetReviewReject,refreshActivityStream,setContentMode} from "../actions/ReviewActions";
+import {toggleCommentary,toggleDifferComp,getFileReviewers,changesetReviewSuccess,changesetReviewReject,refreshActivityStream,setContentMode} from "../actions/ReviewActions";
 
 const mapDispatchToProps = dispatch => ({
     loadPendingReviews : (personne) => {
@@ -29,8 +29,11 @@ const mapDispatchToProps = dispatch => ({
 
      setContentMode: (modeType) => {
          dispatch(setContentMode(modeType));
-     }
+     },
 
+     toggleCommentary: (change_id, file_id, fieldname) => {
+        dispatch(toggleCommentary(change_id, file_id, fieldname));
+     }
 })
 
 const LeftBar = connect(state => ({

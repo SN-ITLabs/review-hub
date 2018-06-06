@@ -19,7 +19,9 @@ export default function Review(state={
   userName : "Haribabu",
   expandMode: "default",
   showLiveStream: false,
-  personaTab: "Home"
+  personaTab: "Home",
+  commentary: [],
+  contentMode: 'Differ'
 },action){
    
     // update the state and return the state based on the action type
@@ -28,6 +30,10 @@ export default function Review(state={
     
     switch(action.type){
         
+        case 'TOGGLE_COMMENTARY': {
+            state = {...state,commentary:action.payload}
+            break;
+        }
         case 'SWITCH_PERSONA': {
             state = {...state,personaTab:action.payload}
             break;
