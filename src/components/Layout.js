@@ -98,6 +98,7 @@ class App extends React.Component {
         }
 
         var commentsCount = this.props.comments ? this.props.comments.length : 0;
+        var notifcationClassName = "fa fa-bell "+this.props.bellClass;
         return (
             <MuiThemeProvider muiTheme={muiTheme}> 
                <React.Fragment>       
@@ -111,7 +112,7 @@ class App extends React.Component {
                     </section>                    
                 </div>
                 <div className={bellClassName} onClick={() => this.toggleLiveStream()}>
-                        <a className="fa fa-bell">
+                        <a className={notifcationClassName}>
                             <span className="fa fa-comment"></span>
                             <span className="num">{commentsCount}</span>
                         </a>

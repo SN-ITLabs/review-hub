@@ -29,7 +29,7 @@ export default class CommentBox extends React.Component{
     }
 
     setComment(){
-        this.commentFactoryInstance.set(this.props.line, this.state.message, this.props.user,this.refreshComments.bind(this));
+        this.commentFactoryInstance.set(this.props.line, this.state.message, this.props.user,this.refreshComments.bind(this),this.props.commenter);
         this.setState({
             message: ''
         });

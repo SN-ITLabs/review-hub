@@ -34,7 +34,8 @@ const mapDispatchToProps = dispatch => ({
 const LayoutCont = connect(state => ({
     contentMode: state.contentMode,
     expandMode: state.Review.expandMode,
-    personaTab: state.Review.personaTab
+    personaTab: state.Review.personaTab,
+    bellClass : state.Activity.bellClass
 }),mapDispatchToProps)(Layout);
 
 export default LayoutCont;

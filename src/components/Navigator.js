@@ -188,7 +188,7 @@ var navigatorTheme = {
             padding: 0,
             color: '#7fb7a1',
             fontFamily: 'lucida grande ,tahoma,verdana,arial,sans-serif',
-            fontSize: '14px'
+            fontSize: '10px'
         },
         node: {
             base: {
@@ -219,8 +219,8 @@ var navigatorTheme = {
                     margin: '-7px 0 0 -7px',
                     height: '14px'
                 },
-                height: 14,
-                width: 14,
+                height: 10,
+                width: 10,
                 arrow: {
                     fill: 'black',
                     strokeWidth: 0

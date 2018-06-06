@@ -85,7 +85,9 @@ a.fa-bell {
     border: blue;
     cursor: pointer;
 }
-
+.alter-zindex{
+    z-index: -1;
+}
 span.fa-comment {
     position: absolute;
     font-size: 0.6em;

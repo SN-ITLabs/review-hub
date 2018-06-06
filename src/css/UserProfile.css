@@ -38,7 +38,7 @@
 .mainSelect {
     position: relative;
     top: 30vh;
-    box-shadow: 5px 5px #bbb9bb;
+    /* box-shadow: 5px 5px #bbb9bb; */
     left: 40vw;
     padding: 80px;
     background-color: white;

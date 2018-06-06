@@ -6,7 +6,7 @@ export default function commentsFactory(changeKey,fileKey,fieldName){
     var file = fileKey;
     var change = changeKey;
     var fieldName = fieldName;
-    var setComment = function(line, message, user,callback){
+    var setComment = function(line, message, user,callback,commenter){
         var _line = line.toString();
         SNAjax({
             processor: "ChangeSetAjax",
@@ -17,7 +17,8 @@ export default function commentsFactory(changeKey,fileKey,fieldName){
                 sysparam_changeid: change,
                 sysparam_linenum: _line,
                 sysparam_message: message,
-                sysparam_fieldName: fieldName
+                sysparam_fieldName: fieldName,
+                sysparam_commenter : commenter
                // sysparam_user : user
             }
         }).getJSON()

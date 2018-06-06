@@ -6,7 +6,8 @@ export default function Activity(state={
     changeComments : [],
     changeHistory : [],
     upwardHierarchy : [],
-    showDelegation : false
+    showDelegation : false,
+    bellClass : ""
 },action){
 
     switch(action.type){
@@ -36,14 +37,16 @@ export default function Activity(state={
             state = {
                 ...state,
                 upwardHierarchy:action.payload,
-                showDelegation : true
+                showDelegation : true,
+                bellClass : "alter-zindex"
             };
             break;
         }
         case 'HIDE_DELEGATION':{
             state = {
                 ...state,
-                showDelegation : action.payload
+                showDelegation : false,
+                bellClass : ""
             };
             break;
         }

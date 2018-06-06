@@ -23,7 +23,16 @@ export default class UserProfile extends React.Component{
         this.hideDelegationPopup = this.hideDelegationPopup.bind(this);
     }
 
+    isEmpty(obj) {
+        for(var key in obj) {
+            if(obj.hasOwnProperty(key))
+                return false;
+        }
+        return true;
+    }
+
     delegateReview() {
+       if(this.isEmpty(this.props.reviewers)) return;
        this.props.getUpwardHierarchy();
         // var self = this;
         // this.getAllUsers().then(function(reviewers) {

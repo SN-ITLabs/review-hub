@@ -69,7 +69,7 @@ class Line extends React.Component {
                                     <div className="no-padding col-md-1" />
                                     <div className="col-md-1" />
                                     <div className="col-md-10">
-                                        <CommentBox user={this.props.user} line={this.props.lineNumber} commentInstance={this.props.commentInstanceRef}/>
+                                        <CommentBox user={this.props.user} line={this.props.lineNumber} commentInstance={this.props.commentInstanceRef} commenter={this.props.commenter}/>
                                     </div>
                                 </div>
                                 )
@@ -143,6 +143,7 @@ export default class Differ extends React.Component {
                                 // file={_this.props.change}
                                 commentInstanceRef={_this.state.commentFactoryInstance}
                                 user = {_this.props.user}
+                                commenter = {_this.props.personaTab}
                             />
                         );
                     })}

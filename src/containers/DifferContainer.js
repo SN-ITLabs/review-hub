@@ -16,7 +16,8 @@ const Differ = connect(state => ({
     fieldName: state.Review.field_name,
     user : state.Review.userName,
     expandMode: state.Review.expandMode,
-    showLiveStream: state.Review.showLiveStream
+    showLiveStream: state.Review.showLiveStream,
+    personaTab : state.Review.personaTab
 }),mapDispatchToProps)(DifferComp);
 
 export default Differ;
