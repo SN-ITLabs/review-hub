@@ -19,6 +19,7 @@ class MainDiff extends React.Component{
             expandMode: this.props.expandMode
         }
     }
+    
 
     handleReviewSuccess(){
         this.props.changeSetSuccess('',this.props.change, this.props.fieldName);
