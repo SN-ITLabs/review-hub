@@ -3,7 +3,7 @@ import Persona from '../components/Persona';
 import {switchPersona} from '../actions/ReviewActions';
 
 const mapDispatchToProps = dispatch => ({
-    switchPersona : (name) => {
+    changePersona : (name) => {
         dispatch(switchPersona(name));
     }
 })

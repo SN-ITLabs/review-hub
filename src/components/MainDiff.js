@@ -60,17 +60,26 @@ class MainDiff extends React.Component{
             script_or_configuration = (<ConfigurationIcon className="accept-button" />);
         }else {
             script_or_configuration = (<ScriptIcon className="accept-button" />);
+
+        var accept,reject;
+ 
+        if(this.props.personaTab == 'Reviewer'){
+            accept = (<AcceptIcon className="accept-button" onClick={this.handleReviewSuccess.bind(this)}/>);
+            reject = (<RejectIcon className="reject-button" onClick={this.handleReject.bind(this)}/>);
+        }else{
+            accept = null;
+            reject = null;
         }
 
         return(<section>
                 { this.props.differData ?
                 <React.Fragment>
                     <div className={buttonBarClassName}>
-                        {expandCollapseButton}
-                        <AcceptIcon className="accept-button" onClick={this.handleReviewSuccess.bind(this)}/>
-                        <RejectIcon className="reject-button" onClick={this.handleReject.bind(this)}/>
-                        <LikeIcon className="accept-button"/>
+                        {expandCollapseButton}                                                
+                        {accept}
+                        {reject}
                         {script_or_configuration}
+                        <LikeIcon className="accept-button"/>                        
                     </div>
                     <Differ className="differ"/>    
                     {propertiesPane}                                

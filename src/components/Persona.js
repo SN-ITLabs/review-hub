@@ -51,6 +51,7 @@ export default class Persona extends React.Component{
         })
         console.log('tabs = ' + JSON.stringify(updateTabs));
         this.setState({tabs: updateTabs, activeTab: activeTab});
+        this.props.changePersona(activeTab);
     }    
 
     getMainContent() {
