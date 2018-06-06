@@ -30,14 +30,28 @@ export default class extends React.Component{
 
         if('review_completed' == node.status){
           return;
-        } else {            
-            if(node.actionable && node.change_id) {
+        } 
+
+        var changesetId = node.id?node.id:'';
+        var changeId = node.change_id?node.change_id:'';
+        var fieldname = node.name?node.name:'';
+        switch(node.type) {
+            case "field": 
                 this.props.setContentMode("Differ");
                 this.props.toggleDifferComp(node.change_id, node.file_id, node.name);  
                 var reviewer = this.generateFileReviewer(node);
                 this.props.fileReviewers(reviewer);    
-            }
-        }   
+                this.props.toggleCommentary(changesetId, changeId, fieldname);                
+                break;
+            case "file":
+                this.props.setContentMode("Commentary");
+                this.props.toggleCommentary(changesetId, changeId);  
+                break;
+            case "changeset":
+                this.props.setContentMode("Commentary");
+                this.props.toggleCommentary(changesetId);  
+                break;
+        }            
     }
 
     loadData() {
@@ -58,8 +72,8 @@ export default class extends React.Component{
         if(changeSetNames) {
             changeSetNames.forEach(function(changeSetName) {
 
-                var pendingChangesetObj = {'name': changeSetName, 'id': changeSetName};
-                var completedChangesetObj = {'name': changeSetName, 'id': changeSetName};
+                var pendingChangesetObj = {'name': changeSetName, 'id': changeSets[changeSetName].id, 'type': 'changeset', 'toggled': true};
+                var completedChangesetObj = {'name': changeSetName, 'id': changeSets[changeSetName].id, 'type': 'changeset'};
 
                 if(changeSets[changeSetName].files) {
                     var filesByType = [];
@@ -77,29 +91,38 @@ export default class extends React.Component{
                             isNew = true;
                             instancesByType = {};
                             instancesByType['name'] = type;
-                            instancesByType['id'] = type;
+                            instancesByType['id'] = type;                            
                             instancesByType['status'] = status;
+                            instancesByType['toggled'] = true; 
+                            instancesByType['type'] = 'change';                           
                             instancesByType['children'] = [];
                         }
-                        var fileObj = {};
+                        let fileObj = {};
                         
                         fileObj['name'] = fileName;
                         fileObj['id'] = fileName;
                         fileObj['change_id'] = file.change_id;
+                        fileObj['changeset_id'] = changeSets[changeSetName].id;
                         fileObj['file_id'] = file.file_id;
                         fileObj['reviewer'] = file.reviewer;
-                        fileObj['status'] = status;                        
+                        fileObj['status'] = status; 
+                        fileObj['type'] = 'file';     
+                        fileObj['toggled'] = true;
+
                         var fieldsForFile = [];
                         file.fields.forEach(function(field) {
-                            var fieldObj = {};
+                            let fieldObj = {};
                             if(field.field_name) {
                                 fieldObj['name'] = field.field_name;
                                 fieldObj['id'] = field.field_name;
                                 fieldObj['change_id'] = file.change_id;
                                 fieldObj['file_id'] = file.file_id;
+                                fieldObj['changeset_id'] = changeSets[changeSetName].id;
                                 fieldObj['reviewer'] = file.reviewer;
                                 fieldObj['status'] = status;
                                 fieldObj['actionable'] = true;
+                                fieldObj['type'] = 'field';
+                                fileObj['toggled'] = true;                                
                                 fieldsForFile.push(fieldObj);
                             }                            
                         });

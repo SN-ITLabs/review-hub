@@ -1,6 +1,7 @@
 import React from 'react';
 
 import MainDiff from '../containers/MainDiffContainer';
+import Commentary from '../containers/CommentaryContainer';
 import ActivityStream from '../containers/ActivityStreamContainer'
 
 class MainContent extends React.Component{
@@ -27,6 +28,8 @@ class MainContent extends React.Component{
             case 'ActivityStream': 
                 contentContainer = (<ActivityStream/>);
                 break;
+            case 'Commentary':
+                contentContainer = (<Commentary/>);
         }
 
         return (<React.Fragment>{contentContainer}</React.Fragment>)

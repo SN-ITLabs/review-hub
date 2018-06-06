@@ -8,6 +8,7 @@ import ScriptIcon from 'material-ui/svg-icons/action/code'
 import RejectIcon from 'material-ui/svg-icons/content/clear'
 import ExpandIcon from 'material-ui/svg-icons/navigation/unfold-more'
 import CollapseIcon from 'material-ui/svg-icons/navigation/unfold-less'
+import LikeIcon from 'material-ui/svg-icons/action/thumb-up'
 import '../css/ReviewerContent.css'
 
 class MainDiff extends React.Component{
@@ -53,6 +54,14 @@ class MainDiff extends React.Component{
             expandCollapseButton = (<ExpandIcon className="accept-button" onClick={this.toggleMode.bind(this)}/>);
         }
 
+        var script_or_configuration;
+
+        if("configuration" == this.props.fieldName) {
+            script_or_configuration = (<ConfigurationIcon className="accept-button" />);
+        }else {
+            script_or_configuration = (<ScriptIcon className="accept-button" />);
+        }
+
         return(<section>
                 { this.props.differData ?
                 <React.Fragment>
@@ -60,8 +69,8 @@ class MainDiff extends React.Component{
                         {expandCollapseButton}
                         <AcceptIcon className="accept-button" onClick={this.handleReviewSuccess.bind(this)}/>
                         <RejectIcon className="reject-button" onClick={this.handleReject.bind(this)}/>
-                        <ConfigurationIcon className="accept-button" onClick={this.showConfigurationDiff.bind(this)}/>
-                        <ScriptIcon className="accept-button" onClick={this.showCodeDiff.bind(this)}/>
+                        <LikeIcon className="accept-button"/>
+                        {script_or_configuration}
                     </div>
                     <Differ className="differ"/>    
                     {propertiesPane}                                

@@ -6,6 +6,36 @@ import { getChangeSetsForReviewSuccess,setLoadingIcon} from "./SearchActions";
 
 // implement your actions here...
 
+export function toggleCommentary(changesetId, fileId, fieldname) {
+    return dispatch => {
+        var params = {};
+        if(changesetId) {
+            params.sysparm_changeset_id = changesetId;
+        }
+        if(fileId){
+            params.sysparm_file_id = fileId;
+        }
+        if(fieldname) {
+            params.sysparm_fieldname = fieldname;
+        }
+
+        return SNAjax({
+            processor: "ChangeSetAjax",
+            action: "getCommentary",
+            scope: "x_snc_review_hub",
+            params: params                
+        })
+            .getJSON()
+            .then(function(response) {
+                console.log("In Success for getCommentary");
+                dispatch(handleCommentaryInfo(response))
+            })
+            .catch(function(error) {
+                console.log("In Error");
+            });
+        };
+}
+
 export function switchPersona(value) {
     return {
         type: 'SWITCH_PERSONA', 
@@ -23,6 +53,13 @@ export function toggleLiveStream(value) {
     return {
         type: 'TOGGLE_LIVE_STREAM',
         payload: value
+    }
+}
+
+function handleCommentaryInfo(response){
+    return {
+        type : 'TOGGLE_COMMENTARY',
+        payload: response
     }
 }
 

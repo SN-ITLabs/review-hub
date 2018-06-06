@@ -8,6 +8,7 @@ import RightBar from './RightBar';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import CommentaryContainer from "../containers/CommentaryContainer";
 
 const muiTheme = getMuiTheme({
     palette: {
@@ -20,12 +21,13 @@ export default class extends React.Component {
     constructor(props, context) {
         super(props);
         this.state = {
-            expandMode: this.props.expandMode
+            expandMode: this.props.expandMode,
+            contentMode: 'Differ'
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({expandMode: nextProps.expandMode});
+        this.setState({expandMode: nextProps.expandMode, contentMode: nextProps.contentMode});
     }
 
     render() {
@@ -34,14 +36,26 @@ export default class extends React.Component {
             overlayPane = (<div class="overlay"></div>);
             mainClassName = "main-expandmode";
         }
-    
+
+        var mainContent;
+
+        switch(this.state.contentMode) {
+            case "Commentary": 
+                mainContent = (<CommentaryContainer/>);
+                break;
+            default: 
+                mainContent = (<MainDiff/>);
+                break;
+                            
+        }
+
         return (<MuiThemeProvider muiTheme={muiTheme}>
                     {overlayPane}
                     <aside className="leftbar">
                         <LeftBar personne="Reviewer"/>
                     </aside>
                     <div className={mainClassName}>
-                        <MainDiff/>
+                        {mainContent}
                     </div>                    
                     <aside className="rightbar">
                         <RightBar />

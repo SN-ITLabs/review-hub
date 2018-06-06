@@ -20,7 +20,8 @@ const MainDiffCont = connect(state => ({
     expandMode: state.Review.expandMode,
     differData: state.Review.differData,
     change : state.Review.change_id,
-    fieldName: state.Review.field_name    
+    fieldName: state.Review.field_name,    
+    contentMode: state.contentMode    
     // contentMode: state.Activity.contentMode
 }),mapDispatchToProps)(MainDiff);
 

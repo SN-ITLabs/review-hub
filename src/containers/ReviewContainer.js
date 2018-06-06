@@ -10,7 +10,8 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const ReviewCont = connect(state => ({
-    expandMode: state.Review.expandMode
+    expandMode: state.Review.expandMode,
+    contentMode: state.Review.contentMode
 }),mapDispatchToProps)(ReviewContent);
 
 export default ReviewCont;
