@@ -138,7 +138,8 @@ class App extends React.Component {
                                 </div>):""}
                                 <div className={commentOn}>
                                    <a href="#" onClick={()=>self.openFile(comment)}>{comment.changeName}</a>
-                                </div>                            
+                                   <span> at line number {comment.line} </span>
+                                </div>
                                 <div className="endComment"/>
                                 <div className="dateTime">{comment.commentedOn}</div>                                    
                             </div>
