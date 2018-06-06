@@ -60,7 +60,7 @@ class MainDiff extends React.Component{
             script_or_configuration = (<ConfigurationIcon className="accept-button" />);
         }else {
             script_or_configuration = (<ScriptIcon className="accept-button" />);
-
+        }
         var accept,reject;
  
         if(this.props.personaTab == 'Reviewer'){
