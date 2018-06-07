@@ -6,6 +6,65 @@ import { getChangeSetsForReviewSuccess,setLoadingIcon} from "./SearchActions";
 
 // implement your actions here...
 
+
+
+
+function loadCommentary(response) {
+    return {
+        type: 'LOAD_COMMENTARY',
+        payload:response
+    }
+}
+
+export function saveCommentary(params) {
+    return dispatch => {
+        dispatch(setLoadingIcon(true))
+        return SNAjax({
+            processor: "ChangeSetAjax",
+            action: "saveComment",
+            scope: "x_snc_review_hub",
+            params: params
+        })
+            .getJSON()
+            .then(function(response) {
+                dispatch(loadCommentary(response));
+            })
+            .then(function(response) {
+                console.log("In Success for saveCommentary");                
+                dispatch(setLoadingIcon(false))
+            })
+            .catch(function(error) {
+                console.log("In Error");
+                dispatch(setLoadingIcon(false))
+            });
+        };
+}
+
+export function deleteCommentary(params) {
+    return dispatch => {
+        dispatch(setLoadingIcon(true))
+        return SNAjax({
+            processor: "ChangeSetAjax",
+            action: "deleteComment",
+            scope: "x_snc_review_hub",
+            params: params
+        })
+            .getJSON()
+            .then(function(response) {
+                dispatch(loadCommentary(response));
+            })
+            .then(function(response) {
+                console.log("In Success for deleteCommentary");                
+                dispatch(setLoadingIcon(false))
+            })
+            .catch(function(error) {
+                console.log("In Error");
+                dispatch(setLoadingIcon(false))
+            });
+        };
+}
+
+
 export function toggleCommentary(changesetId, fileId, fieldname) {
     return dispatch => {
         var params = {};

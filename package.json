@@ -9,7 +9,7 @@
         "material-ui": "^0.20.0",
         "material-ui-superselectfield": "^1.9.2",
         "npm": "^6.0.1",
-        "react": "^16.2.0",
+        "react": "^16.4.0",
         "react-dom": "^16.2.0",
         "react-draggable": "^3.0.5",
         "react-redux": "^5.0.6",
@@ -20,6 +20,7 @@
         "react-treebeard": "^2.1.0",
         "react-virtualized": "^9.19.1",
         "redux": "^3.7.2",
+        "redux-devtools-extension": "^2.13.2",
         "redux-logger": "^3.0.6",
         "redux-promise-middleware": "^5.0.0",
         "redux-thunk": "^2.2.0"

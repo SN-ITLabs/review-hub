@@ -20,7 +20,7 @@ export default function Review(state={
   expandMode: "default",
   showLiveStream: false,
   personaTab: "Home",
-  commentary: [],
+  commentary: {'header':{},'data':[]},
   contentMode: 'Differ'
 },action){
    
@@ -29,7 +29,10 @@ export default function Review(state={
     // use action.payload to get the payload information
     
     switch(action.type){
-        
+        case 'LOAD_COMMENTARY':{
+            state = {...state,commentary:action.payload}
+            break;
+        }
         case 'TOGGLE_COMMENTARY': {
             state = {...state,commentary:action.payload}
             break;
