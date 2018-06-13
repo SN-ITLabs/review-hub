@@ -33,7 +33,10 @@ export default class extends React.Component {
         params.sysparam_commentedbyrole='0';
         if(this.props.personaTab=='Reviewer');
             params.sysparam_commentedbyrole='1';
-        this.props.saveCommentary(params);               
+        this.props.saveCommentary(params); 
+        this.setState({
+            'inputComment': ""
+        });
     }
     
     deleteComment(params){
@@ -73,7 +76,7 @@ export default class extends React.Component {
         return ( <div>
         			<div class = "col-sm-12">
             			<h3> {heading} </h3> 
-            			<input id = 'txt_comment' style = {inputStyle} type = "text" placeholder = "Post your comment here..." onChange = {this.captureInput}/> 
+            			<input id = 'txt_comment' value={this.state.inputComment} style = {inputStyle} type = "text" placeholder = "Post your comment here..." onChange = {this.captureInput}/> 
             			<button onClick={()=>{this.saveComment()}} style = {buttonStyle} type = "button" class = "btn btn-info btn-sm" > Add Comment </button> 
             		</div> 
             		{commentPanels} 
