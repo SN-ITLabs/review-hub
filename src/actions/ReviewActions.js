@@ -64,6 +64,29 @@ export function deleteCommentary(params) {
         };
 }
 
+export function editCommentary(params) {
+    return dispatch => {
+        dispatch(setLoadingIcon(true))
+        return SNAjax({
+            processor: "ChangeSetAjax",
+            action: "editComment",
+            scope: "x_snc_review_hub",
+            params: params
+        })
+            .getJSON()
+            .then(function(response) {
+                dispatch(loadCommentary(response));
+            })
+            .then(function(response) {
+                console.log("In Success for deleteCommentary");                
+                dispatch(setLoadingIcon(false))
+            })
+            .catch(function(error) {
+                console.log("In Error");
+                dispatch(setLoadingIcon(false))
+            });
+        };
+}
 
 export function toggleCommentary(changesetId, fileId, fieldname) {
     return dispatch => {

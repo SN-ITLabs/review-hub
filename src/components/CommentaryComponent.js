@@ -5,14 +5,15 @@ export default class extends React.Component {
     constructor(props, context) {
         super(props);
         this.state = {
-            inputComment: ""
+            inputComment: "",
         }
         this.captureInput = this.captureInput.bind(this);
     }
+
     captureInput(e) {
         var val = e.target.value;
         this.setState({
-            'inputComment': val
+            'inputComment': encodeURI(val)
         });
     }
     
@@ -28,7 +29,14 @@ export default class extends React.Component {
         else {
             params.sysparam_changesetid=header.changesetid;
         }
+        var comment=this.state.inputComment;
+     
+        if(comment.trim() === ""){
+            return;
+        }
+
         params.sysparam_description = this.state.inputComment;
+        
         params.sysparam_commentedby=this.props.userName;
         params.sysparam_commentedbyrole='0';
         if(this.props.personaTab=='Reviewer');
@@ -37,6 +45,10 @@ export default class extends React.Component {
         this.setState({
             'inputComment': ""
         });
+    }
+    
+    editComment(params){
+          this.props.editCommentary(params);
     }
     
     deleteComment(params){
@@ -62,23 +74,23 @@ export default class extends React.Component {
                 var postedOn = commentary.postedon;
                 var description = commentary.description;
                 var id=commentary.sysid;
-                var cp = <CommentPanel id = {id} user = {postedBy} time = {postedOn} content = {description} onDelete={(params)=>{this.deleteComment(params)}}/>
+                var cp = <CommentPanel id = {id} user = {postedBy} time = {postedOn} content = {description} onEdit={(params)=>{this.editComment(params)}} onDelete={(params)=>{this.deleteComment(params)}}/>
                 commentPanels.push(cp);
             }
         }
-
-        var buttonStyle = {
-            marginLeft: 20
-        }
-        var inputStyle = {
-            width: 500
+        
+        var textAreaStyle={
+            width: '100%',
+            maxWidth: '100%',
+            minWidth:'100%'
         }
         return ( <div>
         			<div class = "col-sm-12">
             			<h3> {heading} </h3> 
-            			<input id = 'txt_comment' value={this.state.inputComment} style = {inputStyle} type = "text" placeholder = "Post your comment here..." onChange = {this.captureInput}/> 
-            			<button onClick={()=>{this.saveComment()}} style = {buttonStyle} type = "button" class = "btn btn-info btn-sm" > Add Comment </button> 
-            		</div> 
+            			<textarea style={textAreaStyle} value={decodeURI(this.state.inputComment)} type = "text" placeholder = "Post your comment here..." onChange = {this.captureInput}/> 
+            			<button onClick={()=>{this.saveComment()}} type = "button" class = "btn btn-info btn-sm" > Add Comment </button> 
+            	        <hr/>
+                	</div> 
             		{commentPanels} 
             	</div>
         )
