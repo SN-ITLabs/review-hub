@@ -7,7 +7,7 @@ export default class extends React.Component {
         return (<React.Fragment>
                     <div className="SingleScore Score1">
                         <div className="ScoreImg">
-                            <img src="images/participation.png"/>
+                            <img src="/Participation.png"/>
                         </div>
                         <div className="ScoreValue">25</div>
                         <div className="ScoreValueMetric">Percentile</div>
@@ -15,7 +15,7 @@ export default class extends React.Component {
                     </div>
                     <div className="SingleScore Score2">
                         <div className="ScoreImg">
-                            <img src="images/criticalreview.png"/>
+                            <img src="/CriticalReview.png"/>
                         </div>
                         <div className="ScoreValue">75</div>
                         <div className="ScoreValueMetric">Percentile</div>
@@ -23,7 +23,7 @@ export default class extends React.Component {
                     </div>
                     <div className="SingleScore Score3">
                         <div className="ScoreImg">
-                            <img src="images/hulkscore.png"/>
+                            <img src="/HulkScore.png"/>
                         </div>
                         <div className="ScoreValue">25</div>
                         <div className="ScoreValueMetric">Percentile</div>
@@ -31,7 +31,7 @@ export default class extends React.Component {
                     </div>
                     <div className="SingleScore Score4">
                         <div className="ScoreImg">
-                            <img src="images/sla.jpeg"/>
+                            <img src="/sla.jpg"/>
                         </div>
                         <div className="ScoreValue">25</div>
                         <div className="ScoreValueMetric">Percentile</div>
