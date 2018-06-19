@@ -1,6 +1,7 @@
 import React from 'react'
 import {Treebeard} from 'react-treebeard';
 import UpdateSet from '../containers/UpdateSetContainer';
+import { changesetReviewReject } from '../actions/ReviewActions';
 
 export default class extends React.Component{
     constructor(props, context) {
@@ -21,17 +22,35 @@ export default class extends React.Component{
         fileReviewer.reviewer = node.reviewer;
         return fileReviewer;
     }
+
+    collaspseChangeSets(){
+        var navigationTree=this.state.navigationTree;
+        var pendingChangeSets=navigationTree[0].children;
+        var historyChangeSets= navigationTree[1].children[0].children;
+        for(let i=0;i<pendingChangeSets.length;i++){
+            pendingChangeSets[i].toggled=false;
+        }
+        for(let i=0;i<historyChangeSets.length;i++){
+            historyChangeSets[i].toggled=false;
+        }
+        this.setState({ navigationTree  :navigationTree });
+    }
         
     onToggle(node, toggled){
+        if(node && node.type=="changeset"){
+            this.collaspseChangeSets();
+        }
+
         if(this.state.cursor){this.state.cursor.active = false;}
+        
         node.active = true;
+        
         if(node.children){ node.toggled = toggled; }
         this.setState({ cursor: node });
-
         if('review_completed' == node.status){
           return;
         } 
-
+    
         var changesetId = node.id?node.id:'';
         var changeId = node.change_id?node.change_id:'';
         var fieldname = node.name?node.name:'';
@@ -51,7 +70,7 @@ export default class extends React.Component{
                 this.props.setContentMode("Commentary");
                 this.props.toggleCommentary(changesetId);  
                 break;
-        }            
+        }          
     }
 
     loadData() {
@@ -62,7 +81,6 @@ export default class extends React.Component{
         if(navigationTree && navigationTree.length > 0) {
             return navigationTree;
         }
-
         var changeSets = this.state.changeSets;
         if(!changeSets) {
             return [];
@@ -72,8 +90,8 @@ export default class extends React.Component{
         if(changeSetNames) {
             changeSetNames.forEach(function(changeSetName) {
 
-                var pendingChangesetObj = {'name': changeSetName, 'id': changeSets[changeSetName].id, 'type': 'changeset', 'toggled': true};
-                var completedChangesetObj = {'name': changeSetName, 'id': changeSets[changeSetName].id, 'type': 'changeset'};
+                var pendingChangesetObj = {'name': changeSetName, 'id': changeSets[changeSetName].id, 'type': 'changeset', 'toggled': false};
+                var completedChangesetObj = {'name': changeSetName, 'id': changeSets[changeSetName].id, 'type': 'changeset', 'toggled': false};
 
                 if(changeSets[changeSetName].files) {
                     var filesByType = [];
@@ -93,7 +111,7 @@ export default class extends React.Component{
                             instancesByType['name'] = type;
                             instancesByType['id'] = type;                            
                             instancesByType['status'] = status;
-                            instancesByType['toggled'] = true; 
+                            instancesByType['toggled'] = false; 
                             instancesByType['type'] = 'change';                           
                             instancesByType['children'] = [];
                         }
@@ -107,7 +125,7 @@ export default class extends React.Component{
                         fileObj['reviewer'] = file.reviewer;
                         fileObj['status'] = status; 
                         fileObj['type'] = 'file';     
-                        fileObj['toggled'] = true;
+                        fileObj['toggled'] = false;
 
                         var fieldsForFile = [];
                         file.fields.forEach(function(field) {
@@ -122,7 +140,7 @@ export default class extends React.Component{
                                 fieldObj['status'] = status;
                                 fieldObj['actionable'] = true;
                                 fieldObj['type'] = 'field';
-                                fileObj['toggled'] = true;                                
+                                fileObj['toggled'] = false;                                
                                 fieldsForFile.push(fieldObj);
                             }                            
                         });
