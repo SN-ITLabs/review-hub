@@ -186,10 +186,10 @@ export default class extends React.Component{
                         }                        
                     });
 
-                    var pendingFiles = filesByType.filter(obj=>obj.status == 'review_in_progress');
+                    var pendingFiles = filesByType.filter(obj=>obj.status == 'review_in_progress' && obj.children && obj.children.length > 0);
                     var compltedFiles = filesByType.filter(obj=>obj.status == 'review_completed');
 
-                    if(pendingFiles && pendingFiles.children && pendingFiles.children.length > 0) {
+                    if(pendingFiles && pendingFiles.length > 0) {
                         pendingChangesetObj['children'] = pendingFiles;
                     }
                     if(compltedFiles && compltedFiles.length > 0) {
