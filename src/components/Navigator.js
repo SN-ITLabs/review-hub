@@ -163,17 +163,19 @@ export default class extends React.Component{
                         file.fields.forEach(function(field) {
                             let fieldObj = {};
                             if(field.field_name) {
-                                fieldObj['name'] = field.field_name;
-                                fieldObj['id'] = field.field_name;
-                                fieldObj['change_id'] = file.change_id;
-                                fieldObj['file_id'] = file.file_id;
-                                fieldObj['changeset_id'] = changeSets[changeSetName].id;
-                                fieldObj['reviewer'] = file.reviewer;
-                                fieldObj['status'] = status;
-                                fieldObj['actionable'] = true;
-                                fieldObj['type'] = 'field';
-                                fileObj['toggled'] = false;                                
-                                fieldsForFile.push(fieldObj);
+                                if('review_in_progress' != file.status || ('review_in_progress' == file.status && 'Pending' == field.status)){
+                                    fieldObj['name'] = field.field_name;
+                                    fieldObj['id'] = field.field_name;
+                                    fieldObj['change_id'] = file.change_id;
+                                    fieldObj['file_id'] = file.file_id;
+                                    fieldObj['changeset_id'] = changeSets[changeSetName].id;
+                                    fieldObj['reviewer'] = file.reviewer;
+                                    fieldObj['status'] = status;
+                                    fieldObj['actionable'] = true;
+                                    fieldObj['type'] = 'field';
+                                    fileObj['toggled'] = false;                                
+                                    fieldsForFile.push(fieldObj);
+                                }                                
                             }                            
                         });
                         if((fieldsForFile && fieldsForFile.length > 0) || 'review_completed' == status  ) {
