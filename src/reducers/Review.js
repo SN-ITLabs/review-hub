@@ -21,7 +21,9 @@ export default function Review(state={
   showLiveStream: false,
   personaTab: "Home",
   commentary: {'header':{},'data':[]},
-  contentMode: 'Differ'
+  contentMode: 'Differ',
+  reivewerNavigationTree: null,
+  developerNavigationTree: null
 },action){
    
     // update the state and return the state based on the action type
@@ -29,6 +31,14 @@ export default function Review(state={
     // use action.payload to get the payload information
     
     switch(action.type){
+        case 'SET_DEVELOPER_NAVIGATION': {
+            state = {...state, developerNavigationTree:action.payload}
+            break;
+        }        
+        case 'SET_REVIEWER_NAVIGATION': {
+            state = {...state, reivewerNavigationTree:action.payload}
+            break;
+        }        
         case 'LOAD_COMMENTARY':{
             state = {...state,commentary:action.payload}
             break;

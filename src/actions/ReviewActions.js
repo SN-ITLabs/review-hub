@@ -7,7 +7,19 @@ import { getChangeSetsForReviewSuccess,setLoadingIcon} from "./SearchActions";
 // implement your actions here...
 
 
+export function saveReviewerNavigationTree(navigationTree) {
+    return {
+        type: 'SET_REVIEWER_NAVIGATION',
+        payload: navigationTree
+    }
+}
 
+export function saveDeveloperNavigationTree(navigationTree) {
+    return {
+        type: 'SET_DEVELOPER_NAVIGATION',
+        payload: navigationTree
+    }
+}
 
 function loadCommentary(response) {
     return {

@@ -1,15 +1,39 @@
 import React from 'react'
 import {Treebeard} from 'react-treebeard';
 import UpdateSet from '../containers/UpdateSetContainer';
-import { changesetReviewReject } from '../actions/ReviewActions';
+import { changesetReviewReject, saveReviewerNavigationTree } from '../actions/ReviewActions';
 
 export default class extends React.Component{
     constructor(props, context) {
       super(props, context);
       this.state = {
-        navigationTree: []
+        navigationTree: [],
+        prevReviewerNavType: null,
+        prevReviewerChangeSet: null,
+        prevReviewerChange: null,
+        prevDeveloperNavType: null,
+        prevDeveloperChangeSet: null,
+        prevDeveloperChange: null
       };
       this.onToggle = this.onToggle.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if('Reviewer' == this.props.personne) {
+            this.setState({
+                prevReviewerNavType: nextProps.prevReviewerNavType,
+                prevReviewerChangeSet: nextProps.prevReviewerChangeSet,
+                prevReviewerChange: nextProps.prevReviewerChange,
+                changeSets: nextProps.changeSets, 
+                navigationTree: []});
+        }else{
+            this.setState({
+                prevDeveloperNavType: nextProps.prevDeveloperNavType,
+                prevDeveloperChangeSet: nextProps.prevDeveloperChangeSet,
+                prevDeveloperChange: nextProps.prevDeveloperChange,
+                changeSets: nextProps.changeSets, 
+                navigationTree: []});
+        }        
     }
     
     componentDidMount(){
@@ -37,6 +61,7 @@ export default class extends React.Component{
     }
         
     onToggle(node, toggled){
+
         if(node && node.type=="changeset"){
             this.collaspseChangeSets();
         }
@@ -47,6 +72,13 @@ export default class extends React.Component{
         
         if(node.children){ node.toggled = toggled; }
         this.setState({ cursor: node });
+
+        /*if('Reviewer' == this.props.personne) {                        
+            this.props.saveReviewerNavigationTree(this.state.navigationTree);
+        }else{
+            this.props.saveDeveloperNavigationTree(this.state.navigationTree);
+        }*/
+
         if('review_completed' == node.status){
           return;
         } 
@@ -77,7 +109,7 @@ export default class extends React.Component{
         var pendingReviews = [];        
         var completedChanges = [];
 
-        var navigationTree = this.state.navigationTree;
+        var navigationTree = this.state.navigationTree;      
         if(navigationTree && navigationTree.length > 0) {
             return navigationTree;
         }
@@ -102,7 +134,7 @@ export default class extends React.Component{
                         var isNew = false;
                         var status = file.status;
 
-                        var instancesByType = filesByType.filter(obj=>obj.name == type);
+                        var instancesByType = filesByType.filter(obj=> obj.name == type && status == obj.status);
                         if(instancesByType && instancesByType.length > 0) {
                             instancesByType = instancesByType[0];
                         }else{
@@ -144,7 +176,7 @@ export default class extends React.Component{
                                 fieldsForFile.push(fieldObj);
                             }                            
                         });
-                        if(fieldsForFile && fieldsForFile.length > 0) {
+                        if((fieldsForFile && fieldsForFile.length > 0) || 'review_completed' == status  ) {
                             fileObj['children'] = fieldsForFile;
                             instancesByType['children'].push(fileObj);
                         }
@@ -157,13 +189,17 @@ export default class extends React.Component{
                     var pendingFiles = filesByType.filter(obj=>obj.status == 'review_in_progress');
                     var compltedFiles = filesByType.filter(obj=>obj.status == 'review_completed');
 
-                    pendingChangesetObj['children'] = pendingFiles;
-                    completedChangesetObj['children'] = compltedFiles;
+                    if(pendingFiles && pendingFiles.children && pendingFiles.children.length > 0) {
+                        pendingChangesetObj['children'] = pendingFiles;
+                    }
+                    if(compltedFiles && compltedFiles.length > 0) {
+                        completedChangesetObj['children'] = compltedFiles;
+                    }
                 }
-                if(pendingChangesetObj.children.length > 0){
+                if(pendingChangesetObj && pendingChangesetObj.children && pendingChangesetObj.children.length > 0){
                     pendingReviews.push(pendingChangesetObj);
                 }
-                if(completedChangesetObj.children.length > 0){
+                if(completedChangesetObj && completedChangesetObj.children && completedChangesetObj.children.length > 0){
                     completedChanges.push(completedChangesetObj);
                 }
 
@@ -186,21 +222,18 @@ export default class extends React.Component{
             {
                 name: 'History',
                 id: 'History',
-                toggled: true,
+                toggled: false,
                 children: [
                     {
                         name: 'Completed ChangeSets',
                         id: 'Completed ChangeSets',
+                        toggled: true,
                         children: completedChanges
                     }
                 ]
             }
         ];
         this.setState({'navigationTree': navigationTree});
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({ changeSets: nextProps.changeSets, navigationTree: [] });  
     }
 
     render(){     
