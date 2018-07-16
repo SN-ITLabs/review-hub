@@ -73,6 +73,9 @@
     margin-left: 3px; */
     float: right;
     margin: 15px 20px 0px 0px;
+    position: absolute;
+    right: 0px;
+    z-index: 2;
 }
 
 .NotificationBellHide {

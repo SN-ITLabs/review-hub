@@ -11,8 +11,8 @@ const mapDispatchToProps = dispatch => ({
     toggleLiveStream : (value) => {
         dispatch(toggleLiveStream(value));
      },
-    toggleDifferComp : (change_id,fileId) => {
-        dispatch(toggleDifferComp(change_id,fileId));
+    toggleDifferComp : (change_id,fileId,fieldName) => {
+        dispatch(toggleDifferComp(change_id,fileId,fieldName));
     },
     // fileReviewers : (fileReviewer) => {
     //     dispatch(getFileReviewers(fileReviewer));

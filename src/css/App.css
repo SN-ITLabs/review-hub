@@ -28,13 +28,14 @@
 
 .addSroll {
   overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .app-livestream {
   width: 20%;
   height: 100%;
   position: fixed;
-  z-index: -1;
+  /* z-index: -1; */
   top: 0;
   left: 80%;
   right: 0;

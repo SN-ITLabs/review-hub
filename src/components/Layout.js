@@ -67,7 +67,7 @@ class App extends React.Component {
         console.log(commentObj);
         this.props.setContentMode("Differ");
         if(commentObj.changeId) {
-            this.props.toggleDifferComp(commentObj.changeId, commentObj.fileId);  
+            this.props.toggleDifferComp(commentObj.changeId, commentObj.fileId,commentObj.fieldName);  
             // var reviewer = this.generateFileReviewer(commentObj);
             //this.props.fileReviewers(reviewer);
             this.props.getReviewDet(commentObj.changeId);
