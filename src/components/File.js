@@ -21,8 +21,6 @@ class File extends React.Component{
         this.props.dispatch(this.props.file.change_id,this.props.file.fileid);
     }
 
-    //checkRating()
-
     handleReviewSuccess(e){
         e.stopPropagation();
         //console.log(e.target);

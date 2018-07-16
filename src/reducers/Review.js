@@ -31,10 +31,6 @@ export default function Review(state={
     // use action.payload to get the payload information
     
     switch(action.type){
-        case 'SET_CURRENT_REVIEWED_CHANGE':{
-            state={...state, currentReviewField:action.payload}
-        }
-       
         case 'SET_DEVELOPER_NAVIGATION': {
             state = {...state, developerNavigationTree:action.payload}
             break;

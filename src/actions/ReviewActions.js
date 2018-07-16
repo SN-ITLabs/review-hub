@@ -305,20 +305,6 @@ function handleToogleDiffSuccess(data,change,file,fieldName){
     }
 }
 
-
-function setCurrentReviewedChange(changeset,change){
-    return{
-        type:'SET_CURRENT_REVIEWED_CHANGE',
-        payload:{
-            fieldReviewed:true,
-            changeset:changeset,
-            change:change
-        }
-        
-    }
-    
-}
-
 export function toggleDifferComp(change_id,fileId,fieldName){
     var fieldName = (!fieldName)?'configuration':fieldName;
     return dispatch => {
@@ -388,7 +374,7 @@ export function handlechangesetReviewSuccess() {
 export function changesetReviewSuccess(changeset,change,fieldName) {
 
     return dispatch => {
-        dispatch(setCurrentReviewedChange(changeset,change))
+       
         dispatch(setLoadingIcon(true))
         return SNAjax({
             processor: "ChangeSetAjax",

@@ -111,19 +111,17 @@ export default class extends React.Component{
         var cancelledReviews=[];
 
         var navigationTree = this.state.navigationTree;
-        console.log("navigationTree");
-        console.log(navigationTree);      
+              
         if(navigationTree && navigationTree.length > 0) {
             return navigationTree;
         }
         var changeSets = this.state.changeSets;
-        console.log("changeSets: ");
-        console.log(changeSets);
+        
         if(!changeSets) {
             return [];
         }
         var changeSetNames = Object.keys(changeSets);
-        console.log(changeSetNames);
+        
         if(changeSetNames) {
             changeSetNames.forEach(function(changeSetName) {
 
