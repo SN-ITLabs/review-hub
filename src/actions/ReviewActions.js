@@ -28,6 +28,51 @@ function loadCommentary(response) {
     }
 }
 
+export function saveRating(params) {
+    return dispatch => {
+        return  SNAjax({
+            processor: "ChangeSetAjax",
+            action: "updateRating",
+            scope: "x_snc_review_hub",
+            params:params
+        }).getJSON()
+        .then(function(response) {
+            console.log("In Success for changeRating");
+        })
+        .catch(function(error) {                
+            console.log("In Error for changeRating");
+        });
+    };
+}
+
+export function checkRatingBeforeChangeStateUpdate(changesetname,change_id, field_name,isAccepted) {
+    return dispatch => {
+        return  SNAjax({
+            processor: "ChangeSetAjax",
+            action: "checkRatingBeforeChangeStateUpdate",
+            scope: "x_snc_review_hub",
+            params:{
+                sysparam_changeId:change_id
+            }
+        }).getJSON()
+        .then(function(response) {
+            if(response.canUpdate){
+                if(isAccepted)
+                    dispatch(changesetReviewSuccess(changesetname,change_id, field_name));
+                else
+                    dispatch(changesetReviewReject(changesetname,change_id, field_name));
+            }
+            else{
+                alert("Please provide rating before accepting/rejecting Change!");
+            }
+            console.log("In Success for changeRating");
+        })
+        .catch(function(error) {                
+            console.log("In Error for changeRating");
+        });
+    };
+}
+
 export function saveCommentary(params) {
     return dispatch => {
         dispatch(setLoadingIcon(true))
@@ -160,7 +205,7 @@ function handleCommentaryInfo(response){
 function handleUserInfo(response){
     return {
         type : 'USER_INFO',
-        payload: response.name
+        payload: response
     }
 }
 
@@ -260,6 +305,20 @@ function handleToogleDiffSuccess(data,change,file,fieldName){
     }
 }
 
+
+function setCurrentReviewedChange(changeset,change){
+    return{
+        type:'SET_CURRENT_REVIEWED_CHANGE',
+        payload:{
+            fieldReviewed:true,
+            changeset:changeset,
+            change:change
+        }
+        
+    }
+    
+}
+
 export function toggleDifferComp(change_id,fileId,fieldName){
     var fieldName = (!fieldName)?'configuration':fieldName;
     return dispatch => {
@@ -287,6 +346,8 @@ export function toggleDifferComp(change_id,fileId,fieldName){
             });
     };
 }
+
+
 
 export function getFileReviewers(fileReviewer){
   return {
@@ -325,7 +386,9 @@ export function handlechangesetReviewSuccess() {
 
 
 export function changesetReviewSuccess(changeset,change,fieldName) {
+
     return dispatch => {
+        dispatch(setCurrentReviewedChange(changeset,change))
         dispatch(setLoadingIcon(true))
         return SNAjax({
             processor: "ChangeSetAjax",

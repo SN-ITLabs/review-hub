@@ -16,7 +16,7 @@ export default function Review(state={
   reviewers : {},
   change_id : null,
   file_id : null,
-  userName : "Haribabu",
+  userName : "",
   expandMode: "default",
   showLiveStream: false,
   personaTab: "Home",
@@ -31,6 +31,10 @@ export default function Review(state={
     // use action.payload to get the payload information
     
     switch(action.type){
+        case 'SET_CURRENT_REVIEWED_CHANGE':{
+            state={...state, currentReviewField:action.payload}
+        }
+       
         case 'SET_DEVELOPER_NAVIGATION': {
             state = {...state, developerNavigationTree:action.payload}
             break;
@@ -130,7 +134,7 @@ export default function Review(state={
             break;
         }
         case 'USER_INFO':{
-            state = {...state,userName:action.payload};
+            state = {...state,userName:action.payload.name,userId:action.payload.id};
             break;
         }
         

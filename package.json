@@ -12,6 +12,7 @@
         "react": "^16.4.0",
         "react-dom": "^16.2.0",
         "react-draggable": "^3.0.5",
+        "react-rating": "^1.1.2",
         "react-redux": "^5.0.6",
         "react-responsive-modal": "^3.0.3",
         "react-router": "^4.2.0",

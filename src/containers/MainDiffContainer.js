@@ -1,19 +1,23 @@
 import {connect} from 'react-redux';
 import MainDiff from '../components/MainDiff';
-import {changesetReviewSuccess,changesetReviewReject,toggleMode} from "../actions/ReviewActions";
+import {checkRatingBeforeChangeStateUpdate/*,changesetReviewSuccess,changesetReviewReject*/,toggleMode} from "../actions/ReviewActions";
 
 const mapDispatchToProps = dispatch => ({
-    changeSetSuccess : (changesetname,change_id, field_name) => {
+   /* changeSetSuccess : (changesetname,change_id, field_name) => {
         dispatch(changesetReviewSuccess(changesetname,change_id, field_name));
      },
  
      changeSetReject : (changesetname,change_id, field_name) => {
         dispatch(changesetReviewReject(changesetname,change_id, field_name));
-     },
+     },*/
 
      toggleMode : () => {
         dispatch(toggleMode());
-     }
+     },
+    
+    checkRatingBeforeChangeStateUpdate: (changesetname,change_id, field_name,isAccepted) =>{
+          dispatch(checkRatingBeforeChangeStateUpdate(changesetname,change_id, field_name,isAccepted));     
+    }
 })
 
 const MainDiffCont = connect(state => ({

@@ -15,6 +15,7 @@ const nestedStyle = {
 class UpdateSet extends React.Component{
    
     handleChangesetReviewSuccess(e){
+
         e.stopPropagation();
         this.props.changesetReviewSuccess(this.props.changeSetName,'');
     }
