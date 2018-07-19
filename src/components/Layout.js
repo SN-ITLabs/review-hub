@@ -31,6 +31,23 @@ class App extends React.Component {
 
         this.toggleLiveStream = this.toggleLiveStream.bind(this);
         this.reviewText = " has added comment ";
+
+        this.setChangeReviewMode();
+    }
+
+    setChangeReviewMode(){
+        const params = new URLSearchParams(this.props.location.search)
+        const changeId = params.get('changeId')
+        const fieldName = params.get('fieldName')
+        
+        if(changeId && fieldName){
+            this.props.setContentMode("Differ")
+            this.props.toggleDifferComp(changeId,'',fieldName)
+            this.props.getReviewDet(changeId)
+            this.props.switchPersona('Reviewer')
+           
+            window.history.pushState(null, null, '/');
+        }
     }
 
     componentDidMount(){

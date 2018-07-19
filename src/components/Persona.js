@@ -12,16 +12,16 @@ export default class Persona extends React.Component{
             'tabs': [
                 {
                     'name': 'Home',
-                    'className': 'Persona-li-active'
+                    'className': this.props.personaTab == 'Home' ? 'Persona-li-active' : 'Persona-li'
                 },
                 {
                     'name': 'Reviewer',
-                    'className': 'Persona-li',
+                    'className': this.props.personaTab == 'Reviewer' ? 'Persona-li-active' : 'Persona-li',
                     'persona': true
                 },
                 {
                     'name': 'Developer',
-                    'className': 'Persona-li',
+                    'className': this.props.personaTab == 'Developer' ? 'Persona-li-active' : 'Persona-li',
                     'persona': true
                 }
             ],
