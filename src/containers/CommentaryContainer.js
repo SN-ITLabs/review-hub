@@ -1,10 +1,11 @@
 import {connect} from 'react-redux'
 import CommentaryComponent from '../components/CommentaryComponent'
-import {saveCommentary,editCommentary,deleteCommentary} from "../actions/ReviewActions";
+import {saveCommentary,editCommentary,deleteCommentary,saveRating,getUserInfo} from "../actions/ReviewActions";
 
 const mapStateToProps = (state) => ({ 
   commentary : state.Review.commentary,
   userName:state.Review.userName,
+  currentUserId:state.Review.userId,
   personaTab:state.Review.personaTab
 });
 
@@ -17,7 +18,13 @@ const mapDispatchToProps = dispatch => ({
     },
     deleteCommentary : (payload) => {
         dispatch(deleteCommentary(payload));
-    }   
+    },
+    saveRating : (payload) => {
+        dispatch(saveRating(payload));
+    },
+    userInfo : () => {
+        dispatch(getUserInfo());
+    }
 })
 
 const CommentaryContainer = connect(mapStateToProps,mapDispatchToProps)(CommentaryComponent);

@@ -37,6 +37,7 @@ export default class Persona extends React.Component{
     }
 
     makeTabActive(tabName) {
+
         var self = this;
         var activeTab = this.state.activeTab;
         var updateTabs = this.state.tabs;
@@ -62,10 +63,12 @@ export default class Persona extends React.Component{
                 this.containerClassName = 'homeContentArea';
                 break;
             case 'Reviewer':
+                this.props.setContentMode("differ");
                 content = (<ReviewerContainer/>);
                 this.containerClassName = 'ContentArea';
                 break;
             case 'Developer': 
+                this.props.setContentMode("differ");
                 content = (<DeveloperContainer/>);
                 this.containerClassName = 'ContentArea';
                 break;

@@ -108,23 +108,27 @@ export default class extends React.Component{
     loadData() {
         var pendingReviews = [];        
         var completedChanges = [];
+        var cancelledReviews=[];
 
-        var navigationTree = this.state.navigationTree;      
+        var navigationTree = this.state.navigationTree;
+              
         if(navigationTree && navigationTree.length > 0) {
             return navigationTree;
         }
         var changeSets = this.state.changeSets;
+        
         if(!changeSets) {
             return [];
         }
         var changeSetNames = Object.keys(changeSets);
-        console.log(changeSetNames);
+        
         if(changeSetNames) {
             changeSetNames.forEach(function(changeSetName) {
 
                 var pendingChangesetObj = {'name': changeSetName, 'id': changeSets[changeSetName].id, 'type': 'changeset', 'toggled': false};
                 var completedChangesetObj = {'name': changeSetName, 'id': changeSets[changeSetName].id, 'type': 'changeset', 'toggled': false};
-
+                var cancelledChangesetObj={'name': changeSetName, 'id': changeSets[changeSetName].id, 'type': 'changeset', 'toggled': false};
+                
                 if(changeSets[changeSetName].files) {
                     var filesByType = [];
                     
@@ -163,7 +167,9 @@ export default class extends React.Component{
                         file.fields.forEach(function(field) {
                             let fieldObj = {};
                             if(field.field_name) {
-                                if('review_in_progress' != file.status || ('review_in_progress' == file.status && 'Pending' == field.status)){
+         if(('review_cancelled' != file.status && 'review_in_progress' != file.status) || (('review_cancelled' == file.status || 'review_in_progress' == file.status) && 'Pending' == field.status)){
+             
+                              //  if('review_in_progress' != file.status || ('review_in_progress' == file.status && 'Pending' == field.status)){
                                     fieldObj['name'] = field.field_name;
                                     fieldObj['id'] = field.field_name;
                                     fieldObj['change_id'] = file.change_id;
@@ -190,12 +196,16 @@ export default class extends React.Component{
 
                     var pendingFiles = filesByType.filter(obj=>obj.status == 'review_in_progress' && obj.children && obj.children.length > 0);
                     var compltedFiles = filesByType.filter(obj=>obj.status == 'review_completed');
+                    var cancelledFiles=filesByType.filter(obj=>obj.status == 'review_cancelled');
 
                     if(pendingFiles && pendingFiles.length > 0) {
                         pendingChangesetObj['children'] = pendingFiles;
                     }
                     if(compltedFiles && compltedFiles.length > 0) {
                         completedChangesetObj['children'] = compltedFiles;
+                    }
+                    if(cancelledFiles && cancelledFiles.length > 0) {
+                        cancelledChangesetObj['children'] = cancelledFiles;
                     }
                 }
                 if(pendingChangesetObj && pendingChangesetObj.children && pendingChangesetObj.children.length > 0){
@@ -204,6 +214,10 @@ export default class extends React.Component{
                 if(completedChangesetObj && completedChangesetObj.children && completedChangesetObj.children.length > 0){
                     completedChanges.push(completedChangesetObj);
                 }
+                if(cancelledChangesetObj && cancelledChangesetObj.children && cancelledChangesetObj.children.length > 0){
+                    cancelledReviews.push(cancelledChangesetObj);
+                }
+            
 
             });
         }
@@ -233,6 +247,12 @@ export default class extends React.Component{
                         children: completedChanges
                     }
                 ]
+            },
+            {
+                name: 'Cancelled Review',
+                id: 'Cancelled Review',
+                toggled: false,
+                children: cancelledReviews
             }
         ];
         this.setState({'navigationTree': navigationTree});

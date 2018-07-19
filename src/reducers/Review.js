@@ -16,7 +16,7 @@ export default function Review(state={
   reviewers : {},
   change_id : null,
   file_id : null,
-  userName : "Haribabu",
+  userName : "",
   expandMode: "default",
   showLiveStream: false,
   personaTab: "Home",
@@ -130,7 +130,7 @@ export default function Review(state={
             break;
         }
         case 'USER_INFO':{
-            state = {...state,userName:action.payload};
+            state = {...state,userName:action.payload.name,userId:action.payload.id};
             break;
         }
         

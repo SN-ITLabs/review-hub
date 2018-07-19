@@ -75,10 +75,6 @@ export default function commentsFactory(changeKey,fileKey,fieldName){
     var api = function(){
             //dispatch(setLoadingIcon(true))
           updateComments();
-
-        // if(window.localStorage.getItem("commentStorage"))
-          /// comments = {"16628de26fc65b80f928c8c17c3ee46d":{"12":[{"user":"Haribabu Garbhan","message":"this sis my testing "}]}};
-
         return ({
             "get": getComment,
             "set": setComment

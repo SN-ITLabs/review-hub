@@ -81,8 +81,9 @@ export default class extends React.Component {
                 <div class = "col-sm-12" >
                     <div class = "panel panel-default" >
                         <div class = "panel-heading" >
-                            <strong > {this.props.user}</strong> 
+                            <strong > {this.props.user + ' '}</strong> 
                             <span class="text-muted">{this.props.time}</span >
+                            {this.props.userId==this.props.currentUserId?
                             <div style = {buttonStyle} >
                                 <button  style={hideWhileEditing} type = "button" class = "btn btn-default btn-sm" onClick = {() => {this.onEdit()}}>
                                     <span class = "glyphicon glyphicon-edit" > </span> Edit 
@@ -97,6 +98,7 @@ export default class extends React.Component {
                                     <span class = "glyphicon glyphicon-bin" > </span> Remove  
                                 </button> 
                             </div> 
+                            :null}
                         </div> 
                         <div class = "panel-body" > 
                             <textarea style={textAreaStyle} disabled={this.state.isDisabled}  value={decodeURI(this.state.content)} onChange = {this.captureInput}></textarea>
