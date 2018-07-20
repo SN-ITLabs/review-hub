@@ -10,6 +10,8 @@
         "material-ui-superselectfield": "^1.9.6",
         "npm": "^6.1.0",
         "react": "^16.4.0",
+        "react-data-grid": "^4.0.7",
+        "react-data-grid-addons": "^4.0.8",
         "react-dom": "^16.2.0",
         "react-draggable": "^3.0.5",
         "react-rating": "^1.1.2",

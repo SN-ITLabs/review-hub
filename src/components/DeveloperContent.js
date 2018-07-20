@@ -1,7 +1,6 @@
 import React from "react";
 
 import LeftBar from '../containers/LeftBarContainer';
-//import MainContent from '../containers/MainContainer';
 import MainDiff from '../containers/MainDiffContainer';
 
 import RightBar from './RightBar';

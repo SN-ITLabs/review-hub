@@ -1,12 +1,14 @@
 import React from 'react'
 import BestPractices from '../statics/BestPractices'
+import RecommendationList from './Recommendations'
 
 class RecommendationPane extends React.Component{
     constructor(props, context) {
-        super(props);
+        super(props);        
     }
 
     render(){
+        console.log(this.props.changeDetails);
         var details = [];
         var categories = Object.keys(BestPractices);        
         categories.forEach(function(categoryName) {            
@@ -21,9 +23,9 @@ class RecommendationPane extends React.Component{
         });
 
         return(
-            <div className="recommendationsPane">
-                {details}
-            </div>          
+            <React.Fragment>
+                <RecommendationList/>
+            </React.Fragment>
         )
     }
 }
