@@ -112,3 +112,32 @@ export function getHierarchy(){
             });
        };
 }
+
+export function getRecomendations(type){
+    return dispatch => {
+        return SNAjax({
+            processor: "ChangeSetAjax",
+            action: "getRecomendations",
+            scope: "x_snc_review_hub",
+            params:{
+                sysparam_recomond: type
+            }
+          })
+            .getJSON()
+            .then(function(response) {
+                dispatch(handleRecomendations(response))
+                console.log("In Success for getHierarchy");
+            })
+            .catch(function(error) {
+                console.log("In Error getHierarchy");
+            });
+       };
+}
+
+
+function handleRecomendations(res){
+    return{
+        type : 'RECOMENDATIONS',
+        payload: res.recomendations
+    }
+}

@@ -1,14 +1,14 @@
 import React from 'react'
 import BestPractices from '../statics/BestPractices'
-import RecommendationList from './Recommendations'
+import RecommendationList from '../containers/RecommendationContainer'
 
 class RecommendationPane extends React.Component{
     constructor(props, context) {
-        super(props);        
-    }
+        super(props);    
+}
 
     render(){
-        console.log(this.props.changeDetails);
+        /*console.log(this.props.changeDetails);
         var details = [];
         var categories = Object.keys(BestPractices);        
         categories.forEach(function(categoryName) {            
@@ -20,11 +20,11 @@ class RecommendationPane extends React.Component{
                 });
                 details.push(<React.Fragment><div className="CategoryName">{categoryName}</div><ul className="recommendList">{categoryWiseLI}</ul></React.Fragment>);
             }
-        });
+        });*/
 
         return(
             <React.Fragment>
-                <RecommendationList/>
+                <RecommendationList details={this.props.details}/>
             </React.Fragment>
         )
     }

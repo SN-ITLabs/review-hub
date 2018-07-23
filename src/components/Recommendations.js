@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDataGrid from 'react-data-grid';
-import { Toolbar, Selectors } from 'react-data-grid-addons';
+import { Toolbar} from 'react-data-grid-addons';
+const {
+  Data: { Selectors }
+  } = require('react-data-grid-addons');
 
 var RecommendationList = class extends React.Component {
   constructor(props, context) {
@@ -12,17 +15,17 @@ var RecommendationList = class extends React.Component {
         width: 80
       },
       {
-        key: 'task',
-        name: 'Title',
+        key: 'category',
+        name: 'Category',
         filterable: true,
         sortable: true
       },
       {
-        key: 'priority',
-        name: 'Priority',
+        key: 'description',
+        name: 'Description',
         filterable: true,
         sortable: true
-      },
+      }/*,
       {
         key: 'issueType',
         name: 'Issue Type',
@@ -46,34 +49,24 @@ var RecommendationList = class extends React.Component {
         name: 'Expected Complete',
         filterable: true,
         sortable: true
-      }
+      }*/
     ];
 
-    this.state = { rows: this.createRows(1000), filters: {}, sortColumn: null, sortDirection: null };
+    this.state = {rows: this.props.rows,filters: {}, sortColumn: null, sortDirection: null };
   }
 
-  getRandomDate = (start, end) => {
-    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toLocaleDateString();
-  };
+  componentDidMount(){
+    this.props.fetchRecomendations(this.props.details.type);
+  }
 
-  createRows = (numberOfRows) => {
-    let rows = [];
-    for (let i = 1; i < numberOfRows; i++) {
-      rows.push({
-        id: i,
-        task: 'Task ' + i,
-        complete: Math.min(100, Math.round(Math.random() * 110)),
-        priority: ['Critical', 'High', 'Medium', 'Low'][Math.floor((Math.random() * 3) + 1)],
-        issueType: ['Bug', 'Improvement', 'Epic', 'Story'][Math.floor((Math.random() * 3) + 1)],
-        startDate: this.getRandomDate(new Date(2015, 3, 1), new Date()),
-        completeDate: this.getRandomDate(new Date(), new Date(2016, 0, 1))
-      });
-    }
-    return rows;
-  };
+  componentWillReceiveProps(nextProps){
+    this.setState({
+      rows : nextProps.rows
+    })
+  }
 
   getRows = () => {
-    return this.state.rows;
+    return Selectors.getRows(this.state);
   };
 
   getSize = () => {
@@ -86,7 +79,20 @@ var RecommendationList = class extends React.Component {
   };
 
   handleGridSort = (sortColumn, sortDirection) => {
-    this.setState({ sortColumn: sortColumn, sortDirection: sortDirection });
+
+    const comparer = (a, b) => {
+      if (sortDirection === 'ASC') {
+        return (a[sortColumn] > b[sortColumn]) ? 1 : -1;
+      } else if (sortDirection === 'DESC') {
+        return (a[sortColumn] < b[sortColumn]) ? 1 : -1;
+      }
+    };
+
+    sortDirection === 'NONE' ? this.state.rows.slice(0) : this.state.rows.sort(comparer);
+
+    //this.setState({ rows });
+
+   // this.setState({ sortColumn: sortColumn, sortDirection: sortDirection });
   };
 
   handleFilterChange = (filter) => {

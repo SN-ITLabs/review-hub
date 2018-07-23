@@ -7,7 +7,8 @@ export default function Activity(state={
     changeHistory : [],
     upwardHierarchy : [],
     showDelegation : false,
-    bellClass : ""
+    bellClass : "",
+    recomendations : []
 },action){
 
     switch(action.type){
@@ -50,6 +51,15 @@ export default function Activity(state={
             };
             break;
         }
+        case 'RECOMENDATIONS':{
+            state = {
+                ...state,
+                recomendations : action.payload
+            };
+            break;
+        }
+
+        
         
     }
 
