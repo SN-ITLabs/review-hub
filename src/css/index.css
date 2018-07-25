@@ -225,3 +225,9 @@ ul {
 .timingDiv {
     display: none;
 }
+.bold-left{
+    margin-left: 5px;
+    font-weight: bold;
+    color: black;
+    font-size: 10px;
+}

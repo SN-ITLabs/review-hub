@@ -21,6 +21,20 @@ class Line extends React.Component {
        // console.log(this.state.showComment);
     }
 
+    componentWillReceiveProps(nextProps){
+        console.log("next props called");
+        this.lineCommentBlock();
+    }
+
+
+    lineCommentBlock(){
+        var comlength = this.props.commentInstanceRef.get(this.props.lineNumber).length;
+        if(comlength > 0)
+            return (<span className="bold-left">+{comlength}</span>);
+        else
+            return (<span />);
+    }
+    
     render() {
         //console.log(this.props.difference);
       //  if (this.props.compare && this.props.difference) {
@@ -41,16 +55,22 @@ class Line extends React.Component {
             }
             
             
+            var _this = this;
             return (
+                
                 <div className="row highlight-row">
-                    <div className="no-padding col-md-12">
+                    <div className="col-md-12">
                         <div className="row script-code highlight">
-                            <div className="no-padding col-md-1 line-comment">
+                            <div className="col-md-1 line-comment">
                                 <span className="line-comment-action" line-id={this.props.lineNumber} onClick={this.toggleLineComment.bind(this)}/>
                                 {
-                                    this.props.commentInstanceRef.get(this.props.lineNumber).length > 0 ?
+                                    /*this.props.commentInstanceRef.get(this.props.lineNumber).length > 0 ?
                                         (<span className="comments-present"/>)
-                                    : <span />
+                                    : <span />*/
+                                    
+                                   // setTimeout(function(){
+                                        this.lineCommentBlock()
+                                    //},1000)
                                 }
                             </div>
                             <div className="col-md-1 line-number">{this.props.lineNumber}</div>
@@ -58,7 +78,7 @@ class Line extends React.Component {
                             <div className="col-md-10 line-code" dangerouslySetInnerHTML={{__html: this.props.script}}></div> 
                         </div>
                         <div className="row script-code highlight">
-                            <div className="no-padding col-md-1 line-comment"></div>
+                            <div className="col-md-1 line-comment"></div>
                             <div className="col-md-1 line-number"></div>
                             {/* <div className="col-md-10 line-code replace" dangerouslySetInnerHTML={{__html: _differenceCode}}></div> */}
                             <div className="col-md-10 line-code replace" dangerouslySetInnerHTML={{__html: _differenceCode}}></div> 
@@ -66,7 +86,7 @@ class Line extends React.Component {
                         {
                             this.state.showComment ?
                                 (<div className="row script-code highlight">
-                                    <div className="no-padding col-md-1" />
+                                    <div className="col-md-1" />
                                     <div className="col-md-1" />
                                     <div className="col-md-10">
                                         <CommentBox user={this.props.user} line={this.props.lineNumber} commentInstance={this.props.commentInstanceRef} commenter={this.props.commenter}/>
@@ -101,7 +121,8 @@ export default class Differ extends React.Component {
            // differData: getDifferScript()
            commentFactoryInstance: commentsFactory(this.props.change,this.props.file,this.props.fieldName),
            expandMode: this.props.expandMode, 
-           showLiveStream: this.props.showLiveStream
+           showLiveStream: this.props.showLiveStream,
+           dtLoaded: false
         };
        // console.log(this.props.change);
     }
@@ -114,7 +135,8 @@ export default class Differ extends React.Component {
         this.setState({
             commentFactoryInstance: commentsFactory(nextProps.change,nextProps.file,nextProps.fieldName),
             expandMode: nextProps.expandMode,
-            showLiveStream: nextProps.showLiveStream
+            showLiveStream: nextProps.showLiveStream,
+            dtLoaded: true
          });
     }
 
@@ -142,6 +164,7 @@ export default class Differ extends React.Component {
                                 difference={object.difference}
                                 // file={_this.props.change}
                                 commentInstanceRef={_this.state.commentFactoryInstance}
+                                dtLoaded={_this.state.dtLoaded}
                                 user = {_this.props.user}
                                 commenter = {_this.props.personaTab}
                             />
