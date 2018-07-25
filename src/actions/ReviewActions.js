@@ -4,8 +4,11 @@ import { SNAjax } from "../util/globalhelper";
 
 import { getChangeSetsForReviewSuccess,setLoadingIcon} from "./SearchActions";
 
-// implement your actions here...
+import * as messageActions from 'react-error/actions';
 
+import  {NotificationManager} from 'react-notifications';
+
+// implement your actions here...
 
 export function saveReviewerNavigationTree(navigationTree) {
     return {
@@ -63,7 +66,8 @@ export function checkRatingBeforeChangeStateUpdate(changesetname,change_id, fiel
                     dispatch(changesetReviewReject(changesetname,change_id, field_name));
             }
             else{
-                alert("Please provide rating before accepting/rejecting Change!");
+                NotificationManager.info("Please provide overall rating for change - " +response.changeName+" before you accept/reject change.");
+                //alert("Please provide overall rating for change - " +response.changeName+" before you accept/reject change.");
             }
             console.log("In Success for changeRating");
         })

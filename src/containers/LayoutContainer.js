@@ -31,6 +31,7 @@ const mapDispatchToProps = dispatch => ({
     }
 })
 
+
 const LayoutCont = connect(state => ({
     contentMode: state.contentMode,
     expandMode: state.Review.expandMode,

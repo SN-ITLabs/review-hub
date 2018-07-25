@@ -31,6 +31,18 @@ export default class Persona extends React.Component{
         this.containerClassName = 'homeContentArea';
     }
 
+    componentWillMount(){
+        const params = new URLSearchParams(window.location.search);
+        const isSlackURL=params.get('isSlackURL');
+        if(isSlackURL){
+            var persona=params.get('persona');
+            if(persona ==='Developer' || persona === 'Reviewer'){
+                this.setState({activeTab:persona});
+                this.makeTabActive(persona);
+            }
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         this.setState({activeTab:nextProps.personaTab});
         this.makeTabActive(nextProps.personaTab);

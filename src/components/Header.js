@@ -1,12 +1,9 @@
 import React from "react";
 import '../css/Header.css';
-import { HUB_CONST } from "../util/Constants"
+import { HUB_CONST } from "../util/Constants";
+import {NotificationContainer} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 class Header extends React.Component {
-
-    // componentDidMount(){
-    //     this.props.dispatch();
-    // } 
-
     render() {
         let logoSRC = "NewLogo.png";
 
@@ -20,6 +17,7 @@ class Header extends React.Component {
                     <img src={logoSRC} alt="Service Now" className="HeaderLogo"/>
                     <div className="HeaderTitle">Review Central</div>
                 </div>
+                <NotificationContainer/>
                 {/* <div className="loginSection">
                    <span>{this.props.user.name}</span>
                 </div> */}

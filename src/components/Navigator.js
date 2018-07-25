@@ -15,9 +15,26 @@ export default class extends React.Component{
         prevDeveloperChangeSet: null,
         prevDeveloperChange: null
       };
-      this.onToggle = this.onToggle.bind(this);
-    }
 
+      const params = new URLSearchParams(window.location.search);
+      var changesetId=null,fileType=null,changeId =null,fieldName=null;
+      var persona=params.get('persona')
+      if(this.props.personne == persona){
+        changesetId=params.get('changesetId');
+        fileType= params.get('fileType');
+        changeId = params.get('changeId');
+        fieldName= params.get('fieldName');
+      }
+      this.activeNode={
+        changeset:changesetId,
+        type:fileType,
+        change:changeId,
+        field:fieldName
+    };
+    this.onToggle = this.onToggle.bind(this);
+    }
+    
+    
     componentWillReceiveProps(nextProps) {
         if('Reviewer' == this.props.personne) {
             this.setState({
@@ -33,7 +50,7 @@ export default class extends React.Component{
                 prevDeveloperChange: nextProps.prevDeveloperChange,
                 changeSets: nextProps.changeSets, 
                 navigationTree: []});
-        }        
+        }       
     }
     
     componentDidMount(){
@@ -88,6 +105,7 @@ export default class extends React.Component{
         var fieldname = node.name?node.name:'';
         switch(node.type) {
             case "field": 
+                this.activeNode.field=fieldname;
                 this.props.setContentMode("Differ");
                 this.props.toggleDifferComp(node.change_id, node.file_id, node.name);  
                 var reviewer = this.generateFileReviewer(node);
@@ -95,17 +113,38 @@ export default class extends React.Component{
                 this.props.toggleCommentary(changesetId, changeId, fieldname);                
                 break;
             case "file":
+                this.activeNode.change=changeId;
+                this.activeNode.field=null;
                 this.props.setContentMode("Commentary");
                 this.props.toggleCommentary(changesetId, changeId);  
                 break;
+            case "change":
+                this.activeNode.type=node.name;
+                this.activeNode.change=null;
+                this.activeNode.field=null;
+                break;
             case "changeset":
+                this.activeNode.changeset=changesetId;
+                this.activeNode.change=null;
+                this.activeNode.field=null;
+                this.activeNode.type=null;
                 this.props.setContentMode("Commentary");
                 this.props.toggleCommentary(changesetId);  
                 break;
+            default:
+                this.activeNode.changeset=null;
+                this.activeNode.change=null;
+                this.activeNode.field=null;
+                this.activeNode.type=null;
         }          
     }
 
     loadData() {
+        var isChangesetActive=false;
+        var isChangeActive=false;
+        var isFieldActive=false;
+        
+        var self=this;
         var pendingReviews = [];        
         var completedChanges = [];
         var cancelledReviews=[];
@@ -125,13 +164,18 @@ export default class extends React.Component{
         if(changeSetNames) {
             changeSetNames.forEach(function(changeSetName) {
 
-                var pendingChangesetObj = {'name': changeSetName, 'id': changeSets[changeSetName].id, 'type': 'changeset', 'toggled': false};
+                isChangesetActive=false;
+                var pendingChangesetObj = {'name': changeSetName, 'id': changeSets[changeSetName].id, 'type': 'changeset', 'toggled': (changeSets[changeSetName].id==self.activeNode.changeset)? true:false};
                 var completedChangesetObj = {'name': changeSetName, 'id': changeSets[changeSetName].id, 'type': 'changeset', 'toggled': false};
                 var cancelledChangesetObj={'name': changeSetName, 'id': changeSets[changeSetName].id, 'type': 'changeset', 'toggled': false};
                 
+                if(changeSets[changeSetName].id==self.activeNode.changeset){
+                    isChangesetActive=true;
+                }
+
                 if(changeSets[changeSetName].files) {
                     var filesByType = [];
-                    
+                    isChangeActive=false;
                     changeSets[changeSetName].files.forEach(function(file) {
                         var fileName = file.file_name;
                         var type = file.type;
@@ -147,7 +191,12 @@ export default class extends React.Component{
                             instancesByType['name'] = type;
                             instancesByType['id'] = type;                            
                             instancesByType['status'] = status;
-                            instancesByType['toggled'] = false; 
+                            if(changeSets[changeSetName].id==self.activeNode.changeset && type==self.activeNode.type){
+                                instancesByType['toggled'] = true; 
+                            }
+                            else{
+                                instancesByType['toggled'] = false; 
+                            }
                             instancesByType['type'] = 'change';                           
                             instancesByType['children'] = [];
                         }
@@ -160,10 +209,18 @@ export default class extends React.Component{
                         fileObj['file_id'] = file.file_id;
                         fileObj['reviewer'] = file.reviewer;
                         fileObj['status'] = status; 
-                        fileObj['type'] = 'file';     
-                        fileObj['toggled'] = false;
-
+                        fileObj['type'] = 'file'; 
+                        fileObj['toggled'] = false; 
+                       if(changeSets[changeSetName].id==self.activeNode.changeset && type==self.activeNode.type && file.change_id==self.activeNode.change && 'review_in_progress' == file.status){
+                           //fileObj['toggled'] = true;
+                           isChangeActive=true;
+                        }
+                        else{
+                           // fileObj['toggled'] = false;
+                        }
+                        
                         var fieldsForFile = [];
+                        isFieldActive=false;
                         file.fields.forEach(function(field) {
                             let fieldObj = {};
                             if(field.field_name) {
@@ -179,11 +236,27 @@ export default class extends React.Component{
                                     fieldObj['status'] = status;
                                     fieldObj['actionable'] = true;
                                     fieldObj['type'] = 'field';
-                                    fileObj['toggled'] = false;                                
+                                    //fileObj['toggled'] = false; 
+                                    if(changeSets[changeSetName].id==self.activeNode.changeset && type==self.activeNode.type && file.change_id==self.activeNode.change && field.field_name == self.activeNode.field && 'Pending' == field.status){
+                                        fileObj['toggled'] = true; 
+                                        self.props.setContentMode("Differ");
+                                        self.props.toggleDifferComp(self.activeNode.change, self.activeNode.type, self.activeNode.field);  
+                                        self.props.toggleCommentary(self.activeNode.changeset, self.activeNode.change, self.activeNode.field);
+                                        var obj={};
+                                        obj.changed_by=file.developer;
+                                        obj.reviewer=file.reviewer;
+                                        self.props.fileReviewers(obj); 
+                                        isFieldActive=true;
+                                    }                        
                                     fieldsForFile.push(fieldObj);
                                 }                                
                             }                            
                         });
+                        if(isFieldActive==false && isChangeActive==true){
+                            self.props.setContentMode("Commentary");
+                            self.props.toggleCommentary(self.activeNode.changeset, self.activeNode.change); 
+                        }
+
                         if((fieldsForFile && fieldsForFile.length > 0) || 'review_completed' == status  ) {
                             fileObj['children'] = fieldsForFile;
                             instancesByType['children'].push(fileObj);
@@ -194,12 +267,19 @@ export default class extends React.Component{
                         }                        
                     });
 
+                   
+
                     var pendingFiles = filesByType.filter(obj=>obj.status == 'review_in_progress' && obj.children && obj.children.length > 0);
                     var compltedFiles = filesByType.filter(obj=>obj.status == 'review_completed');
                     var cancelledFiles=filesByType.filter(obj=>obj.status == 'review_cancelled');
 
                     if(pendingFiles && pendingFiles.length > 0) {
                         pendingChangesetObj['children'] = pendingFiles;
+                        if(isChangeActive==false && isChangesetActive==true){
+                            pendingChangesetObj.toggled=false;
+                            self.props.setContentMode("Commentary");
+                            self.props.toggleCommentary(self.activeNode.changeset); 
+                        }
                     }
                     if(compltedFiles && compltedFiles.length > 0) {
                         completedChangesetObj['children'] = compltedFiles;
@@ -259,6 +339,7 @@ export default class extends React.Component{
     }
 
     render(){     
+        
         //this.setState({'changeSet': this.props.changeSet});
         this.loadData();
 
@@ -272,8 +353,6 @@ export default class extends React.Component{
         );
     }
 }
-
-
 
 var navigatorTheme = {
     tree: {

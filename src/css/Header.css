@@ -27,3 +27,7 @@
     color: black;
     top: 1vh;
 }
+
+.notification-container{
+    width: 500px !important;
+}

@@ -9,6 +9,7 @@ import {combineReducers} from 'redux';
 
 export default function Review(state={
   // configure the default state 
+  activeChangeNode:null,
   changeSets:{},
   fetching:false,
   relatedUpdateSets:{},

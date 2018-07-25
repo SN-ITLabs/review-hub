@@ -10,6 +10,7 @@ import ExpandIcon from 'material-ui/svg-icons/navigation/unfold-more'
 import CollapseIcon from 'material-ui/svg-icons/navigation/unfold-less'
 import LikeIcon from 'material-ui/svg-icons/action/thumb-up'
 import '../css/ReviewerContent.css'
+import Rating from "react-rating";
 
 class MainDiff extends React.Component{
 
@@ -18,18 +19,23 @@ class MainDiff extends React.Component{
         this.state = {
             expandMode: this.props.expandMode
         }
+        this.changeRating=this.changeRating.bind(this);
     }
     
+    changeRating(value){
+        var fileId=this.props.commentary.header.fileid;
+        var params={};
+        params.sysparam_change=fileId;
+        params.sysparam_rating=value;
+        this.props.saveRating(params);
+    }
 
     handleReviewSuccess(){
      this.props.checkRatingBeforeChangeStateUpdate('',this.props.change, this.props.fieldName,true);
-        
-       // this.props.changeSetSuccess('',this.props.change, this.props.fieldName);
     }
 
     handleReject(){
         this.props.checkRatingBeforeChangeStateUpdate('',this.props.change, this.props.fieldName,false);
-        //this.props.changeSetReject('',this.props.change, this.props.fieldName);
     } 
     
     showConfigurationDiff() {
@@ -49,6 +55,14 @@ class MainDiff extends React.Component{
     }
 
     render(){
+        var isRatingReadOnly=true;
+        if(this.props.personaTab=='Reviewer'){
+            isRatingReadOnly=false;
+        }
+        var initialRating=0;
+        var commentaries = this.props.commentary;
+        initialRating=commentaries.header.rating?commentaries.header.rating:initialRating;
+
         var expandCollapseButton, propertiesPane, buttonBarClassName = "button-bar";
         if('full_screen' == this.state.expandMode) {
             expandCollapseButton = (<CollapseIcon className="accept-button" onClick={this.toggleMode.bind(this)}/>);
@@ -83,6 +97,17 @@ class MainDiff extends React.Component{
                         {accept}
                         {reject}
                         {script_or_configuration}
+                        {isRatingReadOnly? ( <Rating initialRating={initialRating} 
+                                    readonly
+                                    emptySymbol="fa fa-star-o fa-2x" 
+                                    fullSymbol="fa fa-star fa-2x"
+                                    onChange={(rating)=>{this.changeRating(rating)}}
+                            />):(
+                            <Rating initialRating={initialRating} 
+                                    emptySymbol="fa fa-star-o fa-2x" 
+                                    fullSymbol="fa fa-star fa-2x"
+                                    onChange={(rating)=>{this.changeRating(rating)}}
+                            />)}
                         <LikeIcon className="accept-button"/>                        
                     </div>
                     <Differ className="differ"/>    
