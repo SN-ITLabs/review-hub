@@ -32,10 +32,10 @@ class App extends React.Component {
         this.toggleLiveStream = this.toggleLiveStream.bind(this);
         this.reviewText = " has added comment ";
 
-        this.setChangeReviewMode();
+        //this.setChangeReviewMode();
     }
 
-    setChangeReviewMode(){
+   /* setChangeReviewMode(){
         const params = new URLSearchParams(this.props.location.search)
         const changeId = params.get('changeId')
         const fieldName = params.get('fieldName')
@@ -48,7 +48,7 @@ class App extends React.Component {
            
             window.history.pushState(null, null, '/');
         }
-    }
+    }*/
 
     componentDidMount(){
         this.props.dispatch();

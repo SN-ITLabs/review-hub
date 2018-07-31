@@ -4,8 +4,8 @@ export const HUB_CONST = {
     /* DEV INSTACNE DATA*/
     DEV_INSTANCE: "partnerportalsedev", // itappsrcr
 
-    DEV_INSTANCE_USER_NAME: "siddharth.kothari",
-    DEV_INSTANCE_USER_PASSWORD: "",
+    DEV_INSTANCE_USER_NAME: "chaitanya.saragadam",
+    DEV_INSTANCE_USER_PASSWORD: "Adri&Adri234",
 
 
     /* PROD INSTACNE DATA*/

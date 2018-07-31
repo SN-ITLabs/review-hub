@@ -10,7 +10,7 @@ const _httpReq = axios.create({ baseURL: "https://partnerportalsedev.service-now
 _httpReq.defaults.headers.put["Content-Type"] = "application/json";
 //_httpReq.defaults.headers.common["Authorization"] = "Basic cmV2aWV3Lmh1Yjp0ZXN0MTIz";
 
-_httpReq.defaults.headers.common["Authorization"] = "Basic cmV2aWV3Lmh1Yjp0ZXN0MTIz";
+_httpReq.defaults.headers.common["Authorization"] = "Basic aGFyaWJhYnUuZ2FyYmhhbmE6VkVOS0FUQWR1cmdhQDc1MQ==";
 
 function pushJS(jsName) {
     var data = fs.readFileSync("./build/static/js/" + jsName, "utf-8");
@@ -61,5 +61,5 @@ function pushCSS(cssName) {
         });
 }
 
-pushJS("main.ea8a98af.js");
-pushCSS("main.62e14b14.css");
+pushJS("main.90c16383.js");
+pushCSS("main.ee1e46ad.css");
